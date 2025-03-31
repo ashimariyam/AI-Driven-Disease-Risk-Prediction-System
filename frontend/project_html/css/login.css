@@ -1,0 +1,144 @@
+/* 🔹 Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+/* 🔹 Body Styling */
+body {
+    background-color: #f4f4f4;
+    text-align: center;
+    font-family: "Times New Roman", "Arial Black", sans-serif;
+}
+
+/* 🔹 Header Styling */
+header {
+    display: flex;
+    justify-content: space-between; /* Align left (nav) & right (logo + title) */
+    align-items: center;
+    background: white;
+    padding: 15px 30px 30px; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Logo + Title Container (Right Alignment) */
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Move to the right */
+    gap: 10px; /* Space between logo and text */
+    text-align: left;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+/* 🔹 Logo Styling */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px; /* Adjust logo size */
+    width: auto;
+}
+
+/* 🔹 Title Text */
+.text-container {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.title-container h1 {
+    font-size: 22px;
+    font-family: "Arial Black", sans-serif;
+    font-weight: bold;
+    color: #0b0806;
+    margin: 0;
+
+}
+
+.subtitle {
+    font-size: 14px;
+    font-family: "Arial", sans-serif;
+    color: rgb(46, 133, 138);
+    margin: 0;
+
+}
+
+/* 🔹 Navigation Styling (Shift Left) */
+nav {
+    flex-grow: 1;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start; /* Align nav items to the left */
+    padding-left: 20px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    padding: 2px 1px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+    font-family: "Arial", sans-serif;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    border: 2px solid #007bff;
+    color: #007bff;
+}
+
+
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.form-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

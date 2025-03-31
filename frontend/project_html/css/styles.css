@@ -1,0 +1,224 @@
+/* 🔹 Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+/* 🔹 Body Styling */
+body {
+    background-color: #f4f4f4;
+    text-align: center;
+    font-family: "Times New Roman", "Arial Black", sans-serif;
+}
+
+/* 🔹 Header Styling */
+header {
+    display: flex;
+    justify-content: space-between; /* Align left (nav) & right (logo + title) */
+    align-items: center;
+    background: white;
+    padding: 15px 30px 30px; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Logo + Title Container (Right Alignment) */
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Move to the right */
+    gap: 10px; /* Space between logo and text */
+    text-align: left;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+/* 🔹 Logo Styling */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px; /* Adjust logo size */
+    width: auto;
+}
+
+/* 🔹 Title Text */
+.text-container {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.title-container h1 {
+    font-size: 22px;
+    font-family: "Arial Black", sans-serif;
+    font-weight: bold;
+    color: #0b0806;
+    margin: 0;
+
+}
+
+.subtitle {
+    font-size: 14px;
+    font-family: "Arial", sans-serif;
+    color: rgb(46, 133, 138);
+    margin: 0;
+
+}
+
+/* 🔹 Navigation Styling (Shift Left) */
+nav {
+    flex-grow: 1;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start; /* Align nav items to the left */
+    padding-left: 20px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    padding: 2px 1px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+    font-family: "Arial", sans-serif;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    border: 2px solid #007bff;
+    color: #007bff;
+}
+
+/* 🔹 Hero Section (Background Image) */
+.hero {
+    position: relative;
+    height: 90vh;
+    background: url('../images/background.jpg') no-repeat center center;
+    background-size: cover;
+    background-position: center;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10%;
+}
+
+/* 🔹 Transparent Overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(52, 54, 56, 0.6);
+    z-index: 1;
+}
+
+/* 🔹 Hero Content */
+.hero-content {
+    text-align: left;
+    z-index: 2;
+    padding: 40px;
+    max-width: 900px;
+    margin-left: 1%;
+    border-radius: 5px;
+}
+
+/* 🔹 Fix Font Issues for Headings */
+.hero-content h2 {
+    font-family: "Arial Black", sans-serif;
+    font-size: 50px;
+    font-weight: 100;
+    color: white;
+}
+
+.tagline {
+    font-family: "Segoe UI Semibold", sans-serif;
+    font-size: 25px;
+    margin-top: 10px;
+    color: #f4f4f4;
+}
+
+.description {
+    font-family: "Segoe UI Semibold", sans-serif;
+    font-size: 20px;
+    margin-top: 10px;
+    color: #f4f4f4;
+}
+
+/* 🔹 View Services Button */
+.btn {
+    font-family: "Arial", sans-serif;
+    display: inline-block;
+    padding: 12px 24px;
+    background: #1b937fc4;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 20px;
+    border: 2px solid #bfd1cc;
+    transition: all 0.3s ease-in-out;
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 0;
+}
+
+/* 🔹 Button Hover Effect */
+.btn:hover {
+    background: #15b8ceec;
+    transform: scale(1.05);
+}
+
+/* 🔹 Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .title-container {
+        flex-direction: column;
+        align-items: center;
+        position: static;
+        margin-top: 10px;
+    }
+
+    .logo-container {
+        margin-bottom: 5px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .hero {
+        padding-left: 0;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero-content {
+        max-width: 80%;
+    }
+}

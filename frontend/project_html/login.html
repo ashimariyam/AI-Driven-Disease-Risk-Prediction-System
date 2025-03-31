@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login / Sign Up - WellPredict</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <header>
+        <div class="title-container">
+            <div class="logo-container">
+                <img src="images/logo.jpg" class="logo">
+            </div>
+            <div class="text-container">
+                <h1>WELLPREDICT</h1>
+                <p class="subtitle"><b>Predict Your Wellness, Secure Your Future</b></p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About </a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="login-container">
+        <div class="form-box">
+            <h2 id="form-title">User Login</h2>
+            <form id="login-form">
+                <input type="email" placeholder="Enter Email" required>
+                <input type="password" placeholder="Enter Password" required>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a></p>
+            </form>
+
+            <form id="signup-form" style="display: none;">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Enter Email" required>
+                <input type="password" placeholder="Create Password" required>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            let loginForm = document.getElementById("login-form");
+            let signupForm = document.getElementById("signup-form");
+            let formTitle = document.getElementById("form-title");
+
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                signupForm.style.display = "none";
+                formTitle.innerText = "User Login";
+            } else {
+                loginForm.style.display = "none";
+                signupForm.style.display = "block";
+                formTitle.innerText = "Sign Up";
+            }
+        }
+    </script>
+<footer>
+    <p>&copy; 2024 WellPredict. All rights reserved.</p>
+</footer>
+</body>
+</html>
