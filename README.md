@@ -1,5 +1,5 @@
 # AI-Driven-Disease-Risk-Prediction-System
-
+```
 WellPredict/
 │
 ├── index.html                # Home (hero + CTA)
@@ -47,3 +47,4 @@ WellPredict/
 │
 ├── README.md                 # Project description
 └── .gitignore                # Git ignore rules
+```
