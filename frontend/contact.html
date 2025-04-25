@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - WellPredict</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages/contact.css">
+</head>
+<body>
+    <!-- Header Component (Will be loaded via JavaScript) -->
+    <div id="header"></div>
+    
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="contact-heading">
+            <h1 data-aos="fade-up">Contact Us</h1>
+            <p data-aos="fade-up" data-aos-delay="100">Have questions or feedback? We'd love to hear from you. Our team is here to help with any inquiries about WellPredict's services.</p>
+        </div>
+    </section>
+    
+    <!-- Contact Forms & Info Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <!-- Contact Form -->
+            <div class="contact-form-container" data-aos="fade-up">
+                <h2>Send Us a Message</h2>
+                <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+                
+                <form class="contact-form">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your full name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="" disabled selected>Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="partnership">Partnership Opportunities</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your message here..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="contact-info-container">
+                <div class="contact-info-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Our Location</h3>
+                    <p>123 AI Innovation Center</p>
+                    <p>Health Tech Hub, Suite 45</p>
+                    <p>San Francisco, CA 94105</p>
+                </div>
+                
+                <div class="contact-info-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Us</h3>
+                    <a href="mailto:info@wellpredict.ai">info@wellpredict.ai</a>
+                    <a href="mailto:support@wellpredict.ai">support@wellpredict.ai</a>
+                </div>
+                
+                <div class="contact-info-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>Call Us</h3>
+                    <p>+1 (555) 123-4567</p>
+                    <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title" data-aos="fade-up">Frequently Asked Questions</h2>
+            
+            <div class="faq-list">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        How accurate are WellPredict's disease predictions?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            WellPredict's AI models have been trained on extensive medical datasets and validated by healthcare professionals. Our prediction accuracy varies by condition but generally ranges from 85% to 95% depending on the health condition and available data. We continuously improve our models through machine learning to enhance accuracy over time.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        Is my health data secure with WellPredict?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely. We take data security extremely seriously. All health data is encrypted both in transit and at rest using industry-standard protocols. We adhere to HIPAA compliance standards and never share your personal health information with third parties without explicit consent. Our platform undergoes regular security audits to ensure your data remains protected.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question">
+                        Can WellPredict replace a doctor's diagnosis?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            WellPredict is designed to complement, not replace, medical professionals. Our AI provides risk assessments and screening tools that can help with early detection and health monitoring, but all results should be discussed with a qualified healthcare provider. We always recommend consulting with medical professionals for definitive diagnoses and treatment plans.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question">
+                        How do I get started with WellPredict?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Getting started is easy! Simply create a free account, complete your health profile with basic information, and then you can access our various prediction services. Each service will guide you through the specific inputs needed for an assessment. For more detailed guidance, check out our user guide or contact our support team.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="map-container">
+            <h2 class="section-title" data-aos="fade-up">Find Us</h2>
+            <div class="map-frame" data-aos="fade-up">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d201885.40910624266!2d-122.58192052952886!3d37.75921232841096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sin!4v1666655894284!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Component (Will be loaded via JavaScript) -->
+    <div id="footer"></div>
+    
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // FAQ Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

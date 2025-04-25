@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WellPredict</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages/login.css">
+</head>
+<body>
+    <!-- Header Component (Will be loaded via JavaScript) -->
+    <div id="header"></div>
+    
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <!-- Left Image Panel (visible on larger screens) -->
+        <div class="auth-image">
+            <div class="auth-image-content">
+                <h2>Welcome to WellPredict</h2>
+                <p>Join thousands of users who are taking control of their health with our AI-powered prediction tools.</p>
+                
+                <ul class="auth-image-points">
+                    <li><i class="fas fa-check-circle"></i> Access personalized health risk assessments</li>
+                    <li><i class="fas fa-check-circle"></i> Secure storage of your health data</li>
+                    <li><i class="fas fa-check-circle"></i> Connect with healthcare providers</li>
+                    <li><i class="fas fa-check-circle"></i> Track your health metrics over time</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Right Auth Form -->
+        <div class="auth-form-container">
+            <div class="auth-form-wrapper" data-aos="fade-up">
+                <div class="auth-form-header">
+                    <h1 id="form-title">Welcome Back</h1>
+                    <p>Sign in to access your health dashboard</p>
+                </div>
+                
+                <div class="auth-form">
+                    <!-- Login Form -->
+                    <form id="login-form">
+                        <div class="error-message" id="login-error"></div>
+                        <div class="success-message" id="login-success"></div>
+                        
+                        <div class="input-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" placeholder="Your password" required minlength="6">
+                        </div>
+                        
+                        <div class="input-group-inline">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn auth-form-btn">Sign In</button>
+                        
+                        <div class="auth-form-footer">
+                            Don't have an account? <a href="signup.html">Sign Up</a>
+                        </div>
+                        
+                        <div class="social-login">
+                            <div class="social-login-title">
+                                <span>Or continue with</span>
+                            </div>
+                            <div class="social-login-buttons">
+                                <a href="#" class="social-btn"><i class="fab fa-google"></i></a>
+                                <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="social-btn"><i class="fab fa-apple"></i></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Component (Will be loaded via JavaScript) -->
+    <div id="footer"></div>
+    
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

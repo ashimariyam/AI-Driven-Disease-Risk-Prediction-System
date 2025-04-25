@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Prediction - WellPredict</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages/predict.css">
+</head>
+<body>
+    <!-- Header Component (Will be loaded via JavaScript) -->
+    <div id="header"></div>
+    
+    <!-- Prediction Hero Section -->
+    <section class="predict-hero">
+        <div class="predict-heading">
+            <h1 data-aos="fade-up">AI Health Prediction</h1>
+            <p data-aos="fade-up" data-aos-delay="100">Select a health assessment service below and fill out the required information to receive your personalized health prediction.</p>
+        </div>
+    </section>
+    
+    <!-- Prediction Tabs -->
+    <section class="predict-section">
+        <div class="predict-container">
+            <!-- Service Tabs -->
+            <div class="service-tabs">
+                <button class="tab-btn active" data-tab="heart">Heart Health</button>
+                <button class="tab-btn" data-tab="diabetes">Diabetes Risk</button>
+                <button class="tab-btn" data-tab="lungs">Lung Cancer Risk</button>
+                <button class="tab-btn" data-tab="symptoms">Symptom Checker</button>
+                <button class="tab-btn" data-tab="health-score">Health Score</button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Heart Health Assessment Form -->
+                <div class="tab-pane active" id="heart-tab">
+                    <div class="predict-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h2><i class="fas fa-heartbeat"></i> Heart Health Assessment</h2>
+                            <p>Assess your cardiovascular health by filling out the form below.</p>
+                        </div>
+                        
+                        <form id="heart-form" class="predict-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="heart-age">Age</label>
+                                    <input type="number" id="heart-age" name="age" min="18" max="100" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="heart-gender">Gender</label>
+                                    <select id="heart-gender" name="gender" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="heart-systolic">Systolic Blood Pressure (mmHg)</label>
+                                    <input type="number" id="heart-systolic" name="systolic" min="80" max="220" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="heart-diastolic">Diastolic Blood Pressure (mmHg)</label>
+                                    <input type="number" id="heart-diastolic" name="diastolic" min="50" max="150" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="heart-cholesterol">Total Cholesterol (mg/dL)</label>
+                                    <input type="number" id="heart-cholesterol" name="cholesterol" min="100" max="500" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="heart-hdl">HDL Cholesterol (mg/dL)</label>
+                                    <input type="number" id="heart-hdl" name="hdl" min="20" max="100" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Do you smoke?</label>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="heart-smoke" value="yes" required>
+                                            Yes
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="heart-smoke" value="no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Diabetes Status</label>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="heart-diabetes" value="yes" required>
+                                            Yes
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="heart-diabetes" value="no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-predict">Predict Heart Health</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Diabetes Risk Assessment Form -->
+                <div class="tab-pane" id="diabetes-tab">
+                    <div class="predict-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h2><i class="fas fa-tint"></i> Diabetes Risk Prediction</h2>
+                            <p>Assess your risk of developing Type 2 diabetes.</p>
+                        </div>
+                        
+                        <form id="diabetes-form" class="predict-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="diabetes-age">Age</label>
+                                    <input type="number" id="diabetes-age" name="age" min="18" max="100" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="diabetes-gender">Gender</label>
+                                    <select id="diabetes-gender" name="gender" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="diabetes-weight">Weight (kg)</label>
+                                    <input type="number" id="diabetes-weight" name="weight" min="30" max="250" step="0.1" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="diabetes-height">Height (cm)</label>
+                                    <input type="number" id="diabetes-height" name="height" min="100" max="250" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="diabetes-fasting-glucose">Fasting Blood Glucose (mg/dL)</label>
+                                    <input type="number" id="diabetes-fasting-glucose" name="fastingGlucose" min="50" max="300" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Family History of Diabetes</label>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="diabetes-family" value="yes" required>
+                                            Yes
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="diabetes-family" value="no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Physical Activity Level</label>
+                                    <select id="diabetes-activity" name="activity" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="sedentary">Sedentary (little or no exercise)</option>
+                                        <option value="light">Light (exercise 1-3 days/week)</option>
+                                        <option value="moderate">Moderate (exercise 3-5 days/week)</option>
+                                        <option value="active">Active (exercise 6-7 days/week)</option>
+                                        <option value="veryActive">Very Active (intense daily exercise)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Have you been diagnosed with high blood pressure?</label>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="diabetes-hypertension" value="yes" required>
+                                            Yes
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="diabetes-hypertension" value="no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-predict">Predict Diabetes Risk</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Lung Cancer Risk Assessment Form -->
+                <div class="tab-pane" id="lungs-tab">
+                    <div class="predict-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h2><i class="fas fa-lungs"></i> Lung Cancer Risk Assessment</h2>
+                            <p>Evaluate your risk factors for lung cancer.</p>
+                        </div>
+                        
+                        <form id="lungs-form" class="predict-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="lungs-age">Age</label>
+                                    <input type="number" id="lungs-age" name="age" min="18" max="100" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="lungs-gender">Gender</label>
+                                    <select id="lungs-gender" name="gender" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Smoking Status</label>
+                                <select id="lungs-smoking" name="smokingStatus" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="never">Never Smoked</option>
+                                    <option value="former">Former Smoker</option>
+                                    <option value="current">Current Smoker</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group smoking-details">
+                                <label for="lungs-years">If you smoke(d), for how many years?</label>
+                                <input type="number" id="lungs-years" name="smokingYears" min="0" max="80">
+                            </div>
+                            
+                            <div class="form-group smoking-details">
+                                <label for="lungs-packs">Cigarette packs per day (average)</label>
+                                <input type="number" id="lungs-packs" name="packsPerDay" min="0" max="10" step="0.5">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Check all that apply:</label>
+                                <div class="checkbox-group">
+                                    <label>
+                                        <input type="checkbox" name="lungs-family" value="yes">
+                                        Family history of lung cancer
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="lungs-exposure" value="yes">
+                                        Exposure to air pollution
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="lungs-asbestos" value="yes">
+                                        Exposure to asbestos
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="lungs-radiation" value="yes">
+                                        Previous radiation therapy to the chest
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="lungs-radon" value="yes">
+                                        Exposure to radon gas
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-predict">Assess Lung Cancer Risk</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Symptom Checker Form -->
+                <div class="tab-pane" id="symptoms-tab">
+                    <div class="predict-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h2><i class="fas fa-stethoscope"></i> Quick Symptom Checker</h2>
+                            <p>Select the symptoms you're experiencing to get a preliminary assessment.</p>
+                        </div>
+                        
+                        <form id="symptoms-form" class="predict-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="symptoms-days">How many days have you had symptoms?</label>
+                                    <input type="number" id="symptoms-days" name="symptomDays" min="1" max="30" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Symptom Severity</label>
+                                    <select id="symptoms-severity" name="severity" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="mild">Mild - Noticeable but not interfering with daily activities</option>
+                                        <option value="moderate">Moderate - Somewhat interfering with daily activities</option>
+                                        <option value="severe">Severe - Significantly interfering with daily activities</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Check all symptoms that apply:</label>
+                                <div class="symptom-grid">
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="fever">
+                                        Fever
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="cough">
+                                        Cough
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="soreThroat">
+                                        Sore Throat
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="headache">
+                                        Headache
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="fatigue">
+                                        Fatigue
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="bodyAches">
+                                        Body Aches
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="shortnessOfBreath">
+                                        Shortness of Breath
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="lossOfTaste">
+                                        Loss of Taste/Smell
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="nausea">
+                                        Nausea/Vomiting
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="diarrhea">
+                                        Diarrhea
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="rash">
+                                        Skin Rash
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="jointPain">
+                                        Joint Pain
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="chestPain">
+                                        Chest Pain
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="abdominalPain">
+                                        Abdominal Pain
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="dizziness">
+                                        Dizziness
+                                    </label>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="symptoms" value="congestion">
+                                        Nasal Congestion
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-predict">Check Symptoms</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Health Score Calculator Form -->
+                <div class="tab-pane" id="health-score-tab">
+                    <div class="predict-card" data-aos="fade-up">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-line"></i> Overall Health Score Calculator</h2>
+                            <p>Assess your overall health based on lifestyle and wellness factors.</p>
+                        </div>
+                        
+                        <form id="health-score-form" class="predict-form">
+                            <div class="form-group">
+                                <label for="sleep-hours">Average Sleep Hours per Night</label>
+                                <div class="range-container">
+                                    <input type="range" id="sleep-hours" name="sleep" min="3" max="12" step="0.5" value="7">
+                                    <div class="range-value"><span id="sleep-value">7</span> hours</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exercise-hours">Weekly Exercise (hours)</label>
+                                <div class="range-container">
+                                    <input type="range" id="exercise-hours" name="exercise" min="0" max="20" step="0.5" value="3">
+                                    <div class="range-value"><span id="exercise-value">3</span> hours</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="stress-level">Stress Level</label>
+                                <div class="range-container">
+                                    <input type="range" id="stress-level" name="stress" min="1" max="10" value="5">
+                                    <div class="range-value"><span id="stress-value">5</span> / 10</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="diet-quality">Diet Quality</label>
+                                <div class="range-container">
+                                    <input type="range" id="diet-quality" name="diet" min="1" max="10" value="5">
+                                    <div class="range-value"><span id="diet-value">5</span> / 10</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Alcohol Consumption</label>
+                                    <select id="alcohol-consumption" name="alcohol" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="none">None</option>
+                                        <option value="light">Light (1-2 drinks per week)</option>
+                                        <option value="moderate">Moderate (3-7 drinks per week)</option>
+                                        <option value="heavy">Heavy (8+ drinks per week)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Smoking Status</label>
+                                    <select id="health-smoking" name="smoking" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="never">Never Smoked</option>
+                                        <option value="former">Former Smoker</option>
+                                        <option value="current">Current Smoker</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-predict">Calculate Health Score</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Component (Will be loaded via JavaScript) -->
+    <div id="footer"></div>
+    
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/predict-assessments.js"></script>
+    <script src="js/predict-assessments2.js"></script>
+    <script src="js/predict.js"></script>
+</body>
+</html> 

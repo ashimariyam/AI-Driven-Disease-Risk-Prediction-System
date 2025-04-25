@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - WellPredict</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages/login.css">
+</head>
+<body>
+    <!-- Header Component (Will be loaded via JavaScript) -->
+    <div id="header"></div>
+    
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <!-- Left Image Panel (visible on larger screens) -->
+        <div class="auth-image">
+            <div class="auth-image-content">
+                <h2>Join WellPredict Today</h2>
+                <p>Create your account and start your journey to better health with our AI-powered prediction tools.</p>
+                
+                <ul class="auth-image-points">
+                    <li><i class="fas fa-check-circle"></i> Personalized health risk assessments</li>
+                    <li><i class="fas fa-check-circle"></i> Track health metrics over time</li>
+                    <li><i class="fas fa-check-circle"></i> Connect with healthcare specialists</li>
+                    <li><i class="fas fa-check-circle"></i> Receive tailored health recommendations</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Right Auth Form -->
+        <div class="auth-form-container">
+            <div class="auth-form-wrapper" data-aos="fade-up">
+                <div class="auth-form-header">
+                    <h1>Create Account</h1>
+                    <p>Sign up to get started with WellPredict</p>
+                </div>
+                
+                <div class="auth-form">
+                    <!-- Signup Form -->
+                    <form id="signup-form">
+                        <div class="error-message" id="signup-error"></div>
+                        <div class="success-message" id="signup-success"></div>
+                        
+                        <div class="input-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your full name" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="signup-email">Email Address</label>
+                            <input type="email" id="signup-email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" name="password" placeholder="Create a password" required minlength="8">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required minlength="8">
+                        </div>
+                        
+                        <div class="input-group-inline">
+                            <div class="remember-me">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn auth-form-btn">Create Account</button>
+                        
+                        <div class="auth-form-footer">
+                            Already have an account? <a href="login.html">Sign In</a>
+                        </div>
+                        
+                        <div class="social-login">
+                            <div class="social-login-title">
+                                <span>Or sign up with</span>
+                            </div>
+                            <div class="social-login-buttons">
+                                <a href="#" class="social-btn"><i class="fab fa-google"></i></a>
+                                <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="social-btn"><i class="fab fa-apple"></i></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Component (Will be loaded via JavaScript) -->
+    <div id="footer"></div>
+    
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html> 
