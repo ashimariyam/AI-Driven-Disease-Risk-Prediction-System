@@ -1,0 +1,401 @@
+/* 
+ * WellPredict - Profile Page Styles
+ */
+
+.profile-container {
+    padding: 80px 0;
+    min-height: calc(100vh - 200px);
+    background-color: var(--background-light);
+}
+
+.profile-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.profile-card h1 {
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 28px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 25px;
+}
+
+.profile-avatar i {
+    font-size: 50px;
+    color: var(--primary-color);
+}
+
+.profile-details h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.profile-details p {
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.profile-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.profile-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.profile-section:hover {
+    transform: translateY(-5px);
+}
+
+.profile-section h2 {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-section h2 i {
+    margin-right: 10px;
+}
+
+.profile-section p {
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Assessment History Section */
+.history-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.section-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.section-header h2 {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.section-header h2 i {
+    margin-right: 12px;
+}
+
+.section-header p {
+    color: var(--text-muted);
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+}
+
+.loading-spinner i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* Assessment History Items */
+.assessment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.assessment-item {
+    background-color: var(--background-light);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.assessment-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.assessment-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.assessment-date i {
+    margin-right: 5px;
+}
+
+.assessment-item-body {
+    margin-bottom: 20px;
+}
+
+.assessment-risk {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.risk-label {
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.risk-badge {
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.risk-low {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.risk-medium {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.risk-high {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.assessment-summary {
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+.assessment-item-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-sm {
+    padding: 6px 15px;
+    font-size: 14px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state i {
+    font-size: 50px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+/* Assessment Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9e9e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--primary-color);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.modal-date {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.modal-date i {
+    margin-right: 5px;
+}
+
+.modal-risk {
+    margin-bottom: 25px;
+}
+
+.assessment-summary,
+.assessment-details,
+.assessment-recommendations {
+    margin-bottom: 25px;
+}
+
+.assessment-summary h4,
+.assessment-details h4,
+.assessment-recommendations h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.assessment-details ul,
+.assessment-recommendations ul {
+    padding-left: 20px;
+}
+
+.assessment-details li,
+.assessment-recommendations li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    padding: 15px 25px 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .profile-actions {
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .assessment-item-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+} 

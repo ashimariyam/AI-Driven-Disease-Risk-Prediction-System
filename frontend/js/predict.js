@@ -122,9 +122,39 @@ function initFormHandlers() {
     if (heartForm) {
         heartForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const result = calculateHeartRisk(this);
-            storeHeartResult(result);
-            window.location.href = 'results.html';
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Calculate risk and store result
+                const result = calculateHeartRisk(this);
+                storeHeartResult(result);
+                
+                // Show success briefly before redirecting
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.classList.add('btn-success');
+                
+                // Redirect to results page
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error processing heart form:', error);
+                submitBtn.textContent = 'Error. Try Again';
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
         });
     }
     
@@ -133,9 +163,39 @@ function initFormHandlers() {
     if (diabetesForm) {
         diabetesForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const result = calculateDiabetesRisk(this);
-            storeDiabetesResult(result);
-            window.location.href = 'results.html';
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Calculate risk and store result
+                const result = calculateDiabetesRisk(this);
+                storeDiabetesResult(result);
+                
+                // Show success briefly before redirecting
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.classList.add('btn-success');
+                
+                // Redirect to results page
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error processing diabetes form:', error);
+                submitBtn.textContent = 'Error. Try Again';
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
         });
     }
     
@@ -144,9 +204,46 @@ function initFormHandlers() {
     if (lungsForm) {
         lungsForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const result = calculateLungCancerRisk(this);
-            storeLungCancerResult(result);
-            window.location.href = 'results.html';
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Validate form
+                const smokingStatus = this.querySelector('#lungs-smoking').value;
+                if ((smokingStatus === 'current' || smokingStatus === 'former') && 
+                   (!this.querySelector('#lungs-years').value || !this.querySelector('#lungs-packs').value)) {
+                    throw new Error('Please fill in all smoking details');
+                }
+                
+                // Calculate risk and store result
+                const result = calculateLungCancerRisk(this);
+                storeLungCancerResult(result);
+                
+                // Show success briefly before redirecting
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.classList.add('btn-success');
+                
+                // Redirect to results page
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error processing lung cancer form:', error);
+                submitBtn.textContent = error.message || 'Error. Try Again';
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
         });
     }
     
@@ -155,9 +252,45 @@ function initFormHandlers() {
     if (symptomsForm) {
         symptomsForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const result = checkSymptoms(this);
-            storeSymptomResult(result);
-            window.location.href = 'results.html';
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Validate form
+                const symptoms = this.querySelectorAll('input[name="symptoms"]:checked');
+                if (symptoms.length === 0) {
+                    throw new Error('Please select at least one symptom');
+                }
+                
+                // Calculate result and store it
+                const result = checkSymptoms(this);
+                storeSymptomResult(result);
+                
+                // Show success briefly before redirecting
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.classList.add('btn-success');
+                
+                // Redirect to results page
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error processing symptoms form:', error);
+                submitBtn.textContent = error.message || 'Error. Try Again';
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
         });
     }
     
@@ -166,9 +299,44 @@ function initFormHandlers() {
     if (healthScoreForm) {
         healthScoreForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const result = calculateHealthScore(this);
-            storeHealthScoreResult(result);
-            window.location.href = 'results.html';
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Validate form
+                if (!this.querySelector('#alcohol-consumption').value || !this.querySelector('#health-smoking').value) {
+                    throw new Error('Please complete all fields');
+                }
+                
+                // Calculate score and store result
+                const result = calculateHealthScore(this);
+                storeHealthScoreResult(result);
+                
+                // Show success briefly before redirecting
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.classList.add('btn-success');
+                
+                // Redirect to results page
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 800);
+                
+            } catch (error) {
+                console.error('Error processing health score form:', error);
+                submitBtn.textContent = error.message || 'Error. Try Again';
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
         });
     }
 }
@@ -362,19 +530,24 @@ function calculateLungCancerRisk(form) {
     const smokingStatus = form.querySelector('#lungs-smoking').value;
     
     // Initialize variables for smokers
-    let packYears = 0;
-    let yearsQuit = 0;
+    let yearsSmoked = 0;
+    let packsPerDay = 0;
     
     // Get smoking-specific data if applicable
     if (smokingStatus === 'current' || smokingStatus === 'former') {
-        const cigarettesPerDay = parseInt(form.querySelector('#cigarettes-per-day').value);
-        const yearsSmoked = parseInt(form.querySelector('#years-smoked').value);
-        packYears = (cigarettesPerDay / 20) * yearsSmoked;
-        
-        if (smokingStatus === 'former') {
-            yearsQuit = parseInt(form.querySelector('#years-quit').value);
-        }
+        yearsSmoked = parseInt(form.querySelector('#lungs-years').value) || 0;
+        packsPerDay = parseFloat(form.querySelector('#lungs-packs').value) || 0;
     }
+    
+    // Calculate pack years
+    const packYears = smokingStatus !== 'never' ? (packsPerDay * yearsSmoked) : 0;
+    
+    // Check all risk factors
+    const familyHistory = form.querySelector('input[name="lungs-family"]')?.checked || false;
+    const airPollution = form.querySelector('input[name="lungs-exposure"]')?.checked || false;
+    const asbestos = form.querySelector('input[name="lungs-asbestos"]')?.checked || false;
+    const radiationTherapy = form.querySelector('input[name="lungs-radiation"]')?.checked || false;
+    const radonGas = form.querySelector('input[name="lungs-radon"]')?.checked || false;
     
     // Calculate risk score (simplified algorithm for demo)
     let score = 0;
@@ -388,12 +561,19 @@ function calculateLungCancerRisk(form) {
     if (smokingStatus === 'never') {
         score += 0;
     } else if (smokingStatus === 'former') {
-        score += Math.max(0, 30 - yearsQuit * 2); // Risk reduces the longer someone has quit
-        score += Math.min(40, packYears); // Pack years factor
+        score += 20; // Base score for former smokers
+        score += Math.min(40, packYears); // Pack years factor (capped at 40)
     } else if (smokingStatus === 'current') {
-        score += 30; // Current smoker baseline risk
-        score += Math.min(40, packYears); // Pack years factor
+        score += 35; // Base score for current smokers
+        score += Math.min(40, packYears); // Pack years factor (capped at 40)
     }
+    
+    // Additional risk factors
+    if (familyHistory) score += 15;
+    if (airPollution) score += 5;
+    if (asbestos) score += 15;
+    if (radiationTherapy) score += 10;
+    if (radonGas) score += 10;
     
     // Gender factor
     if (gender === 'male') score += 5;
@@ -403,22 +583,21 @@ function calculateLungCancerRisk(form) {
     
     // Determine risk level
     let riskLevel;
-    if (riskScore < 20) riskLevel = 'Low Risk';
-    else if (riskScore < 40) riskLevel = 'Slightly Elevated Risk';
-    else if (riskScore < 70) riskLevel = 'Moderately Elevated Risk';
-    else riskLevel = 'High Risk';
+    if (riskScore < 20) riskLevel = 'Low';
+    else if (riskScore < 40) riskLevel = 'Low-Moderate';
+    else if (riskScore < 70) riskLevel = 'Moderate';
+    else riskLevel = 'High';
     
-    // Generate insights and descriptions
-    let riskDescription;
+    // Generate insights based on risk factors
     const insights = [];
     
     if (smokingStatus === 'never') {
-        riskDescription = 'As a non-smoker, your risk for lung cancer is relatively low. However, other factors like environmental exposures and genetics still play a role.';
+        insights.push('As a non-smoker, your risk for lung cancer is relatively low.');
     } else if (smokingStatus === 'former') {
-        riskDescription = `As a former smoker with ${packYears.toFixed(1)} pack-years of smoking history, your risk is elevated compared to non-smokers. However, quitting smoking ${yearsQuit} years ago has reduced your risk significantly.`;
+        insights.push(`As a former smoker with ${packYears.toFixed(1)} pack-years, your risk is elevated. However, quitting smoking has reduced your risk significantly.`);
         insights.push('Continue to maintain a smoke-free lifestyle to further reduce your risk over time.');
     } else if (smokingStatus === 'current') {
-        riskDescription = `As a current smoker with ${packYears.toFixed(1)} pack-years of smoking history, you have a significantly elevated risk of developing lung cancer.`;
+        insights.push(`As a current smoker with ${packYears.toFixed(1)} pack-years, you have a significantly elevated risk of developing lung cancer.`);
         insights.push('Quitting smoking is the single most effective way to reduce your lung cancer risk.');
     }
     
@@ -426,19 +605,47 @@ function calculateLungCancerRisk(form) {
         insights.push('Your age is a risk factor for lung cancer. Consider discussing lung cancer screening with your healthcare provider.');
     }
     
+    if (familyHistory) {
+        insights.push('Having a family history of lung cancer increases your risk.');
+    }
+    
+    if (asbestos || radonGas) {
+        insights.push('Exposure to known carcinogens like asbestos or radon gas significantly increases lung cancer risk.');
+    }
+    
+    // Generate recommendations
+    const recommendations = [
+        'If you smoke, quitting is the most important step you can take to reduce your risk.',
+        'Avoid secondhand smoke and other known lung carcinogens.',
+        'Test your home for radon gas, especially if you live in a high-risk area.',
+        'Follow safety guidelines when working with potentially harmful substances.'
+    ];
+    
+    if (riskLevel === 'Moderate' || riskLevel === 'High') {
+        recommendations.push('Discuss lung cancer screening options with your healthcare provider.');
+    }
+    
     // Return the result object
     return {
         riskScore: riskScore,
         riskLevel: riskLevel,
-        riskDescription: riskDescription,
         details: {
             age: age,
             gender: gender,
             smokingStatus: smokingStatus,
-            packYears: smokingStatus !== 'never' ? packYears.toFixed(1) : 'N/A',
-            yearsQuit: smokingStatus === 'former' ? yearsQuit : 'N/A'
+            packYears: packYears.toFixed(1),
+            yearsSmoked: yearsSmoked,
+            packsPerDay: packsPerDay,
+            familyHistory: familyHistory ? 'Yes' : 'No',
+            otherRiskFactors: [
+                airPollution ? 'Air Pollution' : null,
+                asbestos ? 'Asbestos Exposure' : null,
+                radiationTherapy ? 'Previous Radiation Therapy' : null,
+                radonGas ? 'Radon Gas Exposure' : null
+            ].filter(Boolean).join(', ') || 'None'
         },
-        insights: insights
+        insights: insights,
+        recommendations: recommendations
     };
 }
 
@@ -448,64 +655,166 @@ function calculateLungCancerRisk(form) {
  * @returns {Object} - The symptom assessment result
  */
 function checkSymptoms(form) {
-    // Get form data (simplified for demo)
-    const symptoms = Array.from(form.querySelectorAll('input[name="symptoms[]"]:checked')).map(checkbox => checkbox.value);
-    const duration = form.querySelector('#symptoms-duration').value;
+    // Get form data
+    const symptomDays = parseInt(form.querySelector('#symptoms-days').value);
     const severity = form.querySelector('#symptoms-severity').value;
     
-    // Determine possible conditions based on symptoms (simplified algorithm for demo)
-    let condition = 'Inconclusive';
-    let certainty = 'Low';
-    let description = '';
+    // Get all selected symptoms
+    const symptoms = Array.from(form.querySelectorAll('input[name="symptoms"]:checked')).map(checkbox => checkbox.value);
     
-    // Check for common colds
-    const coldSymptoms = ['cough', 'runny_nose', 'sore_throat', 'congestion', 'sneezing', 'mild_fever'];
-    const coldMatch = coldSymptoms.filter(s => symptoms.includes(s)).length;
-    
-    // Check for flu
-    const fluSymptoms = ['high_fever', 'body_aches', 'chills', 'fatigue', 'cough', 'headache'];
-    const fluMatch = fluSymptoms.filter(s => symptoms.includes(s)).length;
-    
-    // Check for allergies
-    const allergySymptoms = ['sneezing', 'itchy_eyes', 'runny_nose', 'congestion', 'itchy_throat'];
-    const allergyMatch = allergySymptoms.filter(s => symptoms.includes(s)).length;
-    
-    // Determine most likely condition
-    if (coldMatch >= 4 && duration === 'less_than_week') {
-        condition = 'Common Cold';
-        certainty = coldMatch >= 5 ? 'High' : 'Medium';
-        description = 'Your symptoms suggest a common cold, a viral infection of the upper respiratory tract.';
-    } else if (fluMatch >= 4 && (duration === 'less_than_week' || duration === 'one_two_weeks')) {
-        condition = 'Influenza (Flu)';
-        certainty = fluMatch >= 5 ? 'High' : 'Medium';
-        description = 'Your symptoms are consistent with influenza (flu), a contagious respiratory illness caused by influenza viruses.';
-    } else if (allergyMatch >= 4 && (duration === 'more_than_month' || symptoms.includes('seasonal_pattern'))) {
-        condition = 'Seasonal Allergies';
-        certainty = allergyMatch >= 5 ? 'High' : 'Medium';
-        description = 'Your symptoms suggest seasonal allergies, also known as allergic rhinitis or hay fever.';
-    } else if (symptoms.includes('chest_pain') && symptoms.includes('shortness_breath')) {
-        condition = 'Potential Serious Condition';
-        certainty = 'Medium';
-        description = 'Your symptoms include chest pain and shortness of breath, which could indicate a serious condition requiring immediate medical attention.';
+    // Convert days to duration category
+    let duration;
+    if (symptomDays <= 3) {
+        duration = 'Short-term (1-3 days)';
+    } else if (symptomDays <= 7) {
+        duration = 'Recent (less than a week)';
+    } else if (symptomDays <= 14) {
+        duration = 'Persistent (1-2 weeks)';
+    } else {
+        duration = 'Chronic (more than 2 weeks)';
     }
     
-    // Generate recommendations based on condition
+    // Determine possible conditions based on symptoms
+    let condition = 'Inconclusive';
+    let certainty = 'Low';
+    let urgencyLevel = 'Low'; // Default urgency
+    
+    // Define symptom patterns for common conditions
+    const commonConditions = [
+        {
+            name: 'Common Cold',
+            symptoms: ['cough', 'soreThroat', 'congestion', 'headache', 'fatigue'],
+            shortDuration: true
+        },
+        {
+            name: 'Influenza (Flu)',
+            symptoms: ['fever', 'cough', 'bodyAches', 'fatigue', 'headache', 'soreThroat'],
+            shortDuration: true
+        },
+        {
+            name: 'Seasonal Allergies',
+            symptoms: ['congestion', 'soreThroat', 'headache', 'fatigue'],
+            chronicDuration: true
+        },
+        {
+            name: 'COVID-19',
+            symptoms: ['fever', 'cough', 'fatigue', 'shortnessOfBreath', 'lossOfTaste'],
+            anyDuration: true
+        },
+        {
+            name: 'Gastroenteritis',
+            symptoms: ['nausea', 'diarrhea', 'abdominalPain', 'fatigue', 'fever'],
+            shortDuration: true
+        },
+        {
+            name: 'Migraine',
+            symptoms: ['headache', 'nausea', 'fatigue', 'dizziness'],
+            anyDuration: true
+        },
+        {
+            name: 'Potential Serious Condition',
+            symptoms: ['chestPain', 'shortnessOfBreath', 'highFever', 'severeAbdominalPain'],
+            anyDuration: true,
+            urgent: true
+        }
+    ];
+    
+    // Score each condition based on matching symptoms
+    const conditionScores = commonConditions.map(cond => {
+        const matchingSymptoms = cond.symptoms.filter(s => symptoms.includes(s));
+        const matchPercentage = (matchingSymptoms.length / cond.symptoms.length) * 100;
+        
+        // Check duration compatibility
+        let durationMatch = cond.anyDuration;
+        if (!durationMatch) {
+            if (cond.shortDuration && symptomDays <= 7) durationMatch = true;
+            if (cond.chronicDuration && symptomDays > 14) durationMatch = true;
+        }
+        
+        return {
+            condition: cond.name,
+            score: matchPercentage,
+            durationMatch: durationMatch,
+            urgent: cond.urgent || false
+        };
+    });
+    
+    // Sort by score
+    conditionScores.sort((a, b) => b.score - a.score);
+    
+    // Find the best match
+    const bestMatch = conditionScores[0];
+    
+    // Check for urgent conditions first
+    const urgentCondition = conditionScores.find(c => c.urgent && c.score > 50);
+    if (urgentCondition) {
+        condition = urgentCondition.condition;
+        certainty = urgentCondition.score > 75 ? 'High' : 'Medium';
+        urgencyLevel = 'High';
+    } 
+    // Otherwise use best match if it's reasonably good
+    else if (bestMatch && bestMatch.score > 50 && bestMatch.durationMatch) {
+        condition = bestMatch.condition;
+        
+        // Determine certainty level
+        if (bestMatch.score > 75) {
+            certainty = 'High';
+        } else if (bestMatch.score > 60) {
+            certainty = 'Medium';
+        } else {
+            certainty = 'Low';
+        }
+        
+        // Adjust urgency based on severity
+        if (severity === 'severe') {
+            urgencyLevel = 'Medium';
+        }
+    }
+    
+    // Special case for chest pain
+    if (symptoms.includes('chestPain') && symptoms.includes('shortnessOfBreath')) {
+        condition = 'Potential Heart-Related Issue';
+        certainty = 'Medium';
+        urgencyLevel = 'High';
+    }
+    
+    // If still inconclusive but symptoms are severe
+    if (condition === 'Inconclusive' && severity === 'severe') {
+        urgencyLevel = 'Medium';
+    }
+    
+    // Generate description
+    let description = '';
+    if (condition === 'Inconclusive') {
+        description = 'Based on the symptoms provided, we cannot determine a specific condition. Please consult with a healthcare provider for proper diagnosis.';
+    } else if (urgencyLevel === 'High') {
+        description = `Your symptoms suggest ${condition}, which may require prompt medical attention.`;
+    } else {
+        description = `Your symptoms are consistent with ${condition}. The assessment is based on the combination of symptoms and their duration.`;
+    }
+    
+    // Generate recommendations based on condition and urgency
     const recommendations = [];
     
-    if (condition === 'Common Cold') {
+    if (urgencyLevel === 'High') {
+        recommendations.push('Seek medical attention promptly');
+        recommendations.push('Contact your healthcare provider or consider visiting an urgent care facility');
+    } else if (condition === 'Common Cold') {
         recommendations.push('Rest and stay hydrated');
-        recommendations.push('Over-the-counter cold medications may relieve symptoms');
-        recommendations.push('If symptoms worsen or persist beyond 10 days, consult a healthcare provider');
+        recommendations.push('Over-the-counter cold medications may help relieve symptoms');
+        recommendations.push('Consult a healthcare provider if symptoms worsen or persist beyond 10 days');
     } else if (condition === 'Influenza (Flu)') {
         recommendations.push('Rest and stay hydrated');
-        recommendations.push('Consider over-the-counter flu medications to reduce fever and discomfort');
-        recommendations.push('Consult with a healthcare provider, especially if you are in a high-risk group');
+        recommendations.push('Consider over-the-counter flu medications for symptom relief');
+        recommendations.push('Consult a healthcare provider, especially if symptoms are severe or you are in a high-risk group');
     } else if (condition === 'Seasonal Allergies') {
         recommendations.push('Over-the-counter antihistamines may help relieve symptoms');
         recommendations.push('Avoid known allergens when possible');
         recommendations.push('Consider consulting with an allergist for long-term management');
-    } else if (condition === 'Potential Serious Condition') {
-        recommendations.push('Seek immediate medical attention');
+    } else if (condition === 'COVID-19') {
+        recommendations.push('Self-isolate to prevent potential spread');
+        recommendations.push('Consider getting tested for COVID-19');
+        recommendations.push('Monitor your symptoms and seek medical attention if they worsen');
     } else {
         recommendations.push('Monitor your symptoms and consult with a healthcare provider if they persist or worsen');
         recommendations.push('Keep track of any new or changing symptoms');
@@ -515,12 +824,15 @@ function checkSymptoms(form) {
     return {
         condition: condition,
         certainty: certainty,
+        urgencyLevel: urgencyLevel,
         description: description,
         details: {
             symptoms: symptoms,
             duration: duration,
-            severity: severity
+            severity: severity,
+            symptomDays: symptomDays
         },
+        possibleConditions: conditionScores.filter(c => c.score > 40).map(c => c.condition),
         recommendations: recommendations
     };
 }
@@ -532,58 +844,64 @@ function checkSymptoms(form) {
  */
 function calculateHealthScore(form) {
     // Get form data
-    const age = parseInt(form.querySelector('#health-age').value);
-    const gender = form.querySelector('#health-gender').value;
-    const weight = parseFloat(form.querySelector('#health-weight').value);
-    const height = parseInt(form.querySelector('#health-height').value);
-    const sleepHours = parseInt(form.querySelector('#sleep-hours').value);
-    const exerciseHours = parseInt(form.querySelector('#exercise-hours').value);
+    const sleepHours = parseFloat(form.querySelector('#sleep-hours').value);
+    const exerciseHours = parseFloat(form.querySelector('#exercise-hours').value);
     const stressLevel = parseInt(form.querySelector('#stress-level').value);
     const dietQuality = parseInt(form.querySelector('#diet-quality').value);
-    const smoker = form.querySelector('input[name="health-smoke"]:checked').value === 'yes';
+    const smoker = form.querySelector('#health-smoking').value === 'current';
+    const formerSmoker = form.querySelector('#health-smoking').value === 'former';
     const alcohol = form.querySelector('#alcohol-consumption').value;
     
-    // Calculate BMI
-    const bmi = weight / ((height / 100) * (height / 100));
-    
-    // Calculate health score (simplified algorithm for demo)
-    // Starting with a perfect score of 100
+    // Calculate health score (start with 100 points)
     let score = 100;
     
-    // BMI factor (ideal range: 18.5-24.9)
-    if (bmi < 18.5) score -= 10; // Underweight
-    else if (bmi >= 25 && bmi < 30) score -= 10; // Overweight
-    else if (bmi >= 30) score -= 20; // Obese
-    
     // Sleep factor (ideal: 7-8 hours)
-    if (sleepHours < 6) score -= 15;
-    else if (sleepHours > 9) score -= 5;
+    if (sleepHours < 6) {
+        score -= 15;
+    } else if (sleepHours > 9) {
+        score -= 5;
+    }
     
-    // Exercise factor
-    if (exerciseHours < 2) score -= 15;
+    // Exercise factor (weekly hours)
+    if (exerciseHours < 2) {
+        score -= 15;
+    } else if (exerciseHours < 5) {
+        score -= 5;
+    } else if (exerciseHours > 10) {
+        score += 5; // Bonus for very active
+    }
     
-    // Stress factor
-    score -= stressLevel * 2; // 0-10 scale, higher stress decreases score
+    // Stress factor (0-10 scale)
+    score -= stressLevel * 2; // Higher stress decreases score
     
-    // Diet factor
-    score += (dietQuality - 5) * 2; // 0-10 scale, better diet increases score
+    // Diet factor (0-10 scale)
+    score += (dietQuality - 5) * 3; // Better diet increases score
     
     // Smoking factor
-    if (smoker) score -= 20;
+    if (smoker) {
+        score -= 25;
+    } else if (formerSmoker) {
+        score -= 10;
+    }
     
     // Alcohol factor
     switch (alcohol) {
-        case 'none': break; // No penalty
-        case 'light': score -= 5; break;
-        case 'moderate': score -= 10; break;
-        case 'heavy': score -= 20; break;
+        case 'none': 
+            score += 5; // Bonus for abstaining
+            break;
+        case 'light': 
+            score -= 0; // No penalty for light drinking
+            break;
+        case 'moderate': 
+            score -= 10;
+            break;
+        case 'heavy': 
+            score -= 20;
+            break;
     }
     
-    // Age factor (minimal adjustments for age)
-    if (age > 60) score -= 5;
-    
     // Calculate final health score (0-100)
-    let healthScore = Math.min(100, Math.max(0, score));
+    let healthScore = Math.min(100, Math.max(0, Math.round(score)));
     
     // Determine health status
     let healthStatus;
@@ -592,49 +910,70 @@ function calculateHealthScore(form) {
     else if (healthScore >= 50) healthStatus = 'Fair';
     else healthStatus = 'Poor';
     
-    // Generate insights and improvement areas
+    // Generate insights based on factors
     const insights = [];
-    const improvementAreas = [];
-    
-    if (bmi < 18.5) {
-        insights.push(`Your BMI of ${bmi.toFixed(1)} indicates you are underweight.`);
-        improvementAreas.push('Consider a nutrition plan to achieve a healthy weight.');
-    } else if (bmi >= 25 && bmi < 30) {
-        insights.push(`Your BMI of ${bmi.toFixed(1)} indicates you are overweight.`);
-        improvementAreas.push('Weight management through diet and exercise may improve your overall health.');
-    } else if (bmi >= 30) {
-        insights.push(`Your BMI of ${bmi.toFixed(1)} indicates obesity.`);
-        improvementAreas.push('Consider consulting with a healthcare provider about weight management strategies.');
-    }
     
     if (sleepHours < 6) {
-        insights.push(`You reported getting only ${sleepHours} hours of sleep per night.`);
-        improvementAreas.push('Aim for 7-8 hours of quality sleep per night.');
+        insights.push(`You reported getting only ${sleepHours} hours of sleep per night, which is below the recommended 7-9 hours.`);
+    } else if (sleepHours > 9) {
+        insights.push(`You reported getting ${sleepHours} hours of sleep per night, which is slightly above the recommended range.`);
+    } else {
+        insights.push(`Your sleep duration of ${sleepHours} hours per night is within the healthy range.`);
     }
     
     if (exerciseHours < 2) {
-        insights.push(`You reported only ${exerciseHours} hours of exercise per week.`);
-        improvementAreas.push('Aim for at least 150 minutes of moderate exercise per week.');
+        insights.push(`You reported only ${exerciseHours} hours of exercise per week, which is below the recommended level.`);
+    } else {
+        insights.push(`Your exercise level of ${exerciseHours} hours per week is beneficial for your health.`);
     }
     
     if (stressLevel > 6) {
-        insights.push(`You reported a high stress level (${stressLevel}/10).`);
-        improvementAreas.push('Consider stress management techniques such as meditation or mindfulness.');
+        insights.push(`Your stress level is rated as ${stressLevel}/10, which may be impacting your health negatively.`);
     }
     
     if (dietQuality < 5) {
-        insights.push(`You rated your diet quality as ${dietQuality}/10.`);
-        improvementAreas.push('Improving dietary habits can significantly impact your overall health.');
+        insights.push(`You rated your diet quality as ${dietQuality}/10, which suggests room for improvement.`);
+    } else if (dietQuality >= 7) {
+        insights.push(`Your diet quality rating of ${dietQuality}/10 suggests you maintain healthy eating habits.`);
     }
     
     if (smoker) {
-        insights.push('You reported that you currently smoke.');
-        improvementAreas.push('Quitting smoking is one of the most impactful changes for improving health.');
+        insights.push('As a current smoker, you have a significantly increased risk for various health conditions.');
+    } else if (formerSmoker) {
+        insights.push('As a former smoker, your health risks are reduced compared to current smokers, but some elevated risk remains.');
     }
     
     if (alcohol === 'moderate' || alcohol === 'heavy') {
-        insights.push(`You reported ${alcohol} alcohol consumption.`);
-        improvementAreas.push('Reducing alcohol intake can improve your health outcomes.');
+        insights.push(`Your ${alcohol} alcohol consumption may be negatively affecting your health.`);
+    }
+    
+    // Generate improvement recommendations
+    const improvementAreas = [];
+    
+    if (sleepHours < 6) {
+        improvementAreas.push('Aim for 7-8 hours of quality sleep per night.');
+    }
+    
+    if (exerciseHours < 2.5) {
+        improvementAreas.push('Try to get at least 150 minutes (2.5 hours) of moderate exercise per week.');
+    }
+    
+    if (stressLevel > 6) {
+        improvementAreas.push('Consider stress management techniques such as meditation, yoga, or mindfulness.');
+    }
+    
+    if (dietQuality < 6) {
+        improvementAreas.push('Focus on improving your diet with more fruits, vegetables, and whole foods.');
+    }
+    
+    if (smoker) {
+        improvementAreas.push('Quitting smoking is one of the most impactful changes you can make for your health.');
+    }
+    
+    if (alcohol === 'moderate') {
+        improvementAreas.push('Consider reducing alcohol consumption to improve overall health.');
+    } else if (alcohol === 'heavy') {
+        improvementAreas.push('Significantly reducing alcohol intake would substantially improve your health score.');
     }
     
     // Return the result object
@@ -642,14 +981,11 @@ function calculateHealthScore(form) {
         healthScore: healthScore,
         healthStatus: healthStatus,
         details: {
-            age: age,
-            gender: gender,
-            bmi: bmi.toFixed(1),
             sleepHours: sleepHours,
             exerciseHours: exerciseHours,
             stressLevel: stressLevel,
             dietQuality: dietQuality,
-            smoker: smoker ? 'Yes' : 'No',
+            smoker: smoker ? 'Yes' : (formerSmoker ? 'Former' : 'No'),
             alcoholConsumption: alcohol
         },
         insights: insights,
@@ -669,6 +1005,24 @@ function storeHeartResult(result) {
     
     // Also store as last assessment for highlighting on results page
     localStorage.setItem('lastAssessment', 'heart');
+    
+    // Save to user's assessment history
+    saveAssessmentToHistory({
+        type: 'Heart Health Assessment',
+        date: new Date().toISOString(),
+        riskLevel: getRiskLevelFromScore(result.riskScore),
+        summary: `Your heart risk score is ${result.riskScore}, indicating a ${result.riskCategory} risk of heart disease.`,
+        details: [
+            `Age: ${result.details.age}`,
+            `Gender: ${result.details.gender}`,
+            `Blood Pressure: ${result.details.bloodPressure}`,
+            `Total Cholesterol: ${result.details.cholesterol} mg/dL`,
+            `HDL Cholesterol: ${result.details.hdl} mg/dL`,
+            `Smoker: ${result.details.smoker}`,
+            `Diabetic: ${result.details.diabetic}`
+        ],
+        recommendations: result.insights || ['Consult with a healthcare provider for personalized heart health recommendations.']
+    });
 }
 
 /**
@@ -683,6 +1037,24 @@ function storeDiabetesResult(result) {
     
     // Also store as last assessment for highlighting on results page
     localStorage.setItem('lastAssessment', 'diabetes');
+    
+    // Save to user's assessment history
+    saveAssessmentToHistory({
+        type: 'Diabetes Risk Assessment',
+        date: new Date().toISOString(),
+        riskLevel: getRiskLevelFromCategory(result.riskCategory),
+        summary: `Your diabetes risk score is ${result.riskPercentage}%, indicating a ${result.riskCategory} risk of developing type 2 diabetes.`,
+        details: [
+            `Age: ${result.details.age}`,
+            `Gender: ${result.details.gender}`,
+            `BMI: ${result.details.bmi}`,
+            `Fasting Glucose: ${result.details.fastingGlucose} mg/dL`,
+            `Family History: ${result.details.familyHistory}`,
+            `Activity Level: ${result.details.activityLevel}`,
+            `Hypertension: ${result.details.hypertension}`
+        ],
+        recommendations: result.insights || ['Consult with a healthcare provider for personalized diabetes prevention recommendations.']
+    });
 }
 
 /**
@@ -697,6 +1069,23 @@ function storeLungCancerResult(result) {
     
     // Also store as last assessment for highlighting on results page
     localStorage.setItem('lastAssessment', 'lungs');
+    
+    // Save to user's assessment history
+    saveAssessmentToHistory({
+        type: 'Lung Cancer Risk Assessment',
+        date: new Date().toISOString(),
+        riskLevel: result.riskLevel,
+        summary: `Your lung cancer risk is considered ${result.riskLevel.toLowerCase()} based on your smoking history and other risk factors.`,
+        details: [
+            `Age: ${result.details.age}`,
+            `Gender: ${result.details.gender}`,
+            `Smoking Status: ${result.details.smokingStatus}`,
+            `Pack Years: ${result.details.packYears}`,
+            `Years Smoked: ${result.details.yearsSmoked || 'N/A'}`,
+            `Other Risk Factors: ${result.details.otherRiskFactors}`
+        ],
+        recommendations: result.recommendations
+    });
 }
 
 /**
@@ -711,6 +1100,23 @@ function storeSymptomResult(result) {
     
     // Also store as last assessment for highlighting on results page
     localStorage.setItem('lastAssessment', 'symptoms');
+    
+    // Save to user's assessment history
+    saveAssessmentToHistory({
+        type: 'Symptom Assessment',
+        date: new Date().toISOString(),
+        riskLevel: result.urgencyLevel,
+        summary: `Based on your symptoms, our system suggests ${result.condition} (${result.certainty} certainty).`,
+        details: [
+            `Condition: ${result.condition}`,
+            `Certainty Level: ${result.certainty}`,
+            `Urgency Level: ${result.urgencyLevel}`,
+            `Duration: ${result.details.duration}`,
+            `Severity: ${result.details.severity}`,
+            `Reported Symptoms: ${result.details.symptoms.join(', ')}`
+        ],
+        recommendations: result.recommendations
+    });
 }
 
 /**
@@ -725,6 +1131,86 @@ function storeHealthScoreResult(result) {
     
     // Also store as last assessment for highlighting on results page
     localStorage.setItem('lastAssessment', 'health-score');
+    
+    // Save to user's assessment history
+    saveAssessmentToHistory({
+        type: 'Health Score Assessment',
+        date: new Date().toISOString(),
+        riskLevel: getRiskLevelFromHealthScore(result.healthScore),
+        summary: `Your overall health score is ${result.healthScore}, which is considered ${result.healthStatus.toLowerCase()}.`,
+        details: [
+            `BMI: ${result.details.bmi}`,
+            `Sleep: ${result.details.sleepHours} hours/night`,
+            `Exercise: ${result.details.exerciseHours} hours/week`,
+            `Stress Level: ${result.details.stressLevel}/10`,
+            `Diet Quality: ${result.details.dietQuality}/10`,
+            `Smoker: ${result.details.smoker}`,
+            `Alcohol Consumption: ${result.details.alcoholConsumption}`
+        ],
+        recommendations: result.improvementAreas
+    });
+}
+
+/**
+ * Save assessment data to user's assessment history in localStorage
+ * @param {Object} assessmentData - The assessment data to save
+ */
+function saveAssessmentToHistory(assessmentData) {
+    // Check if user is logged in
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
+    if (!currentUser || !currentUser.isLoggedIn) return;
+    
+    // Get existing assessment history
+    const allAssessments = JSON.parse(localStorage.getItem('userAssessments')) || {};
+    const userAssessments = allAssessments[currentUser.email] || [];
+    
+    // Add new assessment to user's history
+    userAssessments.push(assessmentData);
+    
+    // Save back to localStorage
+    allAssessments[currentUser.email] = userAssessments;
+    localStorage.setItem('userAssessments', JSON.stringify(allAssessments));
+}
+
+/**
+ * Get risk level string from score
+ * @param {number} score - Risk score
+ * @returns {string} - Risk level (Low, Medium, High)
+ */
+function getRiskLevelFromScore(score) {
+    if (score < 30) return 'Low';
+    if (score < 70) return 'Medium';
+    return 'High';
+}
+
+/**
+ * Get standardized risk level from category
+ * @param {string} category - Risk category (e.g., 'low', 'medium', 'high')
+ * @returns {string} - Standardized risk level (Low, Medium, High)
+ */
+function getRiskLevelFromCategory(category) {
+    // Standardize and capitalize risk level
+    switch(category.toLowerCase()) {
+        case 'low':
+            return 'Low';
+        case 'medium':
+            return 'Medium';
+        case 'high':
+            return 'High';
+        default:
+            return 'Medium';
+    }
+}
+
+/**
+ * Get risk level string from health score
+ * @param {number} healthScore - Health score (0-100)
+ * @returns {string} - Risk level (Low, Medium, High)
+ */
+function getRiskLevelFromHealthScore(healthScore) {
+    if (healthScore >= 70) return 'Low';
+    if (healthScore >= 50) return 'Medium';
+    return 'High';
 }
 
 /**

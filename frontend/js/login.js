@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Validate form
-            if (!validateForm(this)) return;
-            
             // Get form data
             const email = this.querySelector('input[name="email"]').value;
             const password = this.querySelector('input[name="password"]').value;
@@ -23,30 +20,21 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Logging in...';
             
-            // Send login request to backend API
-            loginUser(email, password, rememberMe)
-                .then(response => {
-                    showAlert('Login successful! Redirecting...', 'success', document.querySelector('.auth-form-wrapper'));
+            // Authenticate user using localStorage
+            authenticateUser(email, password, rememberMe)
+                .then(user => {
+                    // Show success message
+                    showSuccessMessage('Login successful! Redirecting...');
                     
-                    // Store user data and token in localStorage/sessionStorage
-                    if (rememberMe) {
-                        localStorage.setItem('authToken', response.token);
-                        localStorage.setItem('user', JSON.stringify(response.user));
-                    } else {
-                        sessionStorage.setItem('authToken', response.token);
-                        sessionStorage.setItem('user', JSON.stringify(response.user));
-                    }
-                    
-                    // Redirect to dashboard after a short delay
+                    // Redirect to profile page after a short delay
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'profile.html';
                     }, 1500);
                 })
                 .catch(error => {
-                    console.error('Login error:', error);
-                    showAlert(error.message || 'Login failed. Please check your credentials.', 'error', document.querySelector('.auth-form-wrapper'));
-                })
-                .finally(() => {
+                    // Show error message
+                    showErrorMessage(error);
+                    
                     // Reset button state
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalBtnText;
@@ -109,33 +97,111 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Login User API Call
+ * Authenticate user using localStorage
  * @param {string} email - User email
  * @param {string} password - User password
  * @param {boolean} rememberMe - Whether to remember the user
- * @returns {Promise} - API response promise
+ * @returns {Promise} - Authentication promise
  */
-function loginUser(email, password, rememberMe) {
-    // This is a mock implementation
-    // Replace with actual API call in production
+function authenticateUser(email, password, rememberMe) {
     return new Promise((resolve, reject) => {
-        // Simulate API call
-        setTimeout(() => {
-            // Demo validation - in a real app, this would be handled by the backend
-            if (email === 'demo@example.com' && password === 'password123') {
-                resolve({
-                    token: 'sample-jwt-token',
-                    user: {
-                        id: 1,
-                        name: 'Demo User',
-                        email: 'demo@example.com'
-                    }
-                });
-            } else {
-                reject({ message: 'Invalid email or password' });
-            }
-        }, 1000);
+        // Get users from localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Find user with matching email
+        const user = users.find(u => u.email === email);
+        
+        if (!user) {
+            reject('Invalid email or password');
+            return;
+        }
+        
+        // Verify password (in a real app, you would use a proper hashing library)
+        if (!verifyPassword(password, user.hashedPassword, user.salt)) {
+            reject('Invalid email or password');
+            return;
+        }
+        
+        // Store current user in sessionStorage or localStorage based on remember me
+        const currentUser = {
+            name: user.name,
+            email: user.email,
+            isLoggedIn: true
+        };
+        
+        if (rememberMe) {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        } else {
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+        
+        resolve(currentUser);
     });
+}
+
+/**
+ * Verify password using simple hashing simulation
+ * @param {string} password - Plain text password input
+ * @param {string} hashedPassword - Stored hashed password
+ * @param {string} salt - Salt used for hashing
+ * @returns {boolean} - Whether password is valid
+ */
+function verifyPassword(password, hashedPassword, salt) {
+    // In a real app, use a proper crypto library
+    // This is just a simple simulation
+    const hash = simpleHash(password + salt);
+    return hash === hashedPassword;
+}
+
+/**
+ * Simple string hashing function (simulation only)
+ * @param {string} str - String to hash
+ * @returns {string} - Hashed string
+ */
+function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash.toString(16);
+}
+
+/**
+ * Show success message
+ * @param {string} message - Success message to display
+ */
+function showSuccessMessage(message) {
+    const successEl = document.getElementById('login-success');
+    const errorEl = document.getElementById('login-error');
+    
+    if (successEl) {
+        successEl.textContent = message;
+        successEl.style.display = 'block';
+    }
+    
+    if (errorEl) {
+        errorEl.style.display = 'none';
+    }
+}
+
+/**
+ * Show error message
+ * @param {string} message - Error message to display
+ */
+function showErrorMessage(message) {
+    const errorEl = document.getElementById('login-error');
+    const successEl = document.getElementById('login-success');
+    
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+    }
+    
+    if (successEl) {
+        successEl.style.display = 'none';
+    }
 }
 
 /**
