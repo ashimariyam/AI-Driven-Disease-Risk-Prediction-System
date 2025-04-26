@@ -4,8 +4,7 @@
 
 WellPredict is a smart health assessment platform that uses simulated AI models to predict disease risk factors and provide personalized health insights.
 
-![WellPredict Logo](assets/logo.png) *(Logo placeholder - to be added)*
-
+![WellPredict Logo](screenshots/logo.jpg)
 ## 📋 Table of Contents
 - [Overview](#overview)
 - [Features](#features)
