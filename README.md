@@ -121,7 +121,7 @@ WellPredict/
 ![Home Page](screenshots/HomePage3.png)
 
 ### Prediction Interface
-![Prediction Interface](screenshots/PredictionInterface1.png) 
+![Prediction Interface](screenshots/PredictionInerface1.png) 
 ![Prediction Interface](screenshots/PredictionInterface2.png) 
 ![Prediction Interface](screenshots/PredictionInterface3.png) 
 
