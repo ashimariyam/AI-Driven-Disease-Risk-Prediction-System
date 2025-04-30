@@ -148,9 +148,9 @@ WellPredict/
 
 Created by **Ashi Mariyam Thomas**
 
-- Email: [your-email@example.com]
-- LinkedIn: [your-linkedin-profile]
-- GitHub: [your-github-profile]
+- Email: [ashnimariyamt@gmail.com]
+- LinkedIn: [www.linkedin.com/in/ashithomas]
+- GitHub: [https://github.com/ashimariyam]
 
 ---
 
