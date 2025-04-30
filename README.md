@@ -114,16 +114,25 @@ WellPredict/
 
 ## 📸 Screenshots
 
-*(Screenshots will be added in future updates)*
 
 ### Home Page
-![Home Page](assets/screenshots/home.png) *(Placeholder)*
+![Home Page](screenshots/HomePage1.png)
+![Home Page](screenshots/HomePage2.png)
+![Home Page](screenshots/HomePage3.png)
 
 ### Prediction Interface
-![Prediction Interface](assets/screenshots/predict.png) *(Placeholder)*
+![Prediction Interface](screenshots/PredictionInterface1.png) 
+![Prediction Interface](screenshots/PredictionInterface2.png) 
+![Prediction Interface](screenshots/PredictionInterface3.png) 
 
 ### Results Display
-![Results Page](assets/screenshots/results.png) *(Placeholder)*
+![Results Page](screenshots/Results1.png) 
+![Results Page](screenshots/Results2.png) 
+![Results Page](screenshots/Results3.png) 
+![Results Page](screenshots/Results4.png) 
+
+### Login Page
+![Login Page](screenshots/LoginPage.png)
 
 ## 🔮 Future Improvements
 
