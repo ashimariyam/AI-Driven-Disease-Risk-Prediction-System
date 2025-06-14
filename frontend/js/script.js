@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobile Navigation Toggle
     initMobileNav();
+
+    // Update Service Cards
+    updateServiceCards();
+
+    // Initialize Service Selection
+    initServiceSelection();
+
+    // Initialize Navigation
+    initNavigation();
 });
 
 /**
@@ -194,4 +203,42 @@ function showAlert(message, type, container) {
     }, 5000);
     
     container.prepend(alertElement);
+}
+
+// Service Navigation
+function navigateToService(service) {
+    if (service === 'heart' || service === 'diabetes') {
+        window.location.href = `predict.html?service=${service}`;
+    }
+}
+
+// Update Service Cards
+function updateServiceCards() {
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach(card => {
+        const service = card.dataset.service;
+        if (service === 'heart' || service === 'diabetes') {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Initialize Service Selection
+function initServiceSelection() {
+    const serviceOptions = document.querySelectorAll('.service-option');
+    serviceOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const service = option.dataset.service;
+            if (service === 'heart' || service === 'diabetes') {
+                navigateToService(service);
+            }
+        });
+    });
+}
+
+// Initialize Navigation
+function initNavigation() {
+    // Implementation of initNavigation function
 } 

@@ -892,4 +892,618 @@ function generatePDF() {
         // Show error message
         alert('There was an error generating the PDF. Please try again.');
     });
-} 
+}
+
+// Heart Health Assessment Results Handler
+function handleHeartHealthResults(data) {
+    // Calculate BMI
+    const bmi = calculateBMI(data.weight, data.height);
+    
+    // Calculate heart risk score (simplified version for demonstration)
+    const riskScore = calculateHeartRiskScore(data, bmi);
+    
+    // Generate risk factors analysis
+    const riskFactors = analyzeHeartRiskFactors(data, bmi);
+    
+    // Create visualizations
+    createHeartHealthVisualizations(data, riskScore, riskFactors);
+    
+    // Generate recommendations
+    const recommendations = generateHeartHealthRecommendations(data, riskScore, riskFactors);
+    
+    // Update UI with results
+    updateHeartHealthResultsUI(riskScore, riskFactors, recommendations);
+}
+
+function calculateBMI(weight, height) {
+    // Convert height from cm to m
+    const heightInMeters = height / 100;
+    return (weight / (heightInMeters * heightInMeters)).toFixed(1);
+}
+
+function calculateHeartRiskScore(data, bmi) {
+    let score = 0;
+    
+    // Age factor (0-25 points)
+    if (data.age < 40) score += 0;
+    else if (data.age < 50) score += 5;
+    else if (data.age < 60) score += 10;
+    else if (data.age < 70) score += 15;
+    else score += 20;
+    
+    // Gender factor (0-5 points)
+    score += data.gender === 'male' ? 5 : 0;
+    
+    // Blood Pressure factor (0-20 points)
+    const bpScore = calculateBPFactor(data.systolic, data.diastolic);
+    score += bpScore;
+    
+    // Cholesterol factor (0-20 points)
+    const cholesterolScore = calculateCholesterolFactor(data);
+    score += cholesterolScore;
+    
+    // BMI factor (0-10 points)
+    const bmiScore = calculateBMIFactor(bmi);
+    score += bmiScore;
+    
+    // Lifestyle factors (0-20 points)
+    const lifestyleScore = calculateLifestyleFactor(data);
+    score += lifestyleScore;
+    
+    // Medical history factor (0-20 points)
+    const medicalScore = calculateMedicalHistoryFactor(data);
+    score += medicalScore;
+    
+    // Normalize score to 0-100
+    return Math.min(Math.round((score / 120) * 100), 100);
+}
+
+function calculateBPFactor(systolic, diastolic) {
+    let score = 0;
+    
+    // Systolic BP
+    if (systolic < 120) score += 0;
+    else if (systolic < 130) score += 5;
+    else if (systolic < 140) score += 10;
+    else if (systolic < 160) score += 15;
+    else score += 20;
+    
+    // Diastolic BP
+    if (diastolic < 80) score += 0;
+    else if (diastolic < 85) score += 2;
+    else if (diastolic < 90) score += 5;
+    else if (diastolic < 100) score += 8;
+    else score += 10;
+    
+    return Math.min(score, 20);
+}
+
+function calculateCholesterolFactor(data) {
+    let score = 0;
+    
+    // Total Cholesterol
+    if (data.cholesterol < 200) score += 0;
+    else if (data.cholesterol < 240) score += 5;
+    else score += 10;
+    
+    // HDL Cholesterol
+    if (data.hdl >= 60) score += 0;
+    else if (data.hdl >= 40) score += 5;
+    else score += 10;
+    
+    // LDL Cholesterol
+    if (data.ldl < 100) score += 0;
+    else if (data.ldl < 130) score += 5;
+    else if (data.ldl < 160) score += 8;
+    else score += 10;
+    
+    return Math.min(score, 20);
+}
+
+function calculateBMIFactor(bmi) {
+    if (bmi < 18.5) return 5;  // Underweight
+    if (bmi < 25) return 0;    // Normal
+    if (bmi < 30) return 5;    // Overweight
+    return 10;                 // Obese
+}
+
+function calculateLifestyleFactor(data) {
+    let score = 0;
+    
+    // Smoking
+    if (data.heart_smoke === 'current') score += 10;
+    else if (data.heart_smoke === 'former') score += 5;
+    
+    // Physical Activity
+    if (data.activity === 'sedentary') score += 10;
+    else if (data.activity === 'light') score += 5;
+    else if (data.activity === 'moderate') score += 2;
+    
+    // Alcohol
+    if (data.alcohol === 'heavy') score += 10;
+    else if (data.alcohol === 'moderate') score += 5;
+    
+    return Math.min(score, 20);
+}
+
+function calculateMedicalHistoryFactor(data) {
+    let score = 0;
+    
+    // Diabetes
+    if (data.heart_diabetes === 'yes') score += 10;
+    else if (data.heart_diabetes === 'prediabetes') score += 5;
+    
+    // Family History
+    if (data.heart_family === 'yes') score += 5;
+    
+    // Previous Conditions
+    const conditions = data.heart_conditions || [];
+    if (conditions.includes('hypertension')) score += 5;
+    if (conditions.includes('heartAttack')) score += 10;
+    if (conditions.includes('stroke')) score += 10;
+    if (conditions.includes('angina')) score += 5;
+    
+    return Math.min(score, 20);
+}
+
+function analyzeHeartRiskFactors(data, bmi) {
+    const factors = [];
+    
+    // Age Analysis
+    if (data.age >= 65) {
+        factors.push({
+            factor: 'Age',
+            level: 'high',
+            description: 'Age is a significant risk factor for heart disease',
+            impact: 'High'
+        });
+    }
+    
+    // Blood Pressure Analysis
+    if (data.systolic >= 140 || data.diastolic >= 90) {
+        factors.push({
+            factor: 'Blood Pressure',
+            level: 'high',
+            description: 'Elevated blood pressure increases heart disease risk',
+            impact: 'High'
+        });
+    }
+    
+    // Cholesterol Analysis
+    if (data.cholesterol >= 240 || data.ldl >= 160 || data.hdl < 40) {
+        factors.push({
+            factor: 'Cholesterol',
+            level: 'high',
+            description: 'Unhealthy cholesterol levels increase heart disease risk',
+            impact: 'High'
+        });
+    }
+    
+    // BMI Analysis
+    if (bmi >= 30) {
+        factors.push({
+            factor: 'BMI',
+            level: 'high',
+            description: 'Obesity is a significant risk factor for heart disease',
+            impact: 'High'
+        });
+    }
+    
+    // Lifestyle Analysis
+    if (data.heart_smoke === 'current') {
+        factors.push({
+            factor: 'Smoking',
+            level: 'high',
+            description: 'Smoking significantly increases heart disease risk',
+            impact: 'High'
+        });
+    }
+    
+    if (data.activity === 'sedentary') {
+        factors.push({
+            factor: 'Physical Activity',
+            level: 'moderate',
+            description: 'Lack of physical activity increases heart disease risk',
+            impact: 'Moderate'
+        });
+    }
+    
+    // Medical History Analysis
+    if (data.heart_diabetes === 'yes') {
+        factors.push({
+            factor: 'Diabetes',
+            level: 'high',
+            description: 'Diabetes significantly increases heart disease risk',
+            impact: 'High'
+        });
+    }
+    
+    if (data.heart_family === 'yes') {
+        factors.push({
+            factor: 'Family History',
+            level: 'moderate',
+            description: 'Family history of heart disease increases your risk',
+            impact: 'Moderate'
+        });
+    }
+    
+    return factors;
+}
+
+function generateHeartHealthRecommendations(data, riskScore, riskFactors) {
+    const recommendations = [];
+    
+    // General recommendations based on risk score
+    if (riskScore >= 70) {
+        recommendations.push({
+            category: 'Immediate Action',
+            items: [
+                'Schedule an appointment with your doctor as soon as possible',
+                'Consider getting a comprehensive cardiac evaluation',
+                'Monitor your blood pressure daily'
+            ]
+        });
+    } else if (riskScore >= 40) {
+        recommendations.push({
+            category: 'Priority Actions',
+            items: [
+                'Schedule a check-up with your doctor',
+                'Start monitoring your blood pressure regularly',
+                'Consider lifestyle modifications'
+            ]
+        });
+    }
+    
+    // Specific recommendations based on risk factors
+    riskFactors.forEach(factor => {
+        switch(factor.factor) {
+            case 'Blood Pressure':
+                recommendations.push({
+                    category: 'Blood Pressure Management',
+                    items: [
+                        'Reduce sodium intake',
+                        'Increase physical activity',
+                        'Consider DASH diet',
+                        'Monitor blood pressure regularly'
+                    ]
+                });
+                break;
+                
+            case 'Cholesterol':
+                recommendations.push({
+                    category: 'Cholesterol Management',
+                    items: [
+                        'Reduce saturated fat intake',
+                        'Increase fiber consumption',
+                        'Consider Mediterranean diet',
+                        'Regular cholesterol checks'
+                    ]
+                });
+                break;
+                
+            case 'BMI':
+                recommendations.push({
+                    category: 'Weight Management',
+                    items: [
+                        'Create a calorie deficit',
+                        'Increase physical activity',
+                        'Consider consulting a nutritionist',
+                        'Set realistic weight loss goals'
+                    ]
+                });
+                break;
+                
+            case 'Smoking':
+                recommendations.push({
+                    category: 'Smoking Cessation',
+                    items: [
+                        'Consider nicotine replacement therapy',
+                        'Join a smoking cessation program',
+                        'Set a quit date',
+                        'Identify and avoid triggers'
+                    ]
+                });
+                break;
+                
+            case 'Physical Activity':
+                recommendations.push({
+                    category: 'Physical Activity',
+                    items: [
+                        'Start with 30 minutes of moderate exercise daily',
+                        'Gradually increase activity level',
+                        'Find activities you enjoy',
+                        'Consider working with a personal trainer'
+                    ]
+                });
+                break;
+                
+            case 'Diabetes':
+                recommendations.push({
+                    category: 'Diabetes Management',
+                    items: [
+                        'Monitor blood sugar regularly',
+                        'Follow a diabetic diet',
+                        'Maintain regular exercise',
+                        'Keep regular appointments with your doctor'
+                    ]
+                });
+                break;
+        }
+    });
+    
+    return recommendations;
+}
+
+function createHeartHealthVisualizations(data, riskScore, riskFactors) {
+    // Create risk score gauge
+    createRiskScoreGauge(riskScore);
+    
+    // Create risk factors chart
+    createRiskFactorsChart(riskFactors);
+    
+    // Create vital signs chart
+    createVitalSignsChart(data);
+    
+    // Create lifestyle factors chart
+    createLifestyleFactorsChart(data);
+}
+
+function createRiskScoreGauge(riskScore) {
+    const ctx = document.getElementById('riskScoreGauge').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [riskScore, 100 - riskScore],
+                backgroundColor: [
+                    getRiskColor(riskScore),
+                    '#e9ecef'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            cutout: '80%',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            }
+        }
+    });
+    
+    // Add center text
+    const centerText = document.createElement('div');
+    centerText.className = 'gauge-center-text';
+    centerText.innerHTML = `
+        <span class="score">${riskScore}</span>
+        <span class="label">Risk Score</span>
+    `;
+    document.getElementById('riskScoreGauge').parentNode.appendChild(centerText);
+}
+
+function createRiskFactorsChart(riskFactors) {
+    const ctx = document.getElementById('riskFactorsChart').getContext('2d');
+    
+    const data = {
+        labels: riskFactors.map(f => f.factor),
+        datasets: [{
+            data: riskFactors.map(f => f.impact === 'High' ? 100 : 50),
+            backgroundColor: riskFactors.map(f => f.impact === 'High' ? '#dc3545' : '#ffc107'),
+            borderWidth: 0
+        }]
+    };
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: value => value === 100 ? 'High' : value === 50 ? 'Moderate' : ''
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createVitalSignsChart(data) {
+    const ctx = document.getElementById('vitalSignsChart').getContext('2d');
+    
+    const vitalSigns = {
+        'Blood Pressure': data.systolic,
+        'HDL Cholesterol': data.hdl,
+        'LDL Cholesterol': data.ldl,
+        'Total Cholesterol': data.cholesterol,
+        'Triglycerides': data.triglycerides
+    };
+    
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: Object.keys(vitalSigns),
+            datasets: [{
+                label: 'Your Values',
+                data: Object.values(vitalSigns),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function createLifestyleFactorsChart(data) {
+    const ctx = document.getElementById('lifestyleFactorsChart').getContext('2d');
+    
+    const lifestyleData = {
+        'Physical Activity': getActivityScore(data.activity),
+        'Smoking Status': getSmokingScore(data.heart_smoke),
+        'Alcohol Consumption': getAlcoholScore(data.alcohol),
+        'Diet Type': getDietScore(data.diet)
+    };
+    
+    new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: Object.keys(lifestyleData),
+            datasets: [{
+                data: Object.values(lifestyleData),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+}
+
+// Helper functions for chart data
+function getRiskColor(score) {
+    if (score >= 70) return '#dc3545';
+    if (score >= 40) return '#ffc107';
+    return '#28a745';
+}
+
+function getActivityScore(activity) {
+    const scores = {
+        'sedentary': 20,
+        'light': 40,
+        'moderate': 60,
+        'active': 80,
+        'veryActive': 100
+    };
+    return scores[activity] || 0;
+}
+
+function getSmokingScore(smoking) {
+    const scores = {
+        'current': 20,
+        'former': 60,
+        'never': 100
+    };
+    return scores[smoking] || 0;
+}
+
+function getAlcoholScore(alcohol) {
+    const scores = {
+        'none': 100,
+        'light': 80,
+        'moderate': 60,
+        'heavy': 20
+    };
+    return scores[alcohol] || 0;
+}
+
+function getDietScore(diet) {
+    const scores = {
+        'mediterranean': 100,
+        'balanced': 80,
+        'vegetarian': 70,
+        'vegan': 70,
+        'highProtein': 60,
+        'other': 50
+    };
+    return scores[diet] || 0;
+}
+
+function updateHeartHealthResultsUI(riskScore, riskFactors, recommendations) {
+    // Update risk score display
+    document.getElementById('riskScore').textContent = riskScore;
+    document.getElementById('riskLevel').textContent = getRiskLevel(riskScore);
+    document.getElementById('riskLevel').className = `risk-level ${getRiskLevelClass(riskScore)}`;
+    
+    // Update risk factors list
+    const riskFactorsList = document.getElementById('riskFactorsList');
+    riskFactorsList.innerHTML = riskFactors.map(factor => `
+        <div class="risk-factor ${factor.level}">
+            <h4>${factor.factor}</h4>
+            <p>${factor.description}</p>
+            <span class="impact ${factor.impact.toLowerCase()}">${factor.impact} Impact</span>
+        </div>
+    `).join('');
+    
+    // Update recommendations
+    const recommendationsList = document.getElementById('recommendationsList');
+    recommendationsList.innerHTML = recommendations.map(rec => `
+        <div class="recommendation-category">
+            <h4>${rec.category}</h4>
+            <ul>
+                ${rec.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+        </div>
+    `).join('');
+}
+
+function getRiskLevel(score) {
+    if (score >= 70) return 'High Risk';
+    if (score >= 40) return 'Moderate Risk';
+    return 'Low Risk';
+}
+
+function getRiskLevelClass(score) {
+    if (score >= 70) return 'high';
+    if (score >= 40) return 'moderate';
+    return 'low';
+}
+
+// Initialize results page
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we have heart health assessment data
+    const urlParams = new URLSearchParams(window.location.search);
+    const service = urlParams.get('service');
+    
+    if (service === 'heart') {
+        // Get stored assessment data
+        const assessmentData = JSON.parse(localStorage.getItem('heartAssessmentData'));
+        if (assessmentData) {
+            handleHeartHealthResults(assessmentData);
+        }
+    }
+}); 

@@ -149,6 +149,110 @@
                 </div>
             </div>
         </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results">
+            <div class="container">
+                <div class="results-container">
+                    <!-- Heart Disease Results -->
+                    <div id="heart-results" class="result-content">
+                        <div class="result-header">
+                            <h2 class="section-title">Heart Health Assessment Results</h2>
+                            <div class="risk-meter">
+                                <div class="risk-gauge">
+                                    <div class="gauge-value" id="heart-risk-value">0%</div>
+                                    <div class="gauge-label">Risk Score</div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-bar">
+                                        <div class="risk-fill" id="heart-risk-fill"></div>
+                                    </div>
+                                    <div class="risk-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-details">
+                            <div class="result-section">
+                                <h3>Key Risk Factors</h3>
+                                <div class="risk-factors" id="heart-risk-factors">
+                                    <!-- Risk factors will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <div class="result-section">
+                                <h3>Recommendations</h3>
+                                <div class="recommendations" id="heart-recommendations">
+                                    <!-- Recommendations will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <div class="result-section">
+                                <h3>Next Steps</h3>
+                                <div class="next-steps" id="heart-next-steps">
+                                    <!-- Next steps will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diabetes Results -->
+                    <div id="diabetes-results" class="result-content">
+                        <div class="result-header">
+                            <h2 class="section-title">Diabetes Risk Assessment Results</h2>
+                            <div class="risk-meter">
+                                <div class="risk-gauge">
+                                    <div class="gauge-value" id="diabetes-risk-value">0%</div>
+                                    <div class="gauge-label">Risk Score</div>
+                                </div>
+                                <div class="risk-indicator">
+                                    <div class="risk-bar">
+                                        <div class="risk-fill" id="diabetes-risk-fill"></div>
+                                    </div>
+                                    <div class="risk-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-details">
+                            <div class="result-section">
+                                <h3>Key Risk Factors</h3>
+                                <div class="risk-factors" id="diabetes-risk-factors">
+                                    <!-- Risk factors will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <div class="result-section">
+                                <h3>Recommendations</h3>
+                                <div class="recommendations" id="diabetes-recommendations">
+                                    <!-- Recommendations will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <div class="result-section">
+                                <h3>Next Steps</h3>
+                                <div class="next-steps" id="diabetes-next-steps">
+                                    <!-- Next steps will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-actions">
+                        <a href="predict.html" class="btn btn-outline">New Assessment</a>
+                        <button class="btn" id="download-report">Download Report</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -196,8 +300,385 @@
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
     <script src="js/results.js"></script>
-    <script src="js/chart-integration.js"></script>
+
+    <!-- Update JavaScript for Results Handling -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+            const resultParam = urlParams.get('result');
+
+            if (!service || !resultParam || !['heart', 'diabetes'].includes(service)) {
+                window.location.href = 'predict.html';
+                return;
+            }
+
+            const result = JSON.parse(decodeURIComponent(resultParam));
+            const resultsContainer = document.querySelector('.results-container');
+            const heartResults = document.getElementById('heart-results');
+            const diabetesResults = document.getElementById('diabetes-results');
+
+            // Show appropriate results section
+            heartResults.style.display = service === 'heart' ? 'block' : 'none';
+            diabetesResults.style.display = service === 'diabetes' ? 'block' : 'none';
+
+            // Update risk score and visualization
+            const riskValue = document.getElementById(`${service}-risk-value`);
+            const riskFill = document.getElementById(`${service}-risk-fill`);
+            const riskScore = result.risk_score * 100;
+
+            riskValue.textContent = `${Math.round(riskScore)}%`;
+            riskFill.style.width = `${riskScore}%`;
+            riskFill.className = `risk-fill ${getRiskLevel(riskScore)}`;
+
+            // Update risk factors
+            const riskFactorsContainer = document.getElementById(`${service}-risk-factors`);
+            riskFactorsContainer.innerHTML = result.risk_factors.map(factor => `
+                <div class="risk-factor">
+                    <i class="fas ${getRiskFactorIcon(factor.severity)}"></i>
+                    <div class="factor-details">
+                        <h4>${factor.name}</h4>
+                        <p>${factor.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update recommendations
+            const recommendationsContainer = document.getElementById(`${service}-recommendations`);
+            recommendationsContainer.innerHTML = result.recommendations.map(rec => `
+                <div class="recommendation">
+                    <i class="fas ${getRecommendationIcon(rec.type)}"></i>
+                    <div class="recommendation-details">
+                        <h4>${rec.title}</h4>
+                        <p>${rec.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update next steps
+            const nextStepsContainer = document.getElementById(`${service}-next-steps`);
+            nextStepsContainer.innerHTML = result.next_steps.map(step => `
+                <div class="next-step">
+                    <i class="fas ${getNextStepIcon(step.priority)}"></i>
+                    <div class="step-details">
+                        <h4>${step.title}</h4>
+                        <p>${step.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Download report functionality
+            document.getElementById('download-report').addEventListener('click', () => {
+                const reportData = {
+                    service,
+                    risk_score: riskScore,
+                    risk_factors: result.risk_factors,
+                    recommendations: result.recommendations,
+                    next_steps: result.next_steps,
+                    timestamp: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `wellpredict-${service}-assessment-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+
+        function getRiskLevel(score) {
+            if (score < 30) return 'low-risk';
+            if (score < 70) return 'medium-risk';
+            return 'high-risk';
+        }
+
+        function getRiskFactorIcon(severity) {
+            switch (severity) {
+                case 'high': return 'fa-exclamation-circle';
+                case 'medium': return 'fa-exclamation-triangle';
+                default: return 'fa-info-circle';
+            }
+        }
+
+        function getRecommendationIcon(type) {
+            switch (type) {
+                case 'lifestyle': return 'fa-heartbeat';
+                case 'medical': return 'fa-stethoscope';
+                case 'diet': return 'fa-utensils';
+                case 'exercise': return 'fa-running';
+                default: return 'fa-lightbulb';
+            }
+        }
+
+        function getNextStepIcon(priority) {
+            switch (priority) {
+                case 'urgent': return 'fa-ambulance';
+                case 'high': return 'fa-calendar-alt';
+                case 'medium': return 'fa-clock';
+                default: return 'fa-calendar';
+            }
+        }
+    </script>
+
+    <!-- Add new styles for the results page -->
+    <style>
+        .results-overview {
+            margin-bottom: 3rem;
+        }
+
+        .risk-score-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .risk-score-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .gauge-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-center-text .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+        }
+
+        .gauge-center-text .label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .risk-score-info {
+            flex: 1;
+        }
+
+        .score-display {
+            margin: 1rem 0;
+        }
+
+        .score-display #riskScore {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+
+        .risk-level.high {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .risk-level.moderate {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .risk-level.low {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .analysis-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+
+        .risk-factors-list {
+            margin-top: 1rem;
+        }
+
+        .risk-factor {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .risk-factor.high {
+            border-left: 4px solid #dc3545;
+        }
+
+        .risk-factor.moderate {
+            border-left: 4px solid #ffc107;
+        }
+
+        .risk-factor h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+
+        .risk-factor p {
+            margin: 0 0 0.5rem 0;
+            color: #6c757d;
+        }
+
+        .impact {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .impact.high {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .impact.moderate {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .recommendation-category {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-category h4 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .recommendation-category ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendation-category li {
+            padding: 0.5rem 0;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recommendation-category li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .action-plan {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .action-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .action-step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+
+        .step-content p {
+            margin: 0;
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .risk-score-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .risk-score-gauge {
+                margin: 0 auto;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </body>
 </html> 
