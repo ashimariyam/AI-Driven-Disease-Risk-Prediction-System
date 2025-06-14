@@ -39,7 +39,7 @@
                     Diabetes Risk Prediction
                 </button>
             </div>
-
+            
             <!-- Forms Container -->
             <div class="forms-container">
                 <!-- Heart Disease Form -->
@@ -47,19 +47,19 @@
                     <div class="form-header">
                         <h2><i class="fas fa-heartbeat"></i> Heart Disease Risk Assessment</h2>
                         <p>Please provide your cardiovascular health information for accurate risk assessment.</p>
-                    </div>
-
+                        </div>
+                        
                     <div class="form-grid">
                         <!-- Age -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="heart-age">Age (years)</label>
                             <input type="number" id="heart-age" name="age" min="29" max="80" required
                                    placeholder="Enter age (29-80)">
                             <small>Range: 29-80 years</small>
-                        </div>
-
+                                </div>
+                                
                         <!-- Sex -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label>Sex</label>
                             <div class="radio-group">
                                 <label class="radio-label">
@@ -71,10 +71,10 @@
                                     Female
                                 </label>
                             </div>
-                        </div>
-
+                                </div>
+                                
                         <!-- Chest Pain Type -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="cp">Chest Pain Type</label>
                             <select id="cp" name="cp" required>
                                 <option value="">Select chest pain type</option>
@@ -83,41 +83,41 @@
                                 <option value="2">Non-anginal pain</option>
                                 <option value="3">Asymptomatic</option>
                             </select>
-                        </div>
-
+                            </div>
+                            
                         <!-- Resting Blood Pressure -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="trestbps">Resting Blood Pressure (mm Hg)</label>
                             <input type="number" id="trestbps" name="trestbps" min="80" max="200" required
                                    placeholder="Enter blood pressure">
                             <small>Range: 80-200 mm Hg</small>
-                        </div>
-
+                                </div>
+                                
                         <!-- Serum Cholesterol -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="chol">Serum Cholesterol (mg/dL)</label>
                             <input type="number" id="chol" name="chol" min="100" max="600" required
                                    placeholder="Enter cholesterol level">
                             <small>Range: 100-600 mg/dL</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Fasting Blood Sugar -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label>Fasting Blood Sugar > 120 mg/dL</label>
-                            <div class="radio-group">
+                                    <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="fbs" value="1" required>
-                                    Yes
-                                </label>
+                                            Yes
+                                        </label>
                                 <label class="radio-label">
                                     <input type="radio" name="fbs" value="0" required>
-                                    No
-                                </label>
-                            </div>
-                        </div>
-
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                
                         <!-- Resting ECG Results -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="restecg">Resting ECG Results</label>
                             <select id="restecg" name="restecg" required>
                                 <option value="">Select ECG result</option>
@@ -126,29 +126,29 @@
                                 <option value="2">Left ventricular hypertrophy</option>
                             </select>
                         </div>
-
+                        
                         <!-- Maximum Heart Rate -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="thalach">Maximum Heart Rate (bpm)</label>
                             <input type="number" id="thalach" name="thalach" min="60" max="210" required
                                    placeholder="Enter maximum heart rate">
                             <small>Range: 60-210 bpm</small>
-                        </div>
-
+                                </div>
+                                
                         <!-- Exercise-Induced Angina -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label>Exercise-Induced Angina</label>
-                            <div class="radio-group">
+                                    <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="exang" value="1" required>
-                                    Yes
-                                </label>
+                                            Yes
+                                        </label>
                                 <label class="radio-label">
                                     <input type="radio" name="exang" value="0" required>
-                                    No
-                                </label>
-                            </div>
-                        </div>
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
 
                         <!-- ST Depression -->
                         <div class="form-group">
@@ -156,21 +156,21 @@
                             <input type="number" id="oldpeak" name="oldpeak" min="0" max="6" step="0.1" required
                                    placeholder="Enter ST depression">
                             <small>Range: 0.0-6.0</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Slope of Peak Exercise ST -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="slope">Slope of Peak Exercise ST</label>
                             <select id="slope" name="slope" required>
                                 <option value="">Select slope</option>
                                 <option value="0">Upsloping</option>
                                 <option value="1">Flat</option>
                                 <option value="2">Downsloping</option>
-                            </select>
-                        </div>
-
+                                    </select>
+                                </div>
+                                
                         <!-- Major Vessels -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="ca">Major Vessels Colored by Fluoroscopy</label>
                             <select id="ca" name="ca" required>
                                 <option value="">Select number of vessels</option>
@@ -181,19 +181,19 @@
                                 <option value="4">4</option>
                             </select>
                         </div>
-
+                        
                         <!-- Thalassemia -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="thal">Thalassemia</label>
                             <select id="thal" name="thal" required>
                                 <option value="">Select thalassemia type</option>
                                 <option value="1">Normal</option>
                                 <option value="2">Fixed defect</option>
                                 <option value="3">Reversible defect</option>
-                            </select>
-                        </div>
-                    </div>
-
+                                    </select>
+                                </div>
+                            </div>
+                            
                     <button type="submit" class="submit-btn">
                         <i class="fas fa-calculator"></i>
                         Predict Heart Disease Risk
@@ -205,8 +205,8 @@
                     <div class="form-header">
                         <h2><i class="fas fa-tint"></i> Diabetes Risk Assessment</h2>
                         <p>Please provide your health information for diabetes risk evaluation.</p>
-                    </div>
-
+                </div>
+                
                     <div class="form-grid">
                         <!-- Pregnancies -->
                         <div class="form-group">
@@ -215,39 +215,39 @@
                                    placeholder="Enter number of pregnancies">
                             <small>Range: 0-20</small>
                         </div>
-
+                        
                         <!-- Glucose -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="diabetes-glucose">Glucose Level (mg/dL)</label>
                             <input type="number" id="diabetes-glucose" name="glucose" min="50" max="300" required
                                    placeholder="Enter glucose level">
                             <small>Range: 50-300 mg/dL</small>
-                        </div>
-
+                                </div>
+                                
                         <!-- Blood Pressure -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="diabetes-bp">Blood Pressure (mm Hg)</label>
                             <input type="number" id="diabetes-bp" name="blood_pressure" min="40" max="140" required
                                    placeholder="Enter blood pressure">
                             <small>Range: 40-140 mm Hg</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Skin Thickness -->
-                        <div class="form-group">
+                            <div class="form-group">
                             <label for="diabetes-skin">Skin Thickness (mm)</label>
                             <input type="number" id="diabetes-skin" name="skin_thickness" min="0" max="100" required
                                    placeholder="Enter skin thickness">
                             <small>Range: 0-100 mm</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Insulin -->
                         <div class="form-group">
                             <label for="diabetes-insulin">Insulin Level (mu U/ml)</label>
                             <input type="number" id="diabetes-insulin" name="insulin" min="0" max="900" required
                                    placeholder="Enter insulin level">
                             <small>Range: 0-900 mu U/ml</small>
-                        </div>
-
+                </div>
+                
                         <!-- BMI -->
                         <div class="form-group">
                             <label for="diabetes-bmi">BMI (kg/m²)</label>
@@ -255,25 +255,25 @@
                                    placeholder="Enter BMI">
                             <small>Range: 10.0-70.0 kg/m²</small>
                         </div>
-
+                        
                         <!-- Diabetes Pedigree Function -->
-                        <div class="form-group">
+                            <div class="form-group">
                             <label for="diabetes-pedigree">Diabetes Pedigree Function</label>
                             <input type="number" id="diabetes-pedigree" name="diabetes_pedigree" min="0" max="2.5" step="0.01" required
                                    placeholder="Enter pedigree function">
                             <small>Range: 0.0-2.5</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Age -->
-                        <div class="form-group">
+                            <div class="form-group">
                             <label for="diabetes-age">Age (years)</label>
                             <input type="number" id="diabetes-age" name="age" min="10" max="100" required
                                    placeholder="Enter age">
                             <small>Range: 10-100 years</small>
-                        </div>
-
+                            </div>
+                            
                         <!-- Family History -->
-                        <div class="form-group">
+                            <div class="form-group">
                             <label>Family History of Diabetes</label>
                             <div class="radio-group">
                                 <label class="radio-label">
@@ -284,20 +284,20 @@
                                     <input type="radio" name="family_history" value="0" required>
                                     No
                                 </label>
+                                </div>
                             </div>
-                        </div>
-
+                            
                         <!-- Physical Activity -->
-                        <div class="form-group">
+                                <div class="form-group">
                             <label for="diabetes-activity">Physical Activity (hrs/week)</label>
                             <input type="number" id="diabetes-activity" name="physical_activity" min="0" max="20" step="0.5" required
                                    placeholder="Enter hours of activity">
                             <small>Range: 0-20 hrs/week</small>
-                        </div>
-
+                                </div>
+                                
                         <!-- Smoking Status -->
-                        <div class="form-group">
-                            <label>Smoking Status</label>
+                                <div class="form-group">
+                                    <label>Smoking Status</label>
                             <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="smoking" value="1" required>
@@ -307,16 +307,16 @@
                                     <input type="radio" name="smoking" value="0" required>
                                     No
                                 </label>
+                                </div>
                             </div>
-                        </div>
-
+                            
                         <!-- Alcohol Consumption -->
                         <div class="form-group">
                             <label for="diabetes-alcohol">Alcohol Consumption (drinks/week)</label>
                             <input type="number" id="diabetes-alcohol" name="alcohol" min="0" max="30" required
                                    placeholder="Enter number of drinks">
                             <small>Range: 0-30 drinks/week</small>
-                        </div>
+                            </div>
                     </div>
 
                     <button type="submit" class="submit-btn">
@@ -327,7 +327,7 @@
             </div>
         </div>
     </section>
-
+    
     <!-- Footer Component (Will be loaded via JavaScript) -->
     <div id="footer"></div>
     
