@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - WellPredict</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .btn {
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #7d3c98;
+        }
+        .status {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Authentication System Test</h1>
+        
+        <div class="status" id="auth-status">
+            <h3>Current Authentication Status:</h3>
+            <p id="status-text">Checking...</p>
+        </div>
+        
+        <div>
+            <h3>Test Actions:</h3>
+            <button class="btn" onclick="createTestUser()">Create Test User</button>
+            <button class="btn" onclick="loginTestUser()">Login Test User</button>
+            <button class="btn" onclick="logoutUser()">Logout</button>
+            <button class="btn" onclick="clearAllData()">Clear All Data</button>
+        </div>
+        
+        <div>
+            <h3>Navigation Tests:</h3>
+            <button class="btn" onclick="testServicesRedirect()">Test Services → Heart</button>
+            <button class="btn" onclick="window.location.href='services.html'">Go to Services Page</button>
+            <button class="btn" onclick="window.location.href='predict.html'">Go to Predict Page</button>
+            <button class="btn" onclick="window.location.href='profile.html'">Go to Profile Page</button>
+        </div>
+        
+        <div class="status">
+            <h3>Debug Info:</h3>
+            <pre id="debug-info"></pre>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus() {
+            const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            const statusText = document.getElementById('status-text');
+            const debugInfo = document.getElementById('debug-info');
+            
+            if (currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    statusText.innerHTML = `✅ <strong>LOGGED IN</strong><br>Name: ${userData.name}<br>Email: ${userData.email}`;
+                } catch (e) {
+                    statusText.innerHTML = `⚠️ <strong>LOGGED IN (CORRUPTED DATA)</strong><br>Raw: ${currentUser}`;
+                }
+            } else {
+                statusText.innerHTML = `❌ <strong>NOT LOGGED IN</strong>`;
+            }
+            
+            // Debug info
+            debugInfo.textContent = JSON.stringify({
+                localStorage_currentUser: localStorage.getItem('currentUser'),
+                sessionStorage_currentUser: sessionStorage.getItem('currentUser'),
+                localStorage_users: localStorage.getItem('users'),
+                localStorage_selectedService: localStorage.getItem('selectedService'),
+                localStorage_returnUrl: localStorage.getItem('returnUrl')
+            }, null, 2);
+        }
+        
+        function createTestUser() {
+            const testUser = {
+                name: 'Test User',
+                email: 'test@example.com',
+                hashedPassword: 'test123', // In real app, this would be properly hashed
+                salt: 'testsalt'
+            };
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            if (users.find(u => u.email === testUser.email)) {
+                alert('Test user already exists!');
+                return;
+            }
+            
+            users.push(testUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('✅ Test user created: test@example.com / test123');
+            updateStatus();
+        }
+        
+        function loginTestUser() {
+            const currentUser = {
+                name: 'Test User',
+                email: 'test@example.com',
+                isLoggedIn: true
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            alert('✅ Test user logged in!');
+            updateStatus();
+        }
+        
+        function logoutUser() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('currentUser');
+            alert('✅ User logged out!');
+            updateStatus();
+        }
+        
+        function clearAllData() {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('✅ All data cleared!');
+            updateStatus();
+        }
+        
+        function testServicesRedirect() {
+            // Simulate clicking on heart service
+            const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            
+            if (currentUser) {
+                localStorage.setItem('selectedService', 'heart');
+                alert('✅ User is logged in. Would redirect to profile.html');
+            } else {
+                localStorage.setItem('selectedService', 'heart');
+                localStorage.setItem('returnUrl', 'profile.html');
+                alert('❌ User not logged in. Would redirect to login.html');
+            }
+            updateStatus();
+        }
+        
+        // Update status on page load
+        document.addEventListener('DOMContentLoaded', updateStatus);
+    </script>
+</body>
+</html>

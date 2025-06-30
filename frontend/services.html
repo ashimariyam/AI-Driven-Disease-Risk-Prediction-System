@@ -45,7 +45,7 @@
                         <h3 class="service-title">Heart Health Assessment</h3>
                         <p class="service-description">Our advanced AI analyzes your vital signs, medical history, and lifestyle factors to assess your cardiovascular risk with high accuracy. Get personalized insights and preventive recommendations.</p>
                         <div class="service-actions">
-                            <a href="predict.html?service=heart" class="btn service-btn">Get Started</a>
+                            <button class="btn service-btn" onclick="checkAuthAndRedirect('heart')">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         <h3 class="service-title">Diabetes Risk Prediction</h3>
                         <p class="service-description">Our AI-powered system evaluates your risk of developing Type 2 diabetes based on key health markers, family history, and lifestyle factors. Receive personalized insights and preventive recommendations.</p>
                         <div class="service-actions">
-                            <a href="predict.html?service=diabetes" class="btn service-btn">Get Started</a>
+                            <button class="btn service-btn" onclick="checkAuthAndRedirect('diabetes')">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
             </div>
 
             <div class="modal-cta">
-                <a href="predict.html?service=heart" class="btn">Start Your Assessment</a>
+                <button class="btn" onclick="checkAuthAndRedirect('heart')">Start Your Assessment</button>
             </div>
         </div>
     </div>
@@ -215,7 +215,7 @@
             </div>
 
             <div class="modal-cta">
-                <a href="predict.html?service=diabetes" class="btn">Start Your Assessment</a>
+                <button class="btn" onclick="checkAuthAndRedirect('diabetes')">Start Your Assessment</button>
             </div>
         </div>
     </div>
@@ -347,6 +347,55 @@
     <script src="js/script.js"></script>
     <script src="js/services.js"></script>
 
+    <!-- Authentication Check Script -->
+    <script>
+        // Check if user is logged in and redirect accordingly
+        function checkAuthAndRedirect(serviceType) {
+            console.log('🔍 Checking authentication for service:', serviceType);
+            
+            // Check both localStorage and sessionStorage for current user
+            const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            
+            console.log('👤 Current user:', currentUser ? 'Found' : 'Not found');
+            
+            if (currentUser) {
+                // User is logged in, store the selected service and redirect to profile/dashboard
+                console.log('✅ User authenticated, redirecting to profile...');
+                localStorage.setItem('selectedService', serviceType);
+                window.location.href = 'profile.html';
+            } else {
+                // User not logged in, redirect to login with return URL
+                console.log('❌ User not authenticated, redirecting to login...');
+                localStorage.setItem('selectedService', serviceType);
+                localStorage.setItem('returnUrl', 'profile.html');
+                
+                // Show a brief message before redirecting
+                alert('Please log in to access the health assessment forms.');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Debug function to check current auth status
+        function checkCurrentAuth() {
+            const user = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            console.log('🔍 Debug - Current user data:', user);
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    console.log('📋 User details:', userData);
+                } catch (e) {
+                    console.error('❌ Error parsing user data:', e);
+                }
+            }
+        }
+        
+        // Run debug check when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Services page loaded');
+            checkCurrentAuth();
+        });
+    </script>
+
     <!-- Add new styles for the services page -->
     <style>
         .services-container {
@@ -405,15 +454,41 @@
         .service-btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
             color: #fff;
             text-decoration: none;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .service-btn:hover {
-            background-color: var(--primary-color-dark);
+            background: linear-gradient(135deg, #7d3c98, #8e44ad);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(142, 68, 173, 0.3);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #7d3c98, #8e44ad);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(142, 68, 173, 0.3);
         }
 
         @media (max-width: 768px) {

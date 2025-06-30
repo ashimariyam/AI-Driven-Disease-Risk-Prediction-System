@@ -716,5 +716,91 @@
             background-color: #dc3545 !important;
         }
     </style>
+    
+    <!-- Authentication Check Script -->
+    <script>
+        // Check if user is authenticated before allowing access
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Predict page loading...');
+            
+            // Check both localStorage and sessionStorage for current user
+            const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            
+            console.log('👤 Current user check:', currentUser ? 'Found' : 'Not found');
+            
+            if (!currentUser) {
+                // User not authenticated, redirect to login
+                console.log('❌ Access denied - user not authenticated');
+                localStorage.setItem('returnUrl', window.location.href);
+                
+                // Show loading message briefly then redirect
+                document.body.innerHTML = `
+                    <div style="
+                        display: flex; 
+                        justify-content: center; 
+                        align-items: center; 
+                        height: 100vh; 
+                        background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+                        color: white;
+                        font-family: 'Poppins', sans-serif;
+                        text-align: center;
+                        flex-direction: column;
+                    ">
+                        <div style="
+                            background: white;
+                            color: #8e44ad;
+                            padding: 2rem;
+                            border-radius: 16px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                            max-width: 400px;
+                        ">
+                            <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h2>Authentication Required</h2>
+                            <p style="margin: 1rem 0;">Please log in to access the health assessment forms.</p>
+                            <p style="font-size: 0.9rem; color: #666;">Redirecting to login page...</p>
+                        </div>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            // User is authenticated, continue loading the page
+            console.log('✅ User authenticated, loading prediction forms...');
+            
+            // Parse user data to show welcome message
+            try {
+                const userData = JSON.parse(currentUser);
+                console.log('📋 Welcome user:', userData.name || userData.email);
+                
+                // Add a welcome message to the page
+                const welcomeMessage = document.createElement('div');
+                welcomeMessage.innerHTML = `
+                    <div style="
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                        padding: 0.75rem 1rem;
+                        border-radius: 8px;
+                        margin-bottom: 1rem;
+                        text-align: center;
+                        backdrop-filter: blur(10px);
+                    ">
+                        <i class="fas fa-user-check"></i> Welcome, ${userData.name || userData.email}! Ready for your health assessment?
+                    </div>
+                `;
+                
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.insertBefore(welcomeMessage, container.firstChild);
+                }
+                
+            } catch (e) {
+                console.error('❌ Error parsing user data:', e);
+            }
+        });
+    </script>
 </body>
 </html> 

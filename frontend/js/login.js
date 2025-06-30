@@ -30,9 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Show success message
                     showSuccessMessage('Login successful! Redirecting...');
                     
-                    // Redirect to profile page after a short delay
+                    // Check if there's a return URL or redirect to profile
+                    const returnUrl = localStorage.getItem('returnUrl') || 'profile.html';
+                    localStorage.removeItem('returnUrl'); // Clean up
+                    
+                    // Redirect after a short delay
                     setTimeout(() => {
-                        window.location.href = 'profile.html';
+                        window.location.href = returnUrl;
                     }, 1500);
                 })
                 .catch(error => {
@@ -78,14 +82,26 @@ document.addEventListener('DOMContentLoaded', function() {
             // Send signup request to backend API
             registerUser(name, email, password)
                 .then(response => {
-                    showAlert('Account created successfully! You can now log in.', 'success', document.querySelector('.auth-form-wrapper'));
+                    showAlert('Account created successfully! Redirecting to your dashboard...', 'success', document.querySelector('.auth-form-wrapper'));
+                    
+                    // Auto-login the user after successful signup
+                    const currentUser = {
+                        name: name,
+                        email: email,
+                        isLoggedIn: true
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     
                     // Clear form
                     this.reset();
                     
-                    // Redirect to login page after a short delay
+                    // Check if there's a return URL or redirect to profile
+                    const returnUrl = localStorage.getItem('returnUrl') || 'profile.html';
+                    localStorage.removeItem('returnUrl'); // Clean up
+                    
+                    // Redirect after a short delay
                     setTimeout(() => {
-                        window.location.href = 'login.html';
+                        window.location.href = returnUrl;
                     }, 2000);
                 })
                 .catch(error => {

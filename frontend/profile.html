@@ -25,8 +25,9 @@
     <!-- Profile Container -->
     <div class="profile-container">
         <div class="container">
-            <div class="profile-card" data-aos="fade-up">
-                <h1>My Profile</h1>
+            <!-- Welcome Section -->
+            <div class="welcome-card" data-aos="fade-up">
+                <h1>Welcome to Your Health Dashboard</h1>
                 
                 <div class="profile-info">
                     <div class="profile-avatar">
@@ -36,18 +37,114 @@
                     <div class="profile-details">
                         <h2 id="user-name">Loading...</h2>
                         <p id="user-email">Loading...</p>
+                        <p class="member-since">Member since <span id="join-date">2024</span></p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Assessment Section -->
+            <div class="assessment-section" data-aos="fade-up" data-aos-delay="100">
+                <h2><i class="fas fa-heartbeat"></i> Start Your Health Assessment</h2>
+                <p>Choose from our AI-powered health prediction services to get personalized insights about your health risks.</p>
                 
-                <div class="profile-actions">
-                    <button id="logout-btn" class="btn btn-danger">Logout</button>
+                <div class="assessment-options">
+                    <div class="assessment-card" id="heart-assessment">
+                        <div class="assessment-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Heart Health Assessment</h3>
+                        <p>Evaluate your cardiovascular risk factors and get personalized recommendations.</p>
+                        <button class="btn btn-primary" onclick="startAssessment('heart')">
+                            <i class="fas fa-play"></i> Take Assessment
+                        </button>
+                    </div>
+                    
+                    <div class="assessment-card" id="diabetes-assessment">
+                        <div class="assessment-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <h3>Diabetes Risk Prediction</h3>
+                        <p>Assess your risk of developing Type 2 diabetes with our advanced AI model.</p>
+                        <button class="btn btn-primary" onclick="startAssessment('diabetes')">
+                            <i class="fas fa-play"></i> Take Assessment
+                        </button>
+                    </div>
                 </div>
             </div>
             
+            <!-- Previous Results Section -->
+            <div class="results-section" data-aos="fade-up" data-aos-delay="200">
+                <h2><i class="fas fa-chart-line"></i> Your Assessment History</h2>
+                <div id="assessment-history">
+                    <p class="no-results">No previous assessments found. Complete your first assessment above!</p>
+                </div>
+            </div>
+            
+            <!-- Profile Actions -->
+            <div class="profile-actions" data-aos="fade-up" data-aos-delay="300">
+                <button id="logout-btn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <a href="services.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Services
+                </a>
+            </div>
+        </div>
+    </div>
+            
             <div class="profile-sections">
                 <div class="profile-section" data-aos="fade-up" data-aos-delay="100">
-                    <h2><i class="fas fa-chart-line"></i> Health Dashboard</h2>
-                    <p>Your personalized health metrics and assessment results will appear here.</p>
+                    <h2><i class="fas fa-info-circle"></i> Health Tips</h2>
+                    <div class="health-tips">
+                        <div class="tip-card">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Healthy Diet</h4>
+                            <p>Maintain a balanced diet rich in fruits, vegetables, and whole grains.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-running"></i>
+                            <h4>Regular Exercise</h4>
+                            <p>Aim for at least 150 minutes of moderate exercise per week.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-bed"></i>
+                            <h4>Quality Sleep</h4>
+                            <p>Get 7-9 hours of quality sleep each night for optimal health.</p>
+                        </div>
+                        <div class="tip-card">
+                            <i class="fas fa-heartbeat"></i>
+                            <h4>Regular Checkups</h4>
+                            <p>Visit your healthcare provider for regular health screenings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Assessment Function Script -->
+    <script>
+        function startAssessment(type) {
+            // Store the selected assessment type
+            localStorage.setItem('selectedService', type);
+            // Redirect to prediction form
+            window.location.href = `predict.html?service=${type}`;
+        }
+        
+        // Check if user came from a specific service selection
+        window.addEventListener('DOMContentLoaded', function() {
+            const selectedService = localStorage.getItem('selectedService');
+            if (selectedService) {
+                // Highlight the selected service card
+                const serviceCard = document.getElementById(`${selectedService}-assessment`);
+                if (serviceCard) {
+                    serviceCard.style.border = '3px solid #8e44ad';
+                    serviceCard.style.boxShadow = '0 0 20px rgba(142, 68, 173, 0.3)';
+                    serviceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
                     <a href="predict.html" class="btn">Take Assessment</a>
                 </div>
                 

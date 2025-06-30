@@ -5,98 +5,320 @@
 .profile-container {
     padding: 80px 0;
     min-height: calc(100vh - 200px);
-    background-color: var(--background-light);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8d5f2 100%);
 }
 
-.profile-card {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    margin-bottom: 40px;
+.welcome-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(142, 68, 173, 0.1);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(142, 68, 173, 0.1);
 }
 
-.profile-card h1 {
-    margin-bottom: 30px;
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 28px;
+.welcome-card h1 {
+    color: #8e44ad;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .profile-info {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
+    justify-content: center;
+    margin-bottom: 1rem;
 }
 
 .profile-avatar {
-    width: 100px;
-    height: 100px;
-    background-color: var(--primary-light);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 25px;
+    margin-right: 1.5rem;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
 }
 
 .profile-avatar i {
-    font-size: 50px;
-    color: var(--primary-color);
-}
-
-.profile-details h2 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: var(--text-dark);
-}
-
-.profile-details p {
-    font-size: 16px;
-    color: var(--text-muted);
-}
-
-.profile-actions {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.btn-danger {
-    background-color: #dc3545;
+    font-size: 2.5rem;
     color: white;
 }
 
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-.profile-sections {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 50px;
-}
-
-.profile-section {
-    background-color: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-}
-
-.profile-section:hover {
-    transform: translateY(-5px);
-}
-
-.profile-section h2 {
-    color: var(--primary-color);
-    font-size: 20px;
+.profile-details h2 {
+    font-size: 1.8rem;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.profile-details p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.member-since {
+    font-size: 0.9rem;
+    color: #8e44ad;
+    font-style: italic;
+}
+
+/* Assessment Section */
+.assessment-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.assessment-section h2 {
+    color: #8e44ad;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
+}
+
+.assessment-section h2 i {
+    margin-right: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.assessment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.assessment-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.assessment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(142, 68, 173, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.assessment-card:hover::before {
+    left: 100%;
+}
+
+.assessment-card:hover {
+    transform: translateY(-5px);
+    border-color: #8e44ad;
+    box-shadow: 0 15px 35px rgba(142, 68, 173, 0.2);
+}
+
+.assessment-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.assessment-card h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.assessment-card p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7d3c98, #8e44ad);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(142, 68, 173, 0.3);
+}
+
+/* Results Section */
+.results-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.results-section h2 {
+    color: #8e44ad;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.results-section h2 i {
+    margin-right: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.no-results {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Health Tips Section */
+.health-tips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.tip-card {
+    background: linear-gradient(135deg, #f8f9fa, #fff);
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(142, 68, 173, 0.1);
+    border-color: #8e44ad;
+}
+
+.tip-card i {
+    font-size: 2rem;
+    color: #8e44ad;
+    margin-bottom: 1rem;
+}
+
+.tip-card h4 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.tip-card p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Profile Actions */
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .welcome-card h1 {
+        font-size: 2rem;
+    }
+    
+    .profile-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .assessment-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .health-tips {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+    }
 }
 
 .profile-section h2 i {

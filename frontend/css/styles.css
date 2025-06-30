@@ -2,15 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color: #4e73df;
-    --secondary-color: #36b9cc;
-    --accent-color: #1cc88a;
+    --primary-color: #8e44ad;
+    --secondary-color: #9b59b6;
+    --accent-color: #e74c3c;
     --dark-color: #2c3e50;
     --light-color: #f8f9fc;
     --danger-color: #e74a3b;
     --warning-color: #f6c23e;
     --text-color: #333;
-    --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #e8d5f2 100%);
     --card-gradient: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
     --section-padding: 4rem 2rem;
     --transition: all 0.3s ease;

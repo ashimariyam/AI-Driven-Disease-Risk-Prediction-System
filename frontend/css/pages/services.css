@@ -2,9 +2,17 @@
 .services-hero {
     position: relative;
     padding: 5rem 2rem;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 50%, #e74c3c 100%);
     color: white;
     text-align: center;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .services-heading {
@@ -16,6 +24,7 @@
     font-size: 3rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .services-heading p {
