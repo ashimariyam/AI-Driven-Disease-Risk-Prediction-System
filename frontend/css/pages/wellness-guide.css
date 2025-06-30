@@ -1,0 +1,937 @@
+/* Wellness Guide Specific Styles */
+
+:root {
+    --wellness-green: #00d4aa;
+    --wellness-blue: #3498db;
+    --wellness-orange: #f39c12;
+    --nutrition-color: #27ae60;
+    --exercise-color: #e74c3c;
+    --lifestyle-color: #9b59b6;
+}
+
+/* Hero Section */
+.hero-wellness {
+    background: 
+        linear-gradient(135deg, rgba(142, 68, 173, 0.9) 0%, rgba(155, 89, 182, 0.9) 100%),
+        url('../../images/images.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 8rem 0 4rem;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: var(--wellness-green);
+}
+
+/* Tabs Navigation */
+.tabs-section {
+    background: white;
+    padding: 2rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border: none;
+    background: var(--light-bg);
+    color: var(--dark-text);
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.tab-btn i {
+    font-size: 1.2rem;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    padding: 4rem 0;
+    min-height: 600px;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--dark-text);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+}
+
+/* Overview Cards */
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.overview-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background images for specific cards */
+.overview-card:nth-child(1) {
+    background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%),
+        url('../../images/images.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.overview-card:nth-child(2) {
+    background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%),
+        url('../../images/diabetes.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.overview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced hover effect for background image cards */
+.overview-card:nth-child(1):hover {
+    background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.8) 100%),
+        url('../../images/images.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.overview-card:nth-child(2):hover {
+    background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.8) 100%),
+        url('../../images/diabetes.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Enhanced text readability for background image cards */
+.overview-card:nth-child(1) h3,
+.overview-card:nth-child(2) h3 {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+}
+
+.overview-card:nth-child(1) p,
+.overview-card:nth-child(2) p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+}
+
+/* Add subtle backdrop for better text contrast */
+.overview-card:nth-child(1)::before,
+.overview-card:nth-child(2)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 20px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.overview-card:nth-child(1) > *,
+.overview-card:nth-child(2) > * {
+    position: relative;
+    z-index: 2;
+}
+
+.card-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+}
+
+.card-icon.heart-healthy { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.card-icon.diabetes-friendly { background: linear-gradient(135deg, #27ae60, #229954); }
+.card-icon.cardio { background: linear-gradient(135deg, #3498db, #2980b9); }
+.card-icon.strength { background: linear-gradient(135deg, #e67e22, #d35400); }
+
+.overview-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.overview-card p {
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.nutrition-facts,
+.exercise-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.fact,
+.benefit {
+    background: var(--light-bg);
+    color: var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Meal Plans */
+.meal-plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.meal-plan-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.meal-plan-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.meal-header {
+    background: linear-gradient(135deg, var(--nutrition-color), #27ae60);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meal-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.time {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.meal-content {
+    padding: 1.5rem;
+}
+
+.meal-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.meal-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.meal-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.meal-info p {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.nutrition-info {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nutrition-info span {
+    background: var(--light-bg);
+    color: var(--nutrition-color);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.meal-benefits {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--light-bg);
+    padding: 0.8rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.meal-benefits i {
+    color: var(--wellness-green);
+}
+
+.meal-benefits span {
+    font-size: 0.9rem;
+    color: var(--dark-text);
+}
+
+/* Guidelines */
+.guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.guideline-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.guideline-card.do .guideline-header {
+    background: linear-gradient(135deg, var(--wellness-green), #00b894);
+}
+
+.guideline-card.dont .guideline-header {
+    background: linear-gradient(135deg, var(--danger-color), #c0392b);
+}
+
+.guideline-header {
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.guideline-header i {
+    font-size: 1.5rem;
+}
+
+.guideline-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.guideline-list {
+    padding: 1.5rem;
+    list-style: none;
+}
+
+.guideline-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.guideline-list li:last-child {
+    border-bottom: none;
+}
+
+.guideline-list strong {
+    color: var(--primary-color);
+}
+
+/* Exercise Plan */
+.weekly-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.day-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.day-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.day-header {
+    padding: 1.5rem;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.day-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.workout-type {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+}
+
+.cardio-type { background: var(--exercise-color); }
+.strength-type { background: var(--wellness-orange); }
+.active-recovery { background: var(--wellness-green); }
+.fun-type { background: var(--lifestyle-color); }
+
+.workout-details {
+    padding: 1.5rem;
+}
+
+.exercise-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.exercise-item i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-top: 0.2rem;
+}
+
+.exercise-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--dark-text);
+}
+
+.exercise-info p {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.intensity {
+    background: var(--light-bg);
+    color: var(--primary-color);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Safety Guidelines */
+.safety-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.safety-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.safety-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.safety-icon.warning { background: var(--warning-color); }
+.safety-icon.info { background: var(--info-color); }
+.safety-icon.success { background: var(--wellness-green); }
+
+.safety-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.safety-card ul {
+    list-style: none;
+    text-align: left;
+}
+
+.safety-card li {
+    padding: 0.5rem 0;
+    color: var(--dark-text);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.safety-card li::before {
+    content: '•';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.heart-rate-zones {
+    margin-top: 1rem;
+}
+
+.zone {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.zone:last-child {
+    border-bottom: none;
+}
+
+.zone-name {
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.zone-range {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Lifestyle Content */
+.overview-text {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    font-size: 1.1rem;
+    color: var(--light-text);
+    line-height: 1.8;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.category-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.category-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.category-icon.sleep { background: linear-gradient(135deg, #6c5ce7, #5f3dc4); }
+.category-icon.stress { background: linear-gradient(135deg, #00b894, #00a085); }
+.category-icon.habits { background: linear-gradient(135deg, #e17055, #d63031); }
+.category-icon.social { background: linear-gradient(135deg, #fdcb6e, #e17055); }
+
+.category-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.category-content ul {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.category-content li {
+    padding: 0.5rem 0;
+    color: var(--dark-text);
+    position: relative;
+    padding-left: 1.5rem;
+    line-height: 1.6;
+}
+
+.category-content li::before {
+    content: '✓';
+    color: var(--wellness-green);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.category-benefit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--light-bg);
+    padding: 0.8rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--wellness-green);
+}
+
+.category-benefit i {
+    color: var(--wellness-green);
+}
+
+.category-benefit span {
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+/* Daily Routine */
+.routine-timeline {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.routine-timeline::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+}
+
+.routine-item {
+    display: flex;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.routine-item::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.time-marker {
+    min-width: 80px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-right: 1rem;
+}
+
+.routine-content h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.routine-content p {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-wellness {
+    background: 
+        linear-gradient(135deg, rgba(142, 68, 173, 0.95) 0%, rgba(155, 89, 182, 0.95) 100%),
+        url('../../images/diabetes.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background: white;
+    color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: var(--light-bg);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border-color: white;
+}
+
+.btn-secondary:hover {
+    background: white;
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-stats {
+        gap: 1.5rem;
+    }
+    
+    .tabs-nav {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .tab-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .overview-grid,
+    .meal-plan-grid,
+    .guidelines-grid,
+    .weekly-plan,
+    .safety-grid,
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .meal-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .routine-timeline {
+        padding-left: 1rem;
+    }
+    
+    .routine-timeline::before {
+        left: 0.5rem;
+    }
+    
+    .routine-item::before {
+        left: -2rem;
+    }
+    
+    .time-marker {
+        min-width: 70px;
+        font-size: 0.9rem;
+    }
+    
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .hero-wellness {
+        padding: 6rem 0 3rem;
+    }
+    
+    .tab-content {
+        padding: 2rem 0;
+    }
+    
+    .overview-card,
+    .meal-plan-card,
+    .guideline-card,
+    .day-card,
+    .safety-card,
+    .category-card {
+        margin-bottom: 1rem;
+    }
+}

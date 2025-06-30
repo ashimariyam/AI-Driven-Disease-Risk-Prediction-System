@@ -303,6 +303,30 @@
             background: var(--primary-color);
             color: white;
         }
+
+        /* Wellness Guide Card Styles */
+        .wellness-guide-card {
+            border: 2px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(142, 68, 173, 0.05) 0%, rgba(155, 89, 182, 0.05) 100%);
+        }
+        
+        .wellness-guide-card .service-title {
+            color: var(--primary-color);
+        }
+        
+        .wellness-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: linear-gradient(135deg, var(--light-bg) 0%, rgba(142, 68, 173, 0.1) 100%);
+            border-radius: 8px;
+        }
+        
+        .wellness-guide-card:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 20px 40px rgba(142, 68, 173, 0.2);
+        }
     </style>
 
     <!-- Update Modal JavaScript -->

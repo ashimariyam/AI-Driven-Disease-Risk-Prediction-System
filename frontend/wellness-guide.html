@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Guide - Nutrition & Exercise Plans | WellPredict</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages/wellness-guide.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-wellness">
+        <div class="container">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Personalized Wellness Guide</h1>
+                <p class="hero-subtitle">Evidence-based nutrition and exercise recommendations tailored to your health profile</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-apple-alt"></i>
+                        <span>Nutrition Plans</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Exercise Routines</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Heart Health</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Navigation -->
+    <section class="tabs-section">
+        <div class="container">
+            <div class="tabs-nav" data-aos="fade-up">
+                <button class="tab-btn active" data-tab="nutrition">
+                    <i class="fas fa-apple-alt"></i>
+                    <span>Nutrition Guide</span>
+                </button>
+                <button class="tab-btn" data-tab="exercise">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Exercise Plans</span>
+                </button>
+                <button class="tab-btn" data-tab="lifestyle">
+                    <i class="fas fa-heart"></i>
+                    <span>Lifestyle Tips</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nutrition Tab Content -->
+    <div id="nutrition" class="tab-content active">
+        <div class="container">
+            <!-- Nutrition Overview -->
+            <section class="nutrition-overview" data-aos="fade-up">
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="card-icon heart-healthy">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Heart-Healthy Diet</h3>
+                        <p>Reduce cardiovascular risk with Mediterranean-style eating patterns</p>
+                        <div class="nutrition-facts">
+                            <span class="fact">Low Sodium</span>
+                            <span class="fact">Omega-3 Rich</span>
+                            <span class="fact">Fiber Focus</span>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="card-icon diabetes-friendly">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Diabetes Management</h3>
+                        <p>Blood sugar control through balanced nutrition and portion control</p>
+                        <div class="nutrition-facts">
+                            <span class="fact">Low Glycemic</span>
+                            <span class="fact">High Protein</span>
+                            <span class="fact">Complex Carbs</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meal Plans -->
+            <section class="meal-plans" data-aos="fade-up" data-aos-delay="100">
+                <h2 class="section-title">Personalized Meal Plans</h2>
+                
+                <div class="meal-plan-grid">
+                    <div class="meal-plan-card">
+                        <div class="meal-header">
+                            <h3>Breakfast</h3>
+                            <span class="time">7:00 - 9:00 AM</span>
+                        </div>
+                        <div class="meal-content">
+                            <div class="meal-item">
+                                <img src="images/steel-cut-oats.jpg" alt="Heart-healthy oatmeal" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
+                                <div class="meal-info">
+                                    <h4>Steel-Cut Oatmeal Bowl</h4>
+                                    <p>With fresh berries, walnuts, and cinnamon</p>
+                                    <div class="nutrition-info">
+                                        <span>320 cal</span>
+                                        <span>12g protein</span>
+                                        <span>8g fiber</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="meal-benefits">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Lowers cholesterol, stabilizes blood sugar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meal-plan-card">
+                        <div class="meal-header">
+                            <h3>Lunch</h3>
+                            <span class="time">12:00 - 2:00 PM</span>
+                        </div>
+                        <div class="meal-content">
+                            <div class="meal-item">
+                                <img src="images/Mediterranean_Salmon_Salad.jpg" alt="Grilled salmon salad" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
+                                <div class="meal-info">
+                                    <h4>Mediterranean Salmon Salad</h4>
+                                    <p>Grilled salmon with quinoa, mixed greens, and olive oil dressing</p>
+                                    <div class="nutrition-info">
+                                        <span>450 cal</span>
+                                        <span>35g protein</span>
+                                        <span>Omega-3 rich</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="meal-benefits">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Heart-healthy fats, lean protein, anti-inflammatory</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meal-plan-card">
+                        <div class="meal-header">
+                            <h3>Dinner</h3>
+                            <span class="time">6:00 - 8:00 PM</span>
+                        </div>
+                        <div class="meal-content">
+                            <div class="meal-item">
+                                <img src="images/Herb-Crusted-Chicken-Breast.jpg" alt="Lean chicken with vegetables" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
+                                <div class="meal-info">
+                                    <h4>Herb-Crusted Chicken Breast</h4>
+                                    <p>With roasted vegetables and sweet potato</p>
+                                    <div class="nutrition-info">
+                                        <span>380 cal</span>
+                                        <span>30g protein</span>
+                                        <span>Low sodium</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="meal-benefits">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Lean protein, complex carbs, essential vitamins</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Nutrition Guidelines -->
+            <section class="nutrition-guidelines" data-aos="fade-up" data-aos-delay="200">
+                <h2 class="section-title">Key Nutrition Guidelines</h2>
+                
+                <div class="guidelines-grid">
+                    <div class="guideline-card do">
+                        <div class="guideline-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Foods to Include</h3>
+                        </div>
+                        <ul class="guideline-list">
+                            <li><strong>Omega-3 Rich Fish:</strong> Salmon, mackerel, sardines (2-3 times/week)</li>
+                            <li><strong>Whole Grains:</strong> Quinoa, brown rice, oats, whole wheat</li>
+                            <li><strong>Leafy Greens:</strong> Spinach, kale, arugula (daily servings)</li>
+                            <li><strong>Nuts & Seeds:</strong> Walnuts, almonds, chia seeds (1 oz/day)</li>
+                            <li><strong>Berries:</strong> Blueberries, strawberries, raspberries (antioxidants)</li>
+                            <li><strong>Legumes:</strong> Lentils, chickpeas, black beans (fiber & protein)</li>
+                        </ul>
+                    </div>
+
+                    <div class="guideline-card dont">
+                        <div class="guideline-header">
+                            <i class="fas fa-times-circle"></i>
+                            <h3>Foods to Limit</h3>
+                        </div>
+                        <ul class="guideline-list">
+                            <li><strong>Processed Foods:</strong> High sodium, preservatives, trans fats</li>
+                            <li><strong>Sugary Drinks:</strong> Soda, fruit juices, energy drinks</li>
+                            <li><strong>Red Meat:</strong> Limit to 1-2 servings per week</li>
+                            <li><strong>Refined Carbs:</strong> White bread, pastries, sugary cereals</li>
+                            <li><strong>High Sodium Foods:</strong> Canned soups, deli meats, chips</li>
+                            <li><strong>Saturated Fats:</strong> Butter, cream, fried foods</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Exercise Tab Content -->
+    <div id="exercise" class="tab-content">
+        <div class="container">
+            <!-- Exercise Overview -->
+            <section class="exercise-overview" data-aos="fade-up">
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="card-icon cardio">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>Cardiovascular Training</h3>
+                        <p>Strengthen your heart and improve circulation with aerobic exercises</p>
+                        <div class="exercise-benefits">
+                            <span class="benefit">Heart Health</span>
+                            <span class="benefit">Weight Loss</span>
+                            <span class="benefit">Endurance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="card-icon strength">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h3>Strength Training</h3>
+                        <p>Build lean muscle mass and improve metabolism with resistance exercises</p>
+                        <div class="exercise-benefits">
+                            <span class="benefit">Muscle Tone</span>
+                            <span class="benefit">Bone Health</span>
+                            <span class="benefit">Metabolism</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weekly Exercise Plan -->
+            <section class="exercise-plan" data-aos="fade-up" data-aos-delay="100">
+                <h2 class="section-title">7-Day Exercise Schedule</h2>
+                
+                <div class="weekly-plan">
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Monday</h3>
+                            <span class="workout-type cardio-type">Cardio Focus</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-walking"></i>
+                                <div class="exercise-info">
+                                    <h4>Brisk Walking</h4>
+                                    <p>30 minutes at moderate pace</p>
+                                    <span class="intensity">Moderate Intensity</span>
+                                </div>
+                            </div>
+                            <div class="exercise-item">
+                                <i class="fas fa-bicycle"></i>
+                                <div class="exercise-info">
+                                    <h4>Stationary Cycling</h4>
+                                    <p>15 minutes cool down</p>
+                                    <span class="intensity">Low Intensity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Tuesday</h3>
+                            <span class="workout-type strength-type">Strength Training</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <div class="exercise-info">
+                                    <h4>Upper Body Workout</h4>
+                                    <p>Push-ups, arm raises, light weights</p>
+                                    <span class="intensity">Moderate Intensity</span>
+                                </div>
+                            </div>
+                            <div class="exercise-item">
+                                <i class="fas fa-heart"></i>
+                                <div class="exercise-info">
+                                    <h4>Core Strengthening</h4>
+                                    <p>Modified planks, gentle crunches</p>
+                                    <span class="intensity">Low-Moderate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Wednesday</h3>
+                            <span class="workout-type active-recovery">Active Recovery</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-leaf"></i>
+                                <div class="exercise-info">
+                                    <h4>Gentle Yoga</h4>
+                                    <p>20-30 minutes stretching and breathing</p>
+                                    <span class="intensity">Low Intensity</span>
+                                </div>
+                            </div>
+                            <div class="exercise-item">
+                                <i class="fas fa-walking"></i>
+                                <div class="exercise-info">
+                                    <h4>Light Walking</h4>
+                                    <p>15-20 minutes leisurely pace</p>
+                                    <span class="intensity">Very Light</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Thursday</h3>
+                            <span class="workout-type cardio-type">Cardio Focus</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-swimmer"></i>
+                                <div class="exercise-info">
+                                    <h4>Swimming or Water Aerobics</h4>
+                                    <p>25-30 minutes low-impact cardio</p>
+                                    <span class="intensity">Moderate Intensity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Friday</h3>
+                            <span class="workout-type strength-type">Strength Training</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <div class="exercise-info">
+                                    <h4>Lower Body Workout</h4>
+                                    <p>Squats, lunges, leg raises</p>
+                                    <span class="intensity">Moderate Intensity</span>
+                                </div>
+                            </div>
+                            <div class="exercise-item">
+                                <i class="fas fa-balance-scale"></i>
+                                <div class="exercise-info">
+                                    <h4>Balance Training</h4>
+                                    <p>Standing on one foot, balance board</p>
+                                    <span class="intensity">Low Intensity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <h3>Weekend</h3>
+                            <span class="workout-type fun-type">Fun Activities</span>
+                        </div>
+                        <div class="workout-details">
+                            <div class="exercise-item">
+                                <i class="fas fa-hiking"></i>
+                                <div class="exercise-info">
+                                    <h4>Outdoor Activities</h4>
+                                    <p>Hiking, gardening, dancing, sports</p>
+                                    <span class="intensity">Variable</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise Guidelines -->
+            <section class="exercise-guidelines" data-aos="fade-up" data-aos-delay="200">
+                <h2 class="section-title">Exercise Safety Guidelines</h2>
+                
+                <div class="safety-grid">
+                    <div class="safety-card">
+                        <div class="safety-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Before You Start</h3>
+                        <ul>
+                            <li>Consult your healthcare provider before beginning any exercise program</li>
+                            <li>Start slowly and gradually increase intensity</li>
+                            <li>Monitor your heart rate and blood pressure</li>
+                            <li>Stay hydrated throughout your workout</li>
+                        </ul>
+                    </div>
+
+                    <div class="safety-card">
+                        <div class="safety-icon info">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3>During Exercise</h3>
+                        <ul>
+                            <li>Stop if you experience chest pain, dizziness, or shortness of breath</li>
+                            <li>Maintain proper form to prevent injury</li>
+                            <li>Listen to your body and rest when needed</li>
+                            <li>Keep emergency contacts readily available</li>
+                        </ul>
+                    </div>
+
+                    <div class="safety-card">
+                        <div class="safety-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Target Heart Rate</h3>
+                        <div class="heart-rate-zones">
+                            <div class="zone">
+                                <span class="zone-name">Fat Burning Zone</span>
+                                <span class="zone-range">60-70% max HR</span>
+                            </div>
+                            <div class="zone">
+                                <span class="zone-name">Aerobic Zone</span>
+                                <span class="zone-range">70-80% max HR</span>
+                            </div>
+                            <div class="zone">
+                                <span class="zone-name">Anaerobic Zone</span>
+                                <span class="zone-range">80-90% max HR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Lifestyle Tab Content -->
+    <div id="lifestyle" class="tab-content">
+        <div class="container">
+            <!-- Lifestyle Overview -->
+            <section class="lifestyle-overview" data-aos="fade-up">
+                <h2 class="section-title">Holistic Health Approach</h2>
+                <p class="overview-text">
+                    Beyond nutrition and exercise, your overall lifestyle plays a crucial role in disease prevention and health optimization. 
+                    These evidence-based recommendations will help you create sustainable healthy habits.
+                </p>
+            </section>
+
+            <!-- Lifestyle Categories -->
+            <section class="lifestyle-categories" data-aos="fade-up" data-aos-delay="100">
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon sleep">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <h3>Sleep Hygiene</h3>
+                        <div class="category-content">
+                            <ul>
+                                <li><strong>7-9 hours</strong> of quality sleep nightly</li>
+                                <li>Consistent sleep schedule, even on weekends</li>
+                                <li>Cool, dark, quiet sleep environment</li>
+                                <li>Avoid screens 1 hour before bedtime</li>
+                                <li>No caffeine after 2 PM</li>
+                            </ul>
+                            <div class="category-benefit">
+                                <i class="fas fa-heart"></i>
+                                <span>Reduces cardiovascular risk by 22%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon stress">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Stress Management</h3>
+                        <div class="category-content">
+                            <ul>
+                                <li>Daily meditation or mindfulness (10-20 minutes)</li>
+                                <li>Deep breathing exercises</li>
+                                <li>Regular social connections</li>
+                                <li>Time in nature</li>
+                                <li>Hobby engagement</li>
+                            </ul>
+                            <div class="category-benefit">
+                                <i class="fas fa-brain"></i>
+                                <span>Lowers blood pressure and cortisol levels</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon habits">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <h3>Healthy Habits</h3>
+                        <div class="category-content">
+                            <ul>
+                                <li>No smoking or tobacco use</li>
+                                <li>Limit alcohol consumption</li>
+                                <li>Stay hydrated (8-10 glasses water daily)</li>
+                                <li>Regular health check-ups</li>
+                                <li>Maintain healthy weight</li>
+                            </ul>
+                            <div class="category-benefit">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Prevents 80% of premature heart disease</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon social">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Social Wellness</h3>
+                        <div class="category-content">
+                            <ul>
+                                <li>Maintain strong social connections</li>
+                                <li>Join community groups or clubs</li>
+                                <li>Volunteer for meaningful causes</li>
+                                <li>Practice gratitude daily</li>
+                                <li>Seek support when needed</li>
+                            </ul>
+                            <div class="category-benefit">
+                                <i class="fas fa-smile"></i>
+                                <span>Improves mental health and longevity</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Routine -->
+            <section class="daily-routine" data-aos="fade-up" data-aos-delay="200">
+                <h2 class="section-title">Optimal Daily Routine</h2>
+                
+                <div class="routine-timeline">
+                    <div class="routine-item">
+                        <div class="time-marker">6:00 AM</div>
+                        <div class="routine-content">
+                            <h4>Morning Wake-Up</h4>
+                            <p>Natural light exposure, hydration, gentle stretching</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">7:00 AM</div>
+                        <div class="routine-content">
+                            <h4>Healthy Breakfast</h4>
+                            <p>Balanced meal with protein, healthy fats, and complex carbs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">8:00 AM</div>
+                        <div class="routine-content">
+                            <h4>Morning Exercise</h4>
+                            <p>30 minutes of physical activity to boost energy</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">12:00 PM</div>
+                        <div class="routine-content">
+                            <h4>Mindful Lunch</h4>
+                            <p>Eat slowly, focus on nutrition, take a short walk</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">3:00 PM</div>
+                        <div class="routine-content">
+                            <h4>Afternoon Break</h4>
+                            <p>5-minute meditation, healthy snack, hydration</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">6:00 PM</div>
+                        <div class="routine-content">
+                            <h4>Evening Meal</h4>
+                            <p>Light, nutritious dinner 3 hours before bedtime</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">9:00 PM</div>
+                        <div class="routine-content">
+                            <h4>Wind Down</h4>
+                            <p>Digital detox, reading, relaxation techniques</p>
+                        </div>
+                    </div>
+                    
+                    <div class="routine-item">
+                        <div class="time-marker">10:00 PM</div>
+                        <div class="routine-content">
+                            <h4>Sleep Preparation</h4>
+                            <p>Consistent bedtime routine, optimal sleep environment</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <section class="cta-wellness">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Ready to Transform Your Health?</h2>
+                <p>Start implementing these evidence-based recommendations today and track your progress with our assessment tools.</p>
+                <div class="cta-buttons">
+                    <a href="predict.html" class="btn btn-primary">
+                        <i class="fas fa-chart-line"></i> Take Health Assessment
+                    </a>
+                    <a href="profile.html" class="btn btn-secondary">
+                        <i class="fas fa-user"></i> View Your Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer"></div>
+
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/wellness-guide.js"></script>
+</body>
+</html>

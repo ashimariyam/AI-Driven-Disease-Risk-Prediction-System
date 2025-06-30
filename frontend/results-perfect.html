@@ -312,6 +312,23 @@
             border: 2px solid var(--primary-color);
         }
 
+        .btn-wellness {
+            background: linear-gradient(135deg, #00d4aa, #00b894);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            padding: 1.2rem 2rem;
+            margin-bottom: 1rem;
+            width: auto;
+            min-width: 250px;
+        }
+        
+        .btn-wellness:hover {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.3);
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow);
@@ -533,14 +550,14 @@
                         <h4>Find a Specialist</h4>
                         <p>Connect with qualified healthcare professionals in your area</p>
                     </div>
-                    <div class="resource-card">
+                    <div class="resource-card" onclick="window.open('wellness-guide.html#nutrition', '_blank')">
                         <div class="resource-icon">
                             <i class="fas fa-apple-alt"></i>
                         </div>
                         <h4>Nutrition Guide</h4>
                         <p>Personalized dietary recommendations for optimal health</p>
                     </div>
-                    <div class="resource-card">
+                    <div class="resource-card" onclick="window.open('wellness-guide.html#exercise', '_blank')">
                         <div class="resource-icon">
                             <i class="fas fa-dumbbell"></i>
                         </div>
@@ -559,6 +576,9 @@
 
             <!-- Action Buttons -->
             <div class="actions-section fade-in">
+                <a href="wellness-guide.html" class="btn btn-wellness">
+                    <i class="fas fa-spa"></i> Get Personalized Wellness Guide
+                </a>
                 <button class="btn btn-primary" onclick="downloadPDF()">
                     <i class="fas fa-download"></i> Download Report
                 </button>

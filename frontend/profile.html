@@ -17,6 +17,32 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/pages/profile.css">
+    <style>
+        /* Wellness Guide Card Styles */
+        .wellness-guide-card {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(39, 174, 96, 0.1) 100%);
+            border: 2px solid var(--wellness-green, #00d4aa);
+        }
+        
+        .wellness-guide-card .assessment-icon {
+            background: linear-gradient(135deg, var(--wellness-green, #00d4aa), #00b894);
+        }
+        
+        .wellness-guide-card h3 {
+            color: var(--wellness-green, #00d4aa);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--wellness-green, #00d4aa), #00b894);
+            color: white;
+            border: none;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <!-- Header Component (Will be loaded via JavaScript) -->
@@ -181,4 +207,4 @@
     <script src="js/script.js"></script>
     <script src="js/profile.js"></script>
 </body>
-</html> 
+</html>
