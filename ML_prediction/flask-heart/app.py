@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import numpy as np
+import pandas as pd
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -9,6 +10,9 @@ from logging.handlers import RotatingFileHandler
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
+
+# Set port
+PORT = int(os.environ.get('FLASK_HEART_PORT', 5001))
 
 # Configure logging
 if not os.path.exists('logs'):
@@ -21,19 +25,19 @@ handler.setFormatter(logging.Formatter(
 app.logger.addHandler(handler)
 app.logger.setLevel(logging.INFO)
 
-# Load the model
+# Load the model and preprocessing pipeline
 try:
-    model = joblib.load('model.pkl')
-    app.logger.info('Heart disease prediction model loaded successfully')
+    pipeline = joblib.load('model.pkl')
+    app.logger.info('Heart disease prediction pipeline loaded successfully')
 except Exception as e:
-    app.logger.error(f'Failed to load model: {str(e)}')
+    app.logger.error(f'Failed to load pipeline: {str(e)}')
     raise
 
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({
         'status': 'healthy',
-        'model_loaded': model is not None
+        'model_loaded': pipeline is not None
     })
 
 @app.route('/predict', methods=['POST'])
@@ -55,25 +59,25 @@ def predict():
                     'field': field
                 }), 400
 
-        # Prepare features
-        features = np.array([[
-            float(data['age']),
-            float(data['sex']),
-            float(data['cp']),
-            float(data['trestbps']),
-            float(data['chol']),
-            float(data['fbs']),
-            float(data['restecg']),
-            float(data['thalach']),
-            float(data['exang']),
-            float(data['oldpeak']),
-            float(data['slope']),
-            float(data['ca']),
-            float(data['thal'])
-        ]])
+        # Create DataFrame in the exact format used during training
+        features = pd.DataFrame([{
+            "age": float(data['age']),
+            "sex": float(data['sex']),
+            "cp": float(data['cp']),
+            "trestbps": float(data['trestbps']),
+            "chol": float(data['chol']),
+            "fbs": float(data['fbs']),
+            "restecg": float(data['restecg']),
+            "thalach": float(data['thalach']),
+            "exang": float(data['exang']),
+            "oldpeak": float(data['oldpeak']),
+            "slope": float(data['slope']),
+            "ca": float(data['ca']),
+            "thal": float(data['thal'])
+        }])
 
-        # Make prediction
-        prediction = model.predict_proba(features)[0]
+        # Make prediction using the pipeline
+        prediction = pipeline.predict_proba(features)[0]
         risk_score = float(prediction[1])  # Probability of heart disease
 
         # Determine risk level
@@ -100,7 +104,11 @@ def predict():
             'error': 'Prediction failed',
             'message': str(e)
         }), 500
+        app.logger.error(f'Prediction error: {str(e)}')
+        return jsonify({
+            'error': 'Prediction failed',
+            'message': str(e)
+        }), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('FLASK_HEART_PORT', 5001))
-    app.run(host='0.0.0.0', port=port) 
+    app.run(host='0.0.0.0', port=PORT, debug=False)

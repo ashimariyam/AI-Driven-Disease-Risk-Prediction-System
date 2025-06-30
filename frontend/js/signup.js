@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('🚀 Signup form submitted');
             
             // Get form data
             const name = this.querySelector('input[name="name"]').value;
@@ -15,8 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = this.querySelector('input[name="password"]').value;
             const confirmPassword = this.querySelector('input[name="confirm-password"]').value;
             
+            console.log('📝 Form data:', { name, email, password: '***', confirmPassword: '***' });
+            
             // Check if passwords match
             if (password !== confirmPassword) {
+                console.log('❌ Passwords do not match');
                 showErrorMessage('Passwords do not match');
                 return;
             }
@@ -30,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Register user in localStorage
             registerUser(name, email, password)
                 .then(success => {
+                    console.log('✅ User registered successfully');
                     // Show success message
                     showSuccessMessage('Account created successfully! Redirecting to login page...');
                     
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 2000);
                 })
                 .catch(error => {
+                    console.log('❌ Registration failed:', error);
                     // Show error message
                     showErrorMessage(error);
                     

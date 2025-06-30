@@ -1,1308 +1,1016 @@
 /**
- * WellPredict - Results Display JavaScript
+ * Enhanced Results Page JavaScript for HealthPredict AI
+ * Displays beautiful prediction results with visualizations and interactions
  */
 
+let currentResult = null;
+let charts = {
+    pie: null,
+    bar: null,
+    line: null
+};
+
+// Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS
-    initAOS();
-    
-    // Display prediction results
-    displayResults();
-    
-    // Add event listeners for result actions
-    initResultActions();
+    loadResults();
+    initializeActionButtons();
 });
 
-/**
- * Initialize AOS (Animate on Scroll)
- */
-function initAOS() {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 50
-        });
+// Debug function to check localStorage contents
+function debugLocalStorage() {
+    console.log('=== LOCALSTORAGE DEBUG ===');
+    console.log('predictionType:', localStorage.getItem('predictionType'));
+    console.log('heartPredictionResult:', localStorage.getItem('heartPredictionResult'));
+    console.log('diabetesPredictionResult:', localStorage.getItem('diabetesPredictionResult'));
+    console.log('All localStorage keys:', Object.keys(localStorage));
+    console.log('========================');
+}
+
+// Main function to load and display results
+function loadResults() {
+    try {
+        // Debug localStorage first
+        debugLocalStorage();
+        
+        // Get prediction type and result data from localStorage
+        const predictionType = localStorage.getItem('predictionType');
+        const resultData = predictionType === 'heart' ? 
+            localStorage.getItem('heartPredictionResult') : 
+            localStorage.getItem('diabetesPredictionResult');
+        
+        console.log('🔍 Loading results:', { predictionType, resultData });
+        
+        if (!resultData) {
+            console.log('❌ No result data found in localStorage');
+            showError();
+            return;
+        }
+        
+        currentResult = JSON.parse(resultData);
+        console.log('📊 Parsed result data:', currentResult);
+        
+        // Ensure the result has the expected structure
+        currentResult = normalizeResultData(currentResult, predictionType);
+        currentResult.prediction_type = predictionType;
+        
+        // Display the results based on type
+        if (predictionType === 'heart') {
+            displayHeartResults(currentResult);
+        } else if (predictionType === 'diabetes') {
+            displayDiabetesResults(currentResult);
+        } else {
+            showError();
+            return;
+        }
+        
+        // Initialize visualizations after a short delay
+        setTimeout(() => {
+            initializeCharts();
+        }, 500);
+        
+    } catch (error) {
+        console.error('Error loading results:', error);
+        showError();
     }
 }
 
-/**
- * Display Prediction Results
- */
-function displayResults() {
-    // Get the last assessment type
-    const lastAssessment = localStorage.getItem('lastAssessment');
+function displayHeartResults(result) {
+    console.log('💖 Displaying heart results:', result);
+    updatePageHeader('Heart Disease Risk Assessment Results', result);
+    const resultsHTML = createResultsHTML(result, 'heart');
+    console.log('📄 Generated HTML length:', resultsHTML.length);
+    insertResults(resultsHTML);
+}
+
+function displayDiabetesResults(result) {
+    console.log('🩺 Displaying diabetes results:', result);
+    updatePageHeader('Diabetes Risk Assessment Results', result);
+    const resultsHTML = createResultsHTML(result, 'diabetes');
+    console.log('📄 Generated HTML length:', resultsHTML.length);
+    insertResults(resultsHTML);
+}
+
+function updatePageHeader(title, result) {
+    document.title = title;
+    const heroTitle = document.querySelector('#hero-title');
+    if (heroTitle) {
+        heroTitle.textContent = title;
+    }
     
-    // Use the last assessment to determine which result to display prominently
-    let mainResultData;
-    let serviceTitle;
-    
-    // Set default mock data in case no assessment has been completed
-    const mockResultData = {
-        assessmentDate: "Not yet assessed",
-        overallScore: 0,
-        riskCategory: "medium",
-        primaryInsight: "No assessments have been completed yet. Please complete an assessment to see your results.",
-        detailedInsights: [],
-        recommendations: [],
-        nextSteps: [],
-        chartData: {
-            healthMetrics: {
-                userValues: [0, 0, 0, 0, 0],
-                avgValues: [50, 50, 50, 50, 50],
-                labels: ['Blood Pressure', 'Cholesterol', 'Blood Sugar', 'BMI', 'Activity']
-            },
-            riskFactors: {
-                values: [0, 0, 0, 0, 0],
-                labels: ['Lifestyle', 'Genetic', 'Environmental', 'Medical History', 'Age-Related']
-            }
-        }
+    const assessmentDate = document.getElementById('assessment-date');
+    if (assessmentDate) {
+        const date = result.timestamp ? new Date(result.timestamp).toLocaleDateString() : new Date().toLocaleDateString();
+        assessmentDate.textContent = date;
+    }
+}
+
+function createResultsHTML(result, type) {
+    return `
+        <!-- Results Grid -->
+        <div class="results-grid">
+            <!-- Overall Risk Assessment Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-primary);">
+                        <i class="fas fa-${type === 'heart' ? 'heartbeat' : 'tint'}"></i>
+                    </div>
+                    <h3 class="card-title">Overall Risk Assessment</h3>
+                </div>
+                <div class="risk-display">
+                    <div class="risk-gauge-container">
+                        <div class="risk-gauge" style="background: conic-gradient(from 0deg, ${getRiskGradient(result.risk_level)} ${(result.probability * 360)}deg, #e2e8f0 ${(result.probability * 360)}deg);">
+                            <div class="gauge-inner">
+                                <div class="risk-percentage">${(result.probability * 100).toFixed(1)}%</div>
+                                <div class="risk-label">Risk Level</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="risk-level-badge ${getRiskLevelClass(result.risk_level)}">${result.risk_level}</div>
+                    <p style="margin-top: 1.5rem; color: #64748b; font-size: 1.1rem; line-height: 1.6;">
+                        ${getRiskDescription(result.risk_level, type)}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Model Confidence Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-info);">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3 class="card-title">Model Confidence</h3>
+                </div>
+                <div class="risk-display">
+                    <div class="risk-gauge-container">
+                        <div class="risk-gauge" style="background: conic-gradient(from 0deg, var(--gradient-info) ${(result.confidence * 360)}deg, #e2e8f0 ${(result.confidence * 360)}deg);">
+                            <div class="gauge-inner">
+                                <div class="risk-percentage">${(result.confidence * 100).toFixed(1)}%</div>
+                                <div class="risk-label">Confidence</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.5rem; color: #64748b; font-size: 1.1rem;">
+                        AI model prediction accuracy and reliability score
+                    </p>
+                </div>
+            </div>
+
+            <!-- Risk Factors Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-warning);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="card-title">Contributing Risk Factors</h3>
+                </div>
+                <ul class="enhanced-list">
+                    ${result.risk_factors.map(factor => `
+                        <li>
+                            <div class="list-icon" style="background: var(--gradient-warning);">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="list-content">
+                                <div class="list-title">${formatText(factor)}</div>
+                                <div class="list-description">This factor contributes to your overall ${type} risk assessment</div>
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+
+            <!-- Health Recommendations Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="card-title">Personalized Recommendations</h3>
+                </div>
+                <ul class="enhanced-list">
+                    ${result.recommendations.map(rec => `
+                        <li>
+                            <div class="list-icon" style="background: var(--gradient-success);">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="list-content">
+                                <div class="list-title">${formatText(rec)}</div>
+                                <div class="list-description">Recommended action to improve your health outcomes</div>
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Health Data Visualizations -->
+        <section class="charts-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="card-title">Health Data Visualizations</h3>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Distribution Analysis</h4>
+                    <canvas id="riskPieChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Health Metrics Comparison</h4>
+                    <canvas id="metricsBarChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Timeline Projection</h4>
+                    <canvas id="riskLineChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Steps & Action Plan -->
+        <section class="result-card full-width fade-in-up" style="margin-bottom: 3rem;">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-route"></i>
+                </div>
+                <h3 class="card-title">Your Health Action Plan</h3>
+            </div>
+            <div class="resources-grid">
+                ${getActionPlanCards(type)}
+            </div>
+        </section>
+
+        <!-- Health Resources -->
+        <section class="resources-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-pink);">
+                    <i class="fas fa-book-medical"></i>
+                </div>
+                <h3 class="card-title">Additional Health Resources</h3>
+            </div>
+            <div class="resources-grid">
+                ${getHealthResourceCards(type)}
+            </div>
+        </section>
+
+        <!-- Footer Note -->
+        <div class="result-card fade-in-up" style="text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>Important Disclaimer</strong></p>
+            <p style="opacity: 0.9; line-height: 1.6;">
+                This health risk assessment is for informational purposes only and should not replace professional medical advice, diagnosis, or treatment. 
+                Always consult with qualified healthcare providers regarding any health concerns or before making medical decisions.
+            </p>
+        </div>
+    `;
+}
+
+function insertResults(resultsHTML) {
+    console.log('📝 Inserting results HTML...');
+    const container = document.querySelector('.results-container');
+    if (container) {
+        console.log('✅ Container found, inserting HTML');
+        container.innerHTML = resultsHTML;
+        
+        // Re-apply animations
+        const elements = container.querySelectorAll('.fade-in-up');
+        elements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+        console.log(`🎬 Applied animations to ${elements.length} elements`);
+    } else {
+        console.error('❌ Results container not found!');
+    }
+}
+
+// Normalize result data to ensure it has all required fields
+function normalizeResultData(result, type) {
+    // Ensure required fields exist with default values
+    const normalized = {
+        prediction: result.prediction || 0,
+        probability: result.probability || result.risk_percentage / 100 || 0.5,
+        risk_level: result.risk_level || 'Moderate',
+        confidence: result.confidence || 0.85,
+        recommendations: result.recommendations || [],
+        risk_factors: result.risk_factors || [],
+        timestamp: result.timestamp || new Date().toISOString()
     };
     
-    // Load the appropriate result data based on the last assessment
-    if (lastAssessment) {
-        switch (lastAssessment) {
-            case 'heart':
-                mainResultData = getHeartRiskData();
-                serviceTitle = "Heart Health Assessment";
-                break;
-            case 'diabetes':
-                mainResultData = getDiabetesRiskData();
-                serviceTitle = "Diabetes Risk Prediction";
-                break;
-            case 'lungs':
-                mainResultData = getLungCancerRiskData();
-                serviceTitle = "Lung Cancer Risk Assessment";
-                break;
-            case 'symptoms':
-                mainResultData = getSymptomCheckerData();
-                serviceTitle = "Symptom Checker";
-                break;
-            case 'health-score':
-                mainResultData = getHealthScoreData();
-                serviceTitle = "Overall Health Score";
-                break;
-            default:
-                mainResultData = mockResultData;
-                serviceTitle = "Health Assessment Results";
-        }
-    } else {
-        mainResultData = mockResultData;
-        serviceTitle = "Health Assessment Results";
+    // Ensure probability is between 0 and 1
+    if (normalized.probability > 1) {
+        normalized.probability = normalized.probability / 100;
     }
     
-    // Update the main result area with the selected result
-    if (mainResultData) {
-        updateMainResultArea(mainResultData, serviceTitle);
+    // Ensure arrays are actually arrays
+    if (!Array.isArray(normalized.recommendations)) {
+        normalized.recommendations = [];
+    }
+    if (!Array.isArray(normalized.risk_factors)) {
+        normalized.risk_factors = [];
     }
     
-    // Make the result data globally available for chart integration
-    window.resultData = mainResultData;
-}
-
-/**
- * Get Heart Risk Data
- * @returns {Object} - The heart risk result data, or null if not available
- */
-function getHeartRiskData() {
-    const heartData = localStorage.getItem('heartRisk');
-    if (!heartData) return null;
-    
-    try {
-        const parsedData = JSON.parse(heartData);
-        const result = parsedData.result;
-        const dateTime = new Date(parsedData.timestamp).toLocaleDateString();
-        
-        // Format the data for display
-        return {
-            assessmentDate: dateTime,
-            overallScore: result.riskScore,
-            riskCategory: result.riskCategory,
-            primaryInsight: `Based on your cardiovascular assessment, your heart health shows ${getRiskDescription(result.riskCategory)} risk factors.`,
-            detailedInsights: result.insights,
-            recommendations: [
-                "Maintain a heart-healthy diet rich in fruits, vegetables, and whole grains",
-                "Engage in regular aerobic exercise (at least 150 minutes per week)",
-                "Monitor your blood pressure regularly",
-                "Limit sodium intake to reduce hypertension risk"
-            ],
-            nextSteps: [
-                "Schedule a follow-up with your primary care physician",
-                "Consider a comprehensive lipid panel test",
-                "Discuss medication options if risk factors persist",
-                "Implement stress reduction techniques"
-            ],
-            chartData: {
-                healthMetrics: {
-                    userValues: [
-                        mapBPToMetric(result.details.bloodPressure), 
-                        mapCholesterolToMetric(result.details.cholesterol),
-                        50, // Placeholder for blood sugar
-                        50, // Placeholder for BMI
-                        result.details.smoker === 'Yes' ? 30 : 70 // Activity score lower if smoker
-                    ],
-                    avgValues: [50, 50, 50, 50, 50],
-                    labels: ['Blood Pressure', 'Cholesterol', 'Blood Sugar', 'BMI', 'Activity']
-                },
-                riskFactors: {
-                    values: [30, 25, 15, 20, 10],
-                    labels: ['Lifestyle', 'Genetic', 'Environmental', 'Medical History', 'Age-Related']
-                }
-            }
-        };
-    } catch (error) {
-        console.error("Error parsing heart risk data:", error);
-        return null;
-    }
-}
-
-/**
- * Get Diabetes Risk Data
- * @returns {Object} - The diabetes risk result data, or null if not available
- */
-function getDiabetesRiskData() {
-    const diabetesData = localStorage.getItem('diabetesRisk');
-    if (!diabetesData) return null;
-    
-    try {
-        const parsedData = JSON.parse(diabetesData);
-        const result = parsedData.result;
-        const dateTime = new Date(parsedData.timestamp).toLocaleDateString();
-        
-        // Format the data for display
-        return {
-            assessmentDate: dateTime,
-            overallScore: result.riskPercentage,
-            riskCategory: result.riskCategory,
-            primaryInsight: `Based on your diabetes risk assessment, your profile indicates ${getRiskDescription(result.riskCategory)} risk of developing type 2 diabetes in the next 5 years.`,
-            detailedInsights: result.insights,
-            recommendations: [
-                "Maintain a balanced diet low in refined carbohydrates",
-                "Aim for at least 30 minutes of moderate exercise daily",
-                "Maintain a healthy BMI (18.5-24.9)",
-                "Monitor your blood glucose levels regularly"
-            ],
-            nextSteps: [
-                "Schedule a follow-up with your healthcare provider",
-                "Consider regular A1C testing",
-                "Join a diabetes prevention program if available",
-                "Learn about monitoring blood glucose"
-            ],
-            chartData: {
-                healthMetrics: {
-                    userValues: [
-                        50, // Placeholder for blood pressure
-                        50, // Placeholder for cholesterol
-                        mapGlucoseToMetric(result.details.fastingGlucose),
-                        mapBMIToMetric(result.details.bmi),
-                        mapActivityToMetric(result.details.activityLevel)
-                    ],
-                    avgValues: [50, 50, 50, 50, 50],
-                    labels: ['Blood Pressure', 'Cholesterol', 'Blood Sugar', 'BMI', 'Activity']
-                },
-                riskFactors: {
-                    values: [35, 20, 10, 25, 10],
-                    labels: ['Lifestyle', 'Genetic', 'Environmental', 'Medical History', 'Age-Related']
-                }
-            }
-        };
-    } catch (error) {
-        console.error("Error parsing diabetes risk data:", error);
-        return null;
-    }
-}
-
-/**
- * Get Lung Cancer Risk Data
- * @returns {Object} - The lung cancer risk result data, or null if not available
- */
-function getLungCancerRiskData() {
-    const lungData = localStorage.getItem('lungCancerRisk');
-    if (!lungData) return null;
-    
-    try {
-        const parsedData = JSON.parse(lungData);
-        const result = parsedData.result;
-        const dateTime = new Date(parsedData.timestamp).toLocaleDateString();
-        
-        // Map risk level to risk category
-        let riskCategory;
-        if (result.riskLevel.includes('Low')) riskCategory = 'low';
-        else if (result.riskLevel.includes('Slightly') || result.riskLevel.includes('Moderately')) riskCategory = 'medium';
-        else riskCategory = 'high';
-        
-        // Format the data for display
-        return {
-            assessmentDate: dateTime,
-            overallScore: result.riskScore,
-            riskCategory: riskCategory,
-            primaryInsight: result.riskDescription,
-            detailedInsights: result.insights,
-            recommendations: [
-                "If you smoke, consider smoking cessation programs",
-                "Avoid exposure to secondhand smoke",
-                "Test your home for radon",
-                "Minimize exposure to environmental pollutants"
-            ],
-            nextSteps: [
-                "Discuss lung cancer screening options with your healthcare provider",
-                "Consider a pulmonary function test",
-                "Learn about warning signs of lung cancer",
-                "Create a plan to reduce risk factors"
-            ],
-            chartData: {
-                healthMetrics: {
-                    userValues: [
-                        50, // Placeholder for blood pressure
-                        50, // Placeholder for cholesterol
-                        50, // Placeholder for blood sugar
-                        50, // Placeholder for BMI
-                        mapSmokingToActivityMetric(result.details.smokingStatus)
-                    ],
-                    avgValues: [50, 50, 50, 50, 50],
-                    labels: ['Blood Pressure', 'Cholesterol', 'Blood Sugar', 'BMI', 'Activity']
-                },
-                riskFactors: {
-                    values: [
-                        result.details.smokingStatus === 'never' ? 10 : 40, // Lifestyle
-                        15, // Genetic
-                        25, // Environmental
-                        10, // Medical History
-                        10  // Age-Related
-                    ],
-                    labels: ['Lifestyle', 'Genetic', 'Environmental', 'Medical History', 'Age-Related']
-                }
-            }
-        };
-    } catch (error) {
-        console.error("Error parsing lung cancer risk data:", error);
-        return null;
-    }
-}
-
-/**
- * Get Symptom Checker Data
- * @returns {Object} - The symptom checker result data, or null if not available
- */
-function getSymptomCheckerData() {
-    const symptomData = localStorage.getItem('symptomResult');
-    if (!symptomData) return null;
-    
-    try {
-        const parsedData = JSON.parse(symptomData);
-        const result = parsedData.result;
-        const dateTime = new Date(parsedData.timestamp).toLocaleDateString();
-        
-        // Map condition to risk category
-        let riskCategory;
-        if (result.condition === 'Common Cold' || result.condition === 'Seasonal Allergies') {
-            riskCategory = 'low';
-        } else if (result.condition === 'Inconclusive' || result.certainty === 'Low') {
-            riskCategory = 'medium';
-        } else if (result.condition === 'Potential Serious Condition') {
-            riskCategory = 'high';
+    // Add default recommendations if empty
+    if (normalized.recommendations.length === 0) {
+        if (type === 'heart') {
+            normalized.recommendations = [
+                "Maintain regular physical activity",
+                "Follow a heart-healthy diet",
+                "Monitor blood pressure regularly",
+                "Reduce stress levels"
+            ];
         } else {
-            riskCategory = 'medium';
+            normalized.recommendations = [
+                "Maintain healthy blood glucose levels",
+                "Follow a balanced diet low in sugar",
+                "Engage in regular physical activity",
+                "Monitor weight regularly"
+            ];
         }
-        
-        // Calculate a score based on condition severity
-        let score;
-        if (riskCategory === 'low') score = 25;
-        else if (riskCategory === 'medium') score = 50;
-        else score = 85;
-        
-        // Generate insights from symptoms
-        const insights = [];
-        for (const symptom of result.details.symptoms) {
-            insights.push(`Reported symptom: ${formatSymptomName(symptom)}`);
-        }
-        insights.push(`Symptom duration: ${formatDuration(result.details.duration)}`);
-        insights.push(`Symptom severity: ${formatSeverity(result.details.severity)}`);
-        
-        // Format the data for display
-        return {
-            assessmentDate: dateTime,
-            overallScore: score,
-            riskCategory: riskCategory,
-            primaryInsight: result.description,
-            detailedInsights: insights,
-            recommendations: result.recommendations,
-            nextSteps: getNextStepsForSymptoms(result.condition, result.certainty),
-            chartData: {
-                healthMetrics: {
-                    userValues: generateSymptomMetrics(result.details.symptoms, result.details.severity),
-                    avgValues: [50, 50, 50, 50, 50],
-                    labels: ['Respiratory', 'Pain', 'Digestive', 'Energy', 'Sleep']
-                },
-                riskFactors: {
-                    values: [20, 20, 20, 20, 20],
-                    labels: ['Viral', 'Bacterial', 'Environmental', 'Lifestyle', 'Genetic']
-                }
-            }
-        };
-    } catch (error) {
-        console.error("Error parsing symptom data:", error);
-        return null;
-    }
-}
-
-/**
- * Get Health Score Data
- * @returns {Object} - The health score result data, or null if not available
- */
-function getHealthScoreData() {
-    const healthScoreData = localStorage.getItem('healthScore');
-    if (!healthScoreData) return null;
-    
-    try {
-        const parsedData = JSON.parse(healthScoreData);
-        const result = parsedData.result;
-        const dateTime = new Date(parsedData.timestamp).toLocaleDateString();
-        
-        // Map health status to risk category
-        let riskCategory;
-        if (result.healthStatus === 'Excellent') riskCategory = 'low';
-        else if (result.healthStatus === 'Good') riskCategory = 'low';
-        else if (result.healthStatus === 'Fair') riskCategory = 'medium';
-        else riskCategory = 'high';
-        
-        // Format the data for display
-        return {
-            assessmentDate: dateTime,
-            overallScore: result.healthScore,
-            riskCategory: riskCategory,
-            primaryInsight: `Your overall health assessment shows a ${result.healthStatus.toLowerCase()} score. ${getHealthStatusDescription(result.healthStatus)}`,
-            detailedInsights: result.insights,
-            recommendations: result.improvementAreas,
-            nextSteps: [
-                "Schedule a comprehensive health check-up",
-                "Discuss your health score results with your physician",
-                "Create a health improvement plan with measurable goals",
-                "Consider follow-up assessments every 3-6 months"
-            ],
-            chartData: {
-                healthMetrics: {
-                    userValues: [
-                        50, // Placeholder
-                        50, // Placeholder
-                        50, // Placeholder
-                        mapBMIToMetric(result.details.bmi),
-                        mapExerciseToMetric(result.details.exerciseHours)
-                    ],
-                    avgValues: [50, 50, 50, 50, 50],
-                    labels: ['Blood Pressure', 'Cholesterol', 'Blood Sugar', 'BMI', 'Activity']
-                },
-                riskFactors: {
-                    values: [
-                        30, // Lifestyle
-                        15, // Genetic
-                        15, // Environmental
-                        20, // Medical History
-                        20  // Age-Related
-                    ],
-                    labels: ['Lifestyle', 'Genetic', 'Environmental', 'Medical History', 'Age-Related']
-                }
-            }
-        };
-    } catch (error) {
-        console.error("Error parsing health score data:", error);
-        return null;
-    }
-}
-
-/**
- * Update Main Result Area
- * @param {Object} resultData - The result data to display
- * @param {string} serviceTitle - The title of the service
- */
-function updateMainResultArea(resultData, serviceTitle) {
-    // Update page title
-    document.title = `${serviceTitle} Results | WellPredict`;
-    
-    // Update assessment date
-    document.getElementById('assessment-date').textContent = resultData.assessmentDate;
-    
-    // Update score
-    const scoreElement = document.getElementById('health-score');
-    scoreElement.textContent = resultData.overallScore;
-    
-    // Update risk class
-    const scoreCircle = document.querySelector('.score-circle');
-    scoreCircle.className = 'score-circle'; // Reset classes
-    scoreCircle.classList.add(`${resultData.riskCategory}-risk`);
-    
-    // Update risk label
-    const scoreLabel = document.querySelector('.score-label');
-    scoreLabel.textContent = getRiskLabel(resultData.riskCategory);
-    
-    // Update primary insight
-    document.getElementById('primary-insight').textContent = resultData.primaryInsight;
-    
-    // Update detailed insights list
-    updateList('details-list', resultData.detailedInsights);
-    
-    // Update recommendations list
-    updateList('recommendations-list', resultData.recommendations);
-    
-    // Update next steps list
-    updateList('next-steps-list', resultData.nextSteps);
-}
-
-/**
- * Update a List Element
- * @param {string} listId - The ID of the list element to update
- * @param {Array} items - The items to add to the list
- */
-function updateList(listId, items) {
-    const listElement = document.getElementById(listId);
-    if (!listElement) return;
-    
-    // Clear existing items
-    listElement.innerHTML = '';
-    
-    // Add new items
-    if (items && items.length > 0) {
-        items.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            listElement.appendChild(li);
-        });
-    } else {
-        // Add a placeholder if no items are available
-        const li = document.createElement('li');
-        li.textContent = 'No data available';
-        listElement.appendChild(li);
-    }
-}
-
-/**
- * Get Risk Description
- * @param {string} riskCategory - The risk category (low, medium, high)
- * @returns {string} - A description of the risk level
- */
-function getRiskDescription(riskCategory) {
-    switch (riskCategory) {
-        case 'low': return 'a healthy profile with minor';
-        case 'medium': return 'moderate';
-        case 'high': return 'significant';
-        default: return 'unknown';
-    }
-}
-
-/**
- * Get Risk Label
- * @param {string} riskCategory - The risk category (low, medium, high)
- * @returns {string} - A label for the risk level
- */
-function getRiskLabel(riskCategory) {
-    switch (riskCategory) {
-        case 'low': return 'Low Risk';
-        case 'medium': return 'Moderate Risk';
-        case 'high': return 'High Risk';
-        default: return 'Unknown Risk';
-    }
-}
-
-/**
- * Get Health Status Description
- * @param {string} healthStatus - The health status
- * @returns {string} - A description of the health status
- */
-function getHealthStatusDescription(healthStatus) {
-    switch (healthStatus) {
-        case 'Excellent': return 'Continue your healthy habits!';
-        case 'Good': return 'Some minor improvements could help optimize your health.';
-        case 'Fair': return 'Several areas could benefit from improvement.';
-        case 'Poor': return 'Multiple areas require attention to improve your overall health status.';
-        default: return '';
-    }
-}
-
-/**
- * Get Next Steps For Symptoms
- * @param {string} condition - The identified condition
- * @param {string} certainty - The certainty level
- * @returns {Array} - Array of next steps
- */
-function getNextStepsForSymptoms(condition, certainty) {
-    if (condition === 'Potential Serious Condition') {
-        return [
-            "Seek immediate medical attention",
-            "Bring a list of your symptoms to your provider",
-            "Document when symptoms began and their progression",
-            "Inform healthcare providers of any medications you're taking"
-        ];
-    } else if (certainty === 'Low') {
-        return [
-            "Schedule an appointment with your healthcare provider for a proper diagnosis",
-            "Keep a symptom journal to track changes",
-            "Avoid self-medication until a diagnosis is confirmed",
-            "Follow up if symptoms worsen or persist"
-        ];
-    } else {
-        return [
-            "Follow the recommended treatment plan",
-            "Rest and stay hydrated",
-            "Monitor your symptoms for any changes",
-            "Consult a healthcare provider if symptoms worsen"
-        ];
-    }
-}
-
-/**
- * Map Blood Pressure to Metric (0-100)
- * @param {string} bpString - Blood pressure string (e.g., "120/80 mmHg")
- * @returns {number} - Metric value (0-100)
- */
-function mapBPToMetric(bpString) {
-    try {
-        const parts = bpString.split('/');
-        const systolic = parseInt(parts[0]);
-        
-        // Lower is better, up to a point
-        if (systolic < 120) return 80; // Optimal
-        if (systolic < 130) return 70; // Normal
-        if (systolic < 140) return 60; // High-normal
-        if (systolic < 160) return 40; // Grade 1 hypertension
-        if (systolic < 180) return 20; // Grade 2 hypertension
-        return 10; // Grade 3 hypertension
-    } catch (e) {
-        return 50; // Default
-    }
-}
-
-/**
- * Map Cholesterol to Metric (0-100)
- * @param {number} cholesterol - Total cholesterol value
- * @returns {number} - Metric value (0-100)
- */
-function mapCholesterolToMetric(cholesterol) {
-    // Lower is better
-    if (cholesterol < 180) return 90; // Optimal
-    if (cholesterol < 200) return 75; // Desirable
-    if (cholesterol < 240) return 50; // Borderline high
-    if (cholesterol < 280) return 30; // High
-    return 10; // Very high
-}
-
-/**
- * Map Glucose to Metric (0-100)
- * @param {number} glucose - Fasting glucose value
- * @returns {number} - Metric value (0-100)
- */
-function mapGlucoseToMetric(glucose) {
-    // Lower is better
-    if (glucose < 100) return 90; // Normal
-    if (glucose < 126) return 50; // Prediabetes
-    return 20; // Diabetes
-}
-
-/**
- * Map BMI to Metric (0-100)
- * @param {number} bmi - BMI value
- * @returns {number} - Metric value (0-100)
- */
-function mapBMIToMetric(bmi) {
-    // Ideal range is 18.5-24.9
-    if (bmi < 18.5) return 60; // Underweight
-    if (bmi < 25) return 90; // Normal
-    if (bmi < 30) return 60; // Overweight
-    if (bmi < 35) return 30; // Obese (Class 1)
-    if (bmi < 40) return 20; // Obese (Class 2)
-    return 10; // Obese (Class 3)
-}
-
-/**
- * Map Activity Level to Metric (0-100)
- * @param {string} activity - Activity level
- * @returns {number} - Metric value (0-100)
- */
-function mapActivityToMetric(activity) {
-    switch (activity) {
-        case 'sedentary': return 20;
-        case 'light': return 40;
-        case 'moderate': return 60;
-        case 'active': return 80;
-        case 'veryActive': return 90;
-        default: return 50;
-    }
-}
-
-/**
- * Map Smoking Status to Activity Metric (0-100)
- * @param {string} smokingStatus - Smoking status
- * @returns {number} - Activity metric value (0-100)
- */
-function mapSmokingToActivityMetric(smokingStatus) {
-    switch (smokingStatus) {
-        case 'never': return 90;
-        case 'former': return 70;
-        case 'current': return 20;
-        default: return 50;
-    }
-}
-
-/**
- * Map Exercise Hours to Metric (0-100)
- * @param {number} hours - Hours of exercise per week
- * @returns {number} - Metric value (0-100)
- */
-function mapExerciseToMetric(hours) {
-    if (hours < 1) return 20;
-    if (hours < 2.5) return 50;
-    if (hours < 5) return 80;
-    return 90;
-}
-
-/**
- * Generate Symptom Metrics
- * @param {Array} symptoms - Array of symptom codes
- * @param {string} severity - Severity level
- * @returns {Array} - Array of metric values for charts
- */
-function generateSymptomMetrics(symptoms, severity) {
-    // Define symptom categories
-    const respiratorySymptoms = ['cough', 'shortness_breath', 'congestion', 'runny_nose', 'sneezing'];
-    const painSymptoms = ['headache', 'body_aches', 'chest_pain', 'abdominal_pain', 'joint_pain'];
-    const digestiveSymptoms = ['nausea', 'vomiting', 'diarrhea', 'constipation', 'abdominal_pain'];
-    const energySymptoms = ['fatigue', 'weakness', 'dizziness', 'fainting'];
-    const sleepSymptoms = ['insomnia', 'excessive_sleeping', 'night_sweats', 'sleep_apnea'];
-    
-    // Calculate severity multiplier
-    const severityMultiplier = severity === 'severe' ? 1.5 : (severity === 'moderate' ? 1 : 0.5);
-    
-    // Count symptoms in each category
-    const respiratory = respiratorySymptoms.filter(s => symptoms.includes(s)).length * 20 * severityMultiplier;
-    const pain = painSymptoms.filter(s => symptoms.includes(s)).length * 20 * severityMultiplier;
-    const digestive = digestiveSymptoms.filter(s => symptoms.includes(s)).length * 20 * severityMultiplier;
-    const energy = energySymptoms.filter(s => symptoms.includes(s)).length * 20 * severityMultiplier;
-    const sleep = sleepSymptoms.filter(s => symptoms.includes(s)).length * 20 * severityMultiplier;
-    
-    // Return metrics (cap at 100)
-    return [
-        Math.min(100, respiratory),
-        Math.min(100, pain),
-        Math.min(100, digestive),
-        Math.min(100, energy),
-        Math.min(100, sleep)
-    ];
-}
-
-/**
- * Format Symptom Name
- * @param {string} symptom - The symptom code to format
- * @returns {string} - The formatted symptom name
- */
-function formatSymptomName(symptom) {
-    return symptom
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase());
-}
-
-/**
- * Format Duration
- * @param {string} duration - The duration code to format
- * @returns {string} - The formatted duration text
- */
-function formatDuration(duration) {
-    switch (duration) {
-        case 'less_than_week': return 'Less than a week';
-        case 'one_two_weeks': return '1-2 weeks';
-        case 'two_four_weeks': return '2-4 weeks';
-        case 'more_than_month': return 'More than a month';
-        default: return duration;
-    }
-}
-
-/**
- * Format Severity
- * @param {string} severity - The severity code to format
- * @returns {string} - The formatted severity text
- */
-function formatSeverity(severity) {
-    switch (severity) {
-        case 'mild': return 'Mild';
-        case 'moderate': return 'Moderate';
-        case 'severe': return 'Severe';
-        default: return severity;
-    }
-}
-
-/**
- * Initialize Result Actions
- */
-function initResultActions() {
-    // Print Results button
-    const printButton = document.getElementById('print-results');
-    if (printButton) {
-        printButton.addEventListener('click', function() {
-            window.print();
-        });
     }
     
-    // Share Results button
-    const shareButton = document.getElementById('share-results');
-    if (shareButton) {
-        shareButton.addEventListener('click', function() {
-            alert('Share functionality would be implemented here.');
-        });
-    }
-    
-    // Download PDF button
-    const pdfButton = document.getElementById('download-pdf');
-    if (pdfButton) {
-        pdfButton.addEventListener('click', function() {
-            generatePDF();
-        });
-    }
-    
-    // Schedule Appointment button
-    const scheduleButton = document.getElementById('schedule-appointment');
-    if (scheduleButton) {
-        scheduleButton.addEventListener('click', function() {
-            window.location.href = 'appointment.html';
-        });
-    }
-}
-
-/**
- * Generate and Download PDF of Results
- */
-function generatePDF() {
-    // Show loading indicator
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.className = 'loading-indicator';
-    loadingIndicator.innerHTML = '<div class="loading-spinner"></div><p>Generating PDF...</p>';
-    document.body.appendChild(loadingIndicator);
-    
-    // Get the current date for the filename
-    const date = new Date();
-    const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-    
-    // Get assessment type for filename
-    const lastAssessment = localStorage.getItem('lastAssessment') || 'health';
-    const assessmentLabels = {
-        'heart': 'Heart_Health',
-        'diabetes': 'Diabetes_Risk',
-        'lungs': 'Lung_Cancer_Risk',
-        'symptoms': 'Symptom_Check',
-        'health-score': 'Health_Score'
-    };
-    const assessmentLabel = assessmentLabels[lastAssessment] || 'Health_Assessment';
-    
-    // Set filename
-    const filename = `WellPredict_${assessmentLabel}_${dateStr}.pdf`;
-    
-    // Get the elements to include in the PDF
-    const heroSection = document.querySelector('.results-hero');
-    const resultsContainer = document.querySelector('.results-container');
-    const visualizationSection = document.querySelector('.data-visualization');
-    
-    // Wait for window.jspdf to be loaded
-    if (typeof window.jspdf === 'undefined') {
-        window.jspdf = window.jspdf || window.jsPDF;
-    }
-    
-    // Create a new jsPDF instance
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-    });
-    
-    // Define PDF generation steps
-    Promise.all([
-        // Capture hero section
-        html2canvas(heroSection, {
-            scale: 2,
-            logging: false,
-            useCORS: true
-        }),
-        // Capture results container
-        html2canvas(resultsContainer, {
-            scale: 2,
-            logging: false,
-            useCORS: true
-        }),
-        // Capture visualization section
-        html2canvas(visualizationSection, {
-            scale: 2,
-            logging: false,
-            useCORS: true
-        })
-    ]).then(([heroCanvas, resultsCanvas, visualizationCanvas]) => {
-        // Add hero section to PDF
-        const heroImgData = heroCanvas.toDataURL('image/png');
-        const heroImgProps = doc.getImageProperties(heroImgData);
-        const heroPdfWidth = doc.internal.pageSize.getWidth() - 20;
-        const heroPdfHeight = (heroImgProps.height * heroPdfWidth) / heroImgProps.width;
-        
-        doc.setFontSize(22);
-        doc.setTextColor(44, 62, 80); // Dark blue header
-        doc.text('WellPredict Health Assessment', 105, 15, { align: 'center' });
-        doc.addImage(heroImgData, 'PNG', 10, 20, heroPdfWidth, heroPdfHeight);
-        
-        // Add results container to PDF
-        const resultsImgData = resultsCanvas.toDataURL('image/png');
-        const resultsImgProps = doc.getImageProperties(resultsImgData);
-        const resultsPdfWidth = doc.internal.pageSize.getWidth() - 20;
-        const resultsPdfHeight = (resultsImgProps.height * resultsPdfWidth) / resultsImgProps.width;
-        
-        // Check if we need to add a new page
-        if (20 + heroPdfHeight + resultsPdfHeight > doc.internal.pageSize.getHeight()) {
-            doc.addPage();
-            doc.addImage(resultsImgData, 'PNG', 10, 10, resultsPdfWidth, resultsPdfHeight);
+    // Add default risk factors if empty
+    if (normalized.risk_factors.length === 0) {
+        if (type === 'heart') {
+            normalized.risk_factors = [
+                "Age and gender factors",
+                "Blood pressure levels",
+                "Cholesterol levels",
+                "Exercise capacity"
+            ];
         } else {
-            doc.addImage(resultsImgData, 'PNG', 10, 20 + heroPdfHeight + 10, resultsPdfWidth, resultsPdfHeight);
+            normalized.risk_factors = [
+                "Blood glucose levels",
+                "BMI and weight factors",
+                "Age and family history",
+                "Lifestyle factors"
+            ];
         }
-        
-        // Add visualization section to PDF on a new page
-        doc.addPage();
-        const visualizationImgData = visualizationCanvas.toDataURL('image/png');
-        const visualizationImgProps = doc.getImageProperties(visualizationImgData);
-        const visualizationPdfWidth = doc.internal.pageSize.getWidth() - 20;
-        const visualizationPdfHeight = (visualizationImgProps.height * visualizationPdfWidth) / visualizationImgProps.width;
-        
-        doc.addImage(visualizationImgData, 'PNG', 10, 10, visualizationPdfWidth, visualizationPdfHeight);
-        
-        // Add footer
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            doc.text(`Generated by WellPredict on ${date.toLocaleDateString()} | Page ${i} of ${pageCount}`, 
-                doc.internal.pageSize.getWidth() / 2, 
-                doc.internal.pageSize.getHeight() - 10, 
-                { align: 'center' }
-            );
-        }
-        
-        // Save the PDF
-        doc.save(filename);
-        
-        // Remove loading indicator
-        document.body.removeChild(loadingIndicator);
-    }).catch(error => {
-        console.error('Error generating PDF:', error);
-        // Remove loading indicator
-        document.body.removeChild(loadingIndicator);
-        // Show error message
-        alert('There was an error generating the PDF. Please try again.');
-    });
-}
-
-// Heart Health Assessment Results Handler
-function handleHeartHealthResults(data) {
-    // Calculate BMI
-    const bmi = calculateBMI(data.weight, data.height);
-    
-    // Calculate heart risk score (simplified version for demonstration)
-    const riskScore = calculateHeartRiskScore(data, bmi);
-    
-    // Generate risk factors analysis
-    const riskFactors = analyzeHeartRiskFactors(data, bmi);
-    
-    // Create visualizations
-    createHeartHealthVisualizations(data, riskScore, riskFactors);
-    
-    // Generate recommendations
-    const recommendations = generateHeartHealthRecommendations(data, riskScore, riskFactors);
-    
-    // Update UI with results
-    updateHeartHealthResultsUI(riskScore, riskFactors, recommendations);
-}
-
-function calculateBMI(weight, height) {
-    // Convert height from cm to m
-    const heightInMeters = height / 100;
-    return (weight / (heightInMeters * heightInMeters)).toFixed(1);
-}
-
-function calculateHeartRiskScore(data, bmi) {
-    let score = 0;
-    
-    // Age factor (0-25 points)
-    if (data.age < 40) score += 0;
-    else if (data.age < 50) score += 5;
-    else if (data.age < 60) score += 10;
-    else if (data.age < 70) score += 15;
-    else score += 20;
-    
-    // Gender factor (0-5 points)
-    score += data.gender === 'male' ? 5 : 0;
-    
-    // Blood Pressure factor (0-20 points)
-    const bpScore = calculateBPFactor(data.systolic, data.diastolic);
-    score += bpScore;
-    
-    // Cholesterol factor (0-20 points)
-    const cholesterolScore = calculateCholesterolFactor(data);
-    score += cholesterolScore;
-    
-    // BMI factor (0-10 points)
-    const bmiScore = calculateBMIFactor(bmi);
-    score += bmiScore;
-    
-    // Lifestyle factors (0-20 points)
-    const lifestyleScore = calculateLifestyleFactor(data);
-    score += lifestyleScore;
-    
-    // Medical history factor (0-20 points)
-    const medicalScore = calculateMedicalHistoryFactor(data);
-    score += medicalScore;
-    
-    // Normalize score to 0-100
-    return Math.min(Math.round((score / 120) * 100), 100);
-}
-
-function calculateBPFactor(systolic, diastolic) {
-    let score = 0;
-    
-    // Systolic BP
-    if (systolic < 120) score += 0;
-    else if (systolic < 130) score += 5;
-    else if (systolic < 140) score += 10;
-    else if (systolic < 160) score += 15;
-    else score += 20;
-    
-    // Diastolic BP
-    if (diastolic < 80) score += 0;
-    else if (diastolic < 85) score += 2;
-    else if (diastolic < 90) score += 5;
-    else if (diastolic < 100) score += 8;
-    else score += 10;
-    
-    return Math.min(score, 20);
-}
-
-function calculateCholesterolFactor(data) {
-    let score = 0;
-    
-    // Total Cholesterol
-    if (data.cholesterol < 200) score += 0;
-    else if (data.cholesterol < 240) score += 5;
-    else score += 10;
-    
-    // HDL Cholesterol
-    if (data.hdl >= 60) score += 0;
-    else if (data.hdl >= 40) score += 5;
-    else score += 10;
-    
-    // LDL Cholesterol
-    if (data.ldl < 100) score += 0;
-    else if (data.ldl < 130) score += 5;
-    else if (data.ldl < 160) score += 8;
-    else score += 10;
-    
-    return Math.min(score, 20);
-}
-
-function calculateBMIFactor(bmi) {
-    if (bmi < 18.5) return 5;  // Underweight
-    if (bmi < 25) return 0;    // Normal
-    if (bmi < 30) return 5;    // Overweight
-    return 10;                 // Obese
-}
-
-function calculateLifestyleFactor(data) {
-    let score = 0;
-    
-    // Smoking
-    if (data.heart_smoke === 'current') score += 10;
-    else if (data.heart_smoke === 'former') score += 5;
-    
-    // Physical Activity
-    if (data.activity === 'sedentary') score += 10;
-    else if (data.activity === 'light') score += 5;
-    else if (data.activity === 'moderate') score += 2;
-    
-    // Alcohol
-    if (data.alcohol === 'heavy') score += 10;
-    else if (data.alcohol === 'moderate') score += 5;
-    
-    return Math.min(score, 20);
-}
-
-function calculateMedicalHistoryFactor(data) {
-    let score = 0;
-    
-    // Diabetes
-    if (data.heart_diabetes === 'yes') score += 10;
-    else if (data.heart_diabetes === 'prediabetes') score += 5;
-    
-    // Family History
-    if (data.heart_family === 'yes') score += 5;
-    
-    // Previous Conditions
-    const conditions = data.heart_conditions || [];
-    if (conditions.includes('hypertension')) score += 5;
-    if (conditions.includes('heartAttack')) score += 10;
-    if (conditions.includes('stroke')) score += 10;
-    if (conditions.includes('angina')) score += 5;
-    
-    return Math.min(score, 20);
-}
-
-function analyzeHeartRiskFactors(data, bmi) {
-    const factors = [];
-    
-    // Age Analysis
-    if (data.age >= 65) {
-        factors.push({
-            factor: 'Age',
-            level: 'high',
-            description: 'Age is a significant risk factor for heart disease',
-            impact: 'High'
-        });
     }
     
-    // Blood Pressure Analysis
-    if (data.systolic >= 140 || data.diastolic >= 90) {
-        factors.push({
-            factor: 'Blood Pressure',
-            level: 'high',
-            description: 'Elevated blood pressure increases heart disease risk',
-            impact: 'High'
-        });
-    }
-    
-    // Cholesterol Analysis
-    if (data.cholesterol >= 240 || data.ldl >= 160 || data.hdl < 40) {
-        factors.push({
-            factor: 'Cholesterol',
-            level: 'high',
-            description: 'Unhealthy cholesterol levels increase heart disease risk',
-            impact: 'High'
-        });
-    }
-    
-    // BMI Analysis
-    if (bmi >= 30) {
-        factors.push({
-            factor: 'BMI',
-            level: 'high',
-            description: 'Obesity is a significant risk factor for heart disease',
-            impact: 'High'
-        });
-    }
-    
-    // Lifestyle Analysis
-    if (data.heart_smoke === 'current') {
-        factors.push({
-            factor: 'Smoking',
-            level: 'high',
-            description: 'Smoking significantly increases heart disease risk',
-            impact: 'High'
-        });
-    }
-    
-    if (data.activity === 'sedentary') {
-        factors.push({
-            factor: 'Physical Activity',
-            level: 'moderate',
-            description: 'Lack of physical activity increases heart disease risk',
-            impact: 'Moderate'
-        });
-    }
-    
-    // Medical History Analysis
-    if (data.heart_diabetes === 'yes') {
-        factors.push({
-            factor: 'Diabetes',
-            level: 'high',
-            description: 'Diabetes significantly increases heart disease risk',
-            impact: 'High'
-        });
-    }
-    
-    if (data.heart_family === 'yes') {
-        factors.push({
-            factor: 'Family History',
-            level: 'moderate',
-            description: 'Family history of heart disease increases your risk',
-            impact: 'Moderate'
-        });
-    }
-    
-    return factors;
+    console.log('✅ Normalized result data:', normalized);
+    return normalized;
 }
 
-function generateHeartHealthRecommendations(data, riskScore, riskFactors) {
-    const recommendations = [];
-    
-    // General recommendations based on risk score
-    if (riskScore >= 70) {
-        recommendations.push({
-            category: 'Immediate Action',
-            items: [
-                'Schedule an appointment with your doctor as soon as possible',
-                'Consider getting a comprehensive cardiac evaluation',
-                'Monitor your blood pressure daily'
-            ]
-        });
-    } else if (riskScore >= 40) {
-        recommendations.push({
-            category: 'Priority Actions',
-            items: [
-                'Schedule a check-up with your doctor',
-                'Start monitoring your blood pressure regularly',
-                'Consider lifestyle modifications'
-            ]
-        });
+// Helper functions
+function getRiskGradient(riskLevel) {
+    switch (riskLevel.toLowerCase()) {
+        case 'low': return '#00d4aa';
+        case 'moderate': return '#ffa726';
+        case 'high': return '#f44336';
+        default: return '#2196f3';
     }
+}
+
+function getRiskLevelClass(riskLevel) {
+    switch (riskLevel.toLowerCase()) {
+        case 'low': return 'risk-low';
+        case 'moderate': return 'risk-moderate';
+        case 'high': return 'risk-high';
+        default: return 'risk-moderate';
+    }
+}
+
+function getRiskDescription(riskLevel, type) {
+    const disease = type === 'heart' ? 'cardiovascular disease' : 'diabetes';
     
-    // Specific recommendations based on risk factors
-    riskFactors.forEach(factor => {
-        switch(factor.factor) {
-            case 'Blood Pressure':
-                recommendations.push({
-                    category: 'Blood Pressure Management',
-                    items: [
-                        'Reduce sodium intake',
-                        'Increase physical activity',
-                        'Consider DASH diet',
-                        'Monitor blood pressure regularly'
-                    ]
-                });
-                break;
-                
-            case 'Cholesterol':
-                recommendations.push({
-                    category: 'Cholesterol Management',
-                    items: [
-                        'Reduce saturated fat intake',
-                        'Increase fiber consumption',
-                        'Consider Mediterranean diet',
-                        'Regular cholesterol checks'
-                    ]
-                });
-                break;
-                
-            case 'BMI':
-                recommendations.push({
-                    category: 'Weight Management',
-                    items: [
-                        'Create a calorie deficit',
-                        'Increase physical activity',
-                        'Consider consulting a nutritionist',
-                        'Set realistic weight loss goals'
-                    ]
-                });
-                break;
-                
-            case 'Smoking':
-                recommendations.push({
-                    category: 'Smoking Cessation',
-                    items: [
-                        'Consider nicotine replacement therapy',
-                        'Join a smoking cessation program',
-                        'Set a quit date',
-                        'Identify and avoid triggers'
-                    ]
-                });
-                break;
-                
-            case 'Physical Activity':
-                recommendations.push({
-                    category: 'Physical Activity',
-                    items: [
-                        'Start with 30 minutes of moderate exercise daily',
-                        'Gradually increase activity level',
-                        'Find activities you enjoy',
-                        'Consider working with a personal trainer'
-                    ]
-                });
-                break;
-                
-            case 'Diabetes':
-                recommendations.push({
-                    category: 'Diabetes Management',
-                    items: [
-                        'Monitor blood sugar regularly',
-                        'Follow a diabetic diet',
-                        'Maintain regular exercise',
-                        'Keep regular appointments with your doctor'
-                    ]
-                });
-                break;
-        }
+    switch (riskLevel.toLowerCase()) {
+        case 'low':
+            return `Based on your current health metrics, you have a low risk of developing ${disease}. Continue maintaining your healthy lifestyle!`;
+        case 'moderate':
+            return `Your assessment indicates a moderate risk for ${disease}. Consider implementing the recommended lifestyle changes to reduce your risk.`;
+        case 'high':
+            return `The analysis shows a higher risk for ${disease}. It's recommended to consult with a healthcare provider and implement preventive measures.`;
+        default:
+            return `Your ${disease} risk assessment has been completed. Please review the recommendations below.`;
+    }
+}
+
+function formatText(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function getActionPlanCards(type) {
+    if (type === 'heart') {
+        return `
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h4 class="resource-title">Consult Cardiologist</h4>
+                <p class="resource-description">Schedule an appointment with a heart specialist to discuss these results and develop a comprehensive cardiovascular health plan.</p>
+                <a href="#" class="resource-link">Find Specialists <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h4 class="resource-title">Monitor Heart Health</h4>
+                <p class="resource-description">Regular monitoring of blood pressure, cholesterol, and other cardiovascular markers.</p>
+                <a href="#" class="resource-link">Learn More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-running"></i>
+                </div>
+                <h4 class="resource-title">Exercise Program</h4>
+                <p class="resource-description">Start a heart-healthy exercise routine tailored to your fitness level and health condition.</p>
+                <a href="#" class="resource-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h4 class="resource-title">Consult Endocrinologist</h4>
+                <p class="resource-description">Discuss these results with a diabetes specialist for comprehensive evaluation and treatment planning.</p>
+                <a href="#" class="resource-link">Find Specialists <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="resource-title">Monitor Blood Sugar</h4>
+                <p class="resource-description">Regular glucose monitoring to track your metabolic health and response to lifestyle changes.</p>
+                <a href="#" class="resource-link">Learn More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <i class="fas fa-apple-alt"></i>
+                </div>
+                <h4 class="resource-title">Dietary Management</h4>
+                <p class="resource-description">Follow recommended dietary guidelines to manage blood sugar levels and prevent diabetes.</p>
+                <a href="#" class="resource-link">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+        `;
+    }
+}
+
+function getHealthResourceCards(type) {
+    return `
+        <div class="resource-card">
+            <div class="resource-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h4 class="resource-title">Health Education</h4>
+            <p class="resource-description">Learn more about ${type === 'heart' ? 'cardiovascular health' : 'diabetes prevention'} with evidence-based educational materials.</p>
+            <a href="https://www.mayoclinic.org/" class="resource-link" target="_blank">Mayo Clinic <i class="fas fa-external-link-alt"></i></a>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h4 class="resource-title">Support Communities</h4>
+            <p class="resource-description">Connect with others who share similar health journeys and experiences.</p>
+            <a href="https://www.healthunlocked.com/" class="resource-link" target="_blank">HealthUnlocked <i class="fas fa-external-link-alt"></i></a>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h4 class="resource-title">Health Tracking Apps</h4>
+            <p class="resource-description">Monitor your progress with recommended health and fitness tracking applications.</p>
+            <a href="#" class="resource-link">Explore Apps <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">
+                <i class="fas fa-phone"></i>
+            </div>
+            <h4 class="resource-title">Emergency Contacts</h4>
+            <p class="resource-description">Important phone numbers and emergency contacts for immediate health concerns.</p>
+            <a href="tel:911" class="resource-link">Emergency: 911 <i class="fas fa-phone"></i></a>
+        </div>
+    `;
+}
+
+function showError() {
+    const container = document.querySelector('.results-container');
+    if (container) {
+        container.innerHTML = `
+            <div class="result-card fade-in-up" style="text-align: center; padding: 4rem;">
+                <div class="card-icon" style="background: var(--gradient-danger); margin: 0 auto 2rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>No Results Found</h3>
+                <p style="color: #64748b; margin: 1rem 0 2rem;">
+                    We couldn't find any assessment results. Please complete a health assessment first.
+                </p>
+                <a href="predict.html" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Start New Assessment
+                </a>
+            </div>
+        `;
+    }
+    showNotification('No results data found. Please complete an assessment first.', 'error');
+}
+
+// Chart initialization functions
+function initializeCharts() {
+    if (!currentResult) return;
+    
+    // Destroy existing charts
+    Object.values(charts).forEach(chart => {
+        if (chart) chart.destroy();
     });
     
-    return recommendations;
+    // Initialize new charts
+    setTimeout(() => {
+        initRiskPieChart();
+        initMetricsBarChart();
+        initRiskLineChart();
+    }, 100);
 }
 
-function createHeartHealthVisualizations(data, riskScore, riskFactors) {
-    // Create risk score gauge
-    createRiskScoreGauge(riskScore);
+function initRiskPieChart() {
+    const ctx = document.getElementById('riskPieChart');
+    if (!ctx) return;
     
-    // Create risk factors chart
-    createRiskFactorsChart(riskFactors);
+    const probability = currentResult.probability;
+    const safeProbability = 1 - probability;
     
-    // Create vital signs chart
-    createVitalSignsChart(data);
-    
-    // Create lifestyle factors chart
-    createLifestyleFactorsChart(data);
-}
-
-function createRiskScoreGauge(riskScore) {
-    const ctx = document.getElementById('riskScoreGauge').getContext('2d');
-    
-    new Chart(ctx, {
+    charts.pie = new Chart(ctx, {
         type: 'doughnut',
         data: {
+            labels: ['Risk Level', 'Safety Margin'],
             datasets: [{
-                data: [riskScore, 100 - riskScore],
+                data: [probability * 100, safeProbability * 100],
                 backgroundColor: [
-                    getRiskColor(riskScore),
-                    '#e9ecef'
+                    getRiskGradient(currentResult.risk_level),
+                    '#e2e8f0'
                 ],
-                borderWidth: 0
+                borderWidth: 0,
+                hoverOffset: 10
             }]
         },
         options: {
-            cutout: '80%',
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.parsed.toFixed(1) + '%';
+                        }
+                    }
+                }
+            },
+            cutout: '60%'
+        }
+    });
+}
+
+function initMetricsBarChart() {
+    const ctx = document.getElementById('metricsBarChart');
+    if (!ctx) return;
+    
+    charts.bar = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Risk Score', 'Model Confidence', 'Health Score'],
+            datasets: [{
+                label: 'Health Metrics (%)',
+                data: [
+                    currentResult.probability * 100,
+                    currentResult.confidence * 100,
+                    (1 - currentResult.probability) * 100
+                ],
+                backgroundColor: [
+                    'rgba(255, 107, 157, 0.8)',
+                    'rgba(33, 150, 243, 0.8)',
+                    'rgba(0, 212, 170, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(255, 107, 157, 1)',
+                    'rgba(33, 150, 243, 1)',
+                    'rgba(0, 212, 170, 1)'
+                ],
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
             plugins: {
                 legend: {
                     display: false
                 },
                 tooltip: {
-                    enabled: false
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                        }
+                    }
                 }
             }
         }
     });
-    
-    // Add center text
-    const centerText = document.createElement('div');
-    centerText.className = 'gauge-center-text';
-    centerText.innerHTML = `
-        <span class="score">${riskScore}</span>
-        <span class="label">Risk Score</span>
-    `;
-    document.getElementById('riskScoreGauge').parentNode.appendChild(centerText);
 }
 
-function createRiskFactorsChart(riskFactors) {
-    const ctx = document.getElementById('riskFactorsChart').getContext('2d');
+function initRiskLineChart() {
+    const ctx = document.getElementById('riskLineChart');
+    if (!ctx) return;
     
-    const data = {
-        labels: riskFactors.map(f => f.factor),
-        datasets: [{
-            data: riskFactors.map(f => f.impact === 'High' ? 100 : 50),
-            backgroundColor: riskFactors.map(f => f.impact === 'High' ? '#dc3545' : '#ffc107'),
-            borderWidth: 0
-        }]
+    // Generate sample timeline data
+    const months = ['Current', '3 Months', '6 Months', '1 Year', '2 Years', '5 Years'];
+    const currentRisk = currentResult.probability * 100;
+    const projectedRisk = [
+        currentRisk,
+        Math.max(currentRisk - 5, 0),
+        Math.max(currentRisk - 10, 0),
+        Math.max(currentRisk - 15, 0),
+        Math.max(currentRisk - 20, 0),
+        Math.max(currentRisk - 25, 0)
+    ];
+    
+    charts.line = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Projected Risk Reduction (%)',
+                data: projectedRisk,
+                borderColor: 'rgba(102, 126, 234, 1)',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: Math.max(currentRisk + 10, 50),
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Risk Level: ' + context.parsed.y.toFixed(1) + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Enhanced action buttons functionality
+function initializeActionButtons() {
+    // Print functionality
+    const printBtn = document.getElementById('print-results');
+    if (printBtn) {
+        printBtn.addEventListener('click', () => {
+            window.print();
+            showNotification('Preparing results for printing...', 'info');
+        });
+    }
+    
+    // Share functionality
+    const shareBtn = document.getElementById('share-results');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'My Health Risk Assessment Results',
+                        text: 'Check out my health risk assessment results from HealthPredict AI',
+                        url: window.location.href
+                    });
+                    showNotification('Results shared successfully!', 'success');
+                } catch (error) {
+                    console.log('Error sharing:', error);
+                    fallbackShare();
+                }
+            } else {
+                fallbackShare();
+            }
+        });
+    }
+    
+    // Download PDF functionality
+    const downloadBtn = document.getElementById('download-pdf');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            generatePDF();
+        });
+    }
+}
+
+function fallbackShare() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        showNotification('Results link copied to clipboard!', 'success');
+    }).catch(() => {
+        showNotification('Unable to share results. Please copy the URL manually.', 'error');
+    });
+}
+
+function generatePDF() {
+    showNotification('Generating PDF...', 'info');
+    
+    try {
+        // Using jsPDF for PDF generation
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Get current results data
+        const predictionType = localStorage.getItem('predictionType');
+        const resultData = predictionType === 'heart' ? 
+            localStorage.getItem('heartPredictionResult') : 
+            localStorage.getItem('diabetesPredictionResult');
+        
+        if (!resultData) {
+            showNotification('No results data found for PDF generation', 'error');
+            return;
+        }
+        
+        const result = JSON.parse(resultData);
+        const title = predictionType === 'heart' ? 'Heart Disease Risk Assessment' : 'Diabetes Risk Assessment';
+        
+        // PDF Header
+        doc.setFontSize(20);
+        doc.setTextColor(40, 40, 40);
+        doc.text(title, 20, 30);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 45);
+        
+        // Risk Overview
+        doc.setFontSize(16);
+        doc.setTextColor(40, 40, 40);
+        doc.text('Risk Assessment Results', 20, 65);
+        
+        doc.setFontSize(12);
+        doc.text(`Risk Level: ${result.risk_level}`, 20, 80);
+        doc.text(`Probability: ${(result.probability * 100).toFixed(1)}%`, 20, 95);
+        doc.text(`Model Confidence: ${(result.confidence * 100).toFixed(1)}%`, 20, 110);
+        
+        // Risk Factors
+        if (result.risk_factors && result.risk_factors.length > 0) {
+            doc.setFontSize(14);
+            doc.text('Risk Factors:', 20, 130);
+            doc.setFontSize(11);
+            result.risk_factors.forEach((factor, index) => {
+                doc.text(`• ${factor}`, 25, 145 + (index * 12));
+            });
+        }
+        
+        // Recommendations
+        if (result.recommendations && result.recommendations.length > 0) {
+            const startY = 130 + (result.risk_factors ? result.risk_factors.length * 12 + 30 : 30);
+            doc.setFontSize(14);
+            doc.text('Recommendations:', 20, startY);
+            doc.setFontSize(11);
+            result.recommendations.forEach((rec, index) => {
+                doc.text(`• ${rec}`, 25, startY + 15 + (index * 12));
+            });
+        }
+        
+        // Footer
+        const pageHeight = doc.internal.pageSize.height;
+        doc.setFontSize(10);
+        doc.setTextColor(150, 150, 150);
+        doc.text('HealthPredict AI - AI-Driven Disease Risk Prediction System', 20, pageHeight - 20);
+        doc.text('This report is for informational purposes only. Consult a healthcare professional.', 20, pageHeight - 10);
+        
+        // Save the PDF
+        const filename = `${predictionType}_risk_assessment_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(filename);
+        
+        showNotification('PDF downloaded successfully!', 'success');
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        showNotification('Error generating PDF. Please try again.', 'error');
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${getNotificationIcon(type)}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+    
+    // Close button functionality
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.remove();
+    });
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        'success': 'check-circle',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
     };
+    return icons[type] || 'info-circle';
+}
+
+function updateConfidenceDisplay(result) {
+    const confidencePercentage = document.getElementById('confidence-percentage');
+    const confidence = (result.confidence * 100).toFixed(1);
+    
+    // Animate the confidence percentage
+    animateCounter(confidencePercentage, 0, parseFloat(confidence), 2000, '%');
+    
+    // Update confidence gauge
+    const confidenceContainer = confidencePercentage.closest('.risk-gauge-container');
+    if (confidenceContainer) {
+        const gauge = confidenceContainer.querySelector('.risk-gauge');
+        gauge.style.background = `conic-gradient(from 0deg, var(--gradient-info) 0deg, var(--gradient-info) ${confidence * 3.6}deg, #e2e8f0 ${confidence * 3.6}deg)`;
+    }
+}
+
+function updateRiskFactors(riskFactors) {
+    const riskFactorsList = document.getElementById('risk-factors-list');
+    
+    if (!riskFactors || riskFactors.length === 0) {
+        riskFactorsList.innerHTML = `
+            <li>
+                <div class="list-icon" style="background: var(--info-color);">
+                    <i class="fas fa-info"></i>
+                </div>
+                <div class="list-content">
+                    <div class="list-title">No significant risk factors identified</div>
+                    <div class="list-description">Your current health profile shows minimal concerning indicators</div>
+                </div>
+            </li>
+        `;
+        return;
+    }
+    
+    riskFactorsList.innerHTML = riskFactors.map((factor, index) => `
+        <li class="fade-in-up" style="animation-delay: ${index * 0.1}s;">
+            <div class="list-icon" style="background: var(--warning-color);">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="list-content">
+                <div class="list-title">${formatRiskFactor(factor)}</div>
+                <div class="list-description">${getRiskFactorDescription(factor)}</div>
+            </div>
+        </li>
+    `).join('');
+}
+
+function updateRecommendations(recommendations) {
+    const recommendationsList = document.getElementById('recommendations-list');
+    
+    if (!recommendations || recommendations.length === 0) {
+        recommendationsList.innerHTML = `
+            <li>
+                <div class="list-icon" style="background: var(--success-color);">
+                    <i class="fas fa-thumbs-up"></i>
+                </div>
+                <div class="list-content">
+                    <div class="list-title">Maintain current healthy lifestyle</div>
+                    <div class="list-description">Continue your current health practices and regular check-ups</div>
+                </div>
+            </li>
+        `;
+        return;
+    }
+    
+    recommendationsList.innerHTML = recommendations.map((rec, index) => `
+        <li class="fade-in-up" style="animation-delay: ${index * 0.1}s;">
+            <div class="list-icon" style="background: var(--success-color);">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="list-content">
+                <div class="list-title">${formatRecommendation(rec)}</div>
+                <div class="list-description">${getRecommendationDescription(rec)}</div>
+            </div>
+        </li>
+    `).join('');
+}
+
+function initializeCharts(result, type) {
+    createRiskPieChart(result);
+    createMetricsBarChart(result, type);
+    createRiskLineChart(result);
+}
+
+function createRiskPieChart(result) {
+    const ctx = document.getElementById('riskPieChart');
+    if (!ctx) return;
+    
+    const riskPercentage = result.probability * 100;
+    const safePercentage = 100 - riskPercentage;
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Risk Level', 'Safe Zone'],
+            datasets: [{
+                data: [riskPercentage, safePercentage],
+                backgroundColor: [
+                    getRiskColor(result.risk_level),
+                    '#00d4aa'
+                ],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        }
+                    }
+                }
+            },
+            cutout: '70%'
+        }
+    });
+}
+
+function createMetricsBarChart(result, type) {
+    const ctx = document.getElementById('metricsBarChart');
+    if (!ctx) return;
+    
+    const metrics = getHealthMetrics(result, type);
     
     new Chart(ctx, {
         type: 'bar',
-        data: data,
+        data: {
+            labels: metrics.labels,
+            datasets: [{
+                label: 'Your Values',
+                data: metrics.values,
+                backgroundColor: [
+                    '#667eea',
+                    '#764ba2',
+                    '#f093fb',
+                    '#ff6b9d',
+                    '#00d4aa'
+                ],
+                borderRadius: 8,
+                borderSkipped: false,
+            }]
+        },
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -1314,9 +1022,13 @@ function createRiskFactorsChart(riskFactors) {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        callback: value => value === 100 ? 'High' : value === 50 ? 'Moderate' : ''
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
                     }
                 }
             }
@@ -1324,72 +1036,38 @@ function createRiskFactorsChart(riskFactors) {
     });
 }
 
-function createVitalSignsChart(data) {
-    const ctx = document.getElementById('vitalSignsChart').getContext('2d');
+function createRiskLineChart(result) {
+    const ctx = document.getElementById('riskLineChart');
+    if (!ctx) return;
     
-    const vitalSigns = {
-        'Blood Pressure': data.systolic,
-        'HDL Cholesterol': data.hdl,
-        'LDL Cholesterol': data.ldl,
-        'Total Cholesterol': data.cholesterol,
-        'Triglycerides': data.triglycerides
-    };
+    // Generate timeline data (example projection)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    const currentRisk = result.probability * 100;
+    const riskProjection = [
+        currentRisk,
+        currentRisk * 0.95,
+        currentRisk * 0.9,
+        currentRisk * 0.85,
+        currentRisk * 0.8,
+        currentRisk * 0.75
+    ];
     
     new Chart(ctx, {
-        type: 'radar',
+        type: 'line',
         data: {
-            labels: Object.keys(vitalSigns),
+            labels: months,
             datasets: [{
-                label: 'Your Values',
-                data: Object.values(vitalSigns),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                label: 'Projected Risk Reduction',
+                data: riskProjection,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#667eea',
                 pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                r: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
-
-function createLifestyleFactorsChart(data) {
-    const ctx = document.getElementById('lifestyleFactorsChart').getContext('2d');
-    
-    const lifestyleData = {
-        'Physical Activity': getActivityScore(data.activity),
-        'Smoking Status': getSmokingScore(data.heart_smoke),
-        'Alcohol Consumption': getAlcoholScore(data.alcohol),
-        'Diet Type': getDietScore(data.diet)
-    };
-    
-    new Chart(ctx, {
-        type: 'polarArea',
-        data: {
-            labels: Object.keys(lifestyleData),
-            datasets: [{
-                data: Object.values(lifestyleData),
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ]
+                pointBorderWidth: 2,
+                pointRadius: 6
             }]
         },
         options: {
@@ -1397,113 +1075,615 @@ function createLifestyleFactorsChart(data) {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'right'
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: Math.max(...riskProjection) + 10,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
     });
 }
 
-// Helper functions for chart data
-function getRiskColor(score) {
-    if (score >= 70) return '#dc3545';
-    if (score >= 40) return '#ffc107';
-    return '#28a745';
-}
-
-function getActivityScore(activity) {
-    const scores = {
-        'sedentary': 20,
-        'light': 40,
-        'moderate': 60,
-        'active': 80,
-        'veryActive': 100
-    };
-    return scores[activity] || 0;
-}
-
-function getSmokingScore(smoking) {
-    const scores = {
-        'current': 20,
-        'former': 60,
-        'never': 100
-    };
-    return scores[smoking] || 0;
-}
-
-function getAlcoholScore(alcohol) {
-    const scores = {
-        'none': 100,
-        'light': 80,
-        'moderate': 60,
-        'heavy': 20
-    };
-    return scores[alcohol] || 0;
-}
-
-function getDietScore(diet) {
-    const scores = {
-        'mediterranean': 100,
-        'balanced': 80,
-        'vegetarian': 70,
-        'vegan': 70,
-        'highProtein': 60,
-        'other': 50
-    };
-    return scores[diet] || 0;
-}
-
-function updateHeartHealthResultsUI(riskScore, riskFactors, recommendations) {
-    // Update risk score display
-    document.getElementById('riskScore').textContent = riskScore;
-    document.getElementById('riskLevel').textContent = getRiskLevel(riskScore);
-    document.getElementById('riskLevel').className = `risk-level ${getRiskLevelClass(riskScore)}`;
+// Helper Functions
+function animateCounter(element, start, end, duration, suffix = '') {
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
     
-    // Update risk factors list
-    const riskFactorsList = document.getElementById('riskFactorsList');
-    riskFactorsList.innerHTML = riskFactors.map(factor => `
-        <div class="risk-factor ${factor.level}">
-            <h4>${factor.factor}</h4>
-            <p>${factor.description}</p>
-            <span class="impact ${factor.impact.toLowerCase()}">${factor.impact} Impact</span>
-        </div>
-    `).join('');
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= end) {
+            current = end;
+            clearInterval(timer);
+        }
+        element.textContent = Math.round(current * 10) / 10 + suffix;
+    }, 16);
+}
+
+function getRiskClass(riskLevel) {
+    const level = riskLevel.toLowerCase();
+    if (level === 'low') return 'success';
+    if (level === 'moderate') return 'warning';
+    return 'danger';
+}
+
+function getRiskColor(riskLevel) {
+    const level = riskLevel.toLowerCase();
+    if (level === 'low') return '#00d4aa';
+    if (level === 'moderate') return '#ffa726';
+    return '#f44336';
+}
+
+function getRiskDescription(riskLevel, probability) {
+    const percentage = (probability * 100).toFixed(1);
+    const level = riskLevel.toLowerCase();
     
-    // Update recommendations
-    const recommendationsList = document.getElementById('recommendationsList');
-    recommendationsList.innerHTML = recommendations.map(rec => `
-        <div class="recommendation-category">
-            <h4>${rec.category}</h4>
-            <ul>
-                ${rec.items.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-        </div>
-    `).join('');
+    if (level === 'low') {
+        return `Your risk assessment shows a ${percentage}% probability, indicating a low likelihood of developing the condition. Continue maintaining your healthy lifestyle.`;
+    } else if (level === 'moderate') {
+        return `Your risk assessment shows a ${percentage}% probability, indicating moderate risk. Consider implementing preventive measures and consulting with healthcare providers.`;
+    } else {
+        return `Your risk assessment shows a ${percentage}% probability, indicating higher risk. It's important to seek medical consultation and implement immediate lifestyle changes.`;
+    }
 }
 
-function getRiskLevel(score) {
-    if (score >= 70) return 'High Risk';
-    if (score >= 40) return 'Moderate Risk';
-    return 'Low Risk';
+function formatRiskFactor(factor) {
+    return factor.charAt(0).toUpperCase() + factor.slice(1);
 }
 
-function getRiskLevelClass(score) {
-    if (score >= 70) return 'high';
-    if (score >= 40) return 'moderate';
-    return 'low';
-}
-
-// Initialize results page
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if we have heart health assessment data
-    const urlParams = new URLSearchParams(window.location.search);
-    const service = urlParams.get('service');
+function getRiskFactorDescription(factor) {
+    const descriptions = {
+        'age': 'Age is a non-modifiable risk factor that increases likelihood over time',
+        'high blood pressure': 'Elevated blood pressure puts additional strain on your cardiovascular system',
+        'high cholesterol': 'Elevated cholesterol levels can lead to arterial blockages',
+        'smoking': 'Tobacco use significantly increases risk of multiple health conditions',
+        'diabetes': 'Diabetic condition affects multiple organ systems',
+        'family history': 'Genetic predisposition increases your baseline risk',
+        'obesity': 'Excess weight contributes to multiple health complications',
+        'sedentary lifestyle': 'Lack of physical activity reduces overall health resilience'
+    };
     
-    if (service === 'heart') {
-        // Get stored assessment data
-        const assessmentData = JSON.parse(localStorage.getItem('heartAssessmentData'));
-        if (assessmentData) {
-            handleHeartHealthResults(assessmentData);
+    return descriptions[factor.toLowerCase()] || 'This factor contributes to your overall health risk profile';
+}
+
+function formatRecommendation(rec) {
+    return rec.charAt(0).toUpperCase() + rec.slice(1);
+}
+
+function getRecommendationDescription(rec) {
+    const descriptions = {
+        'regular exercise': 'Aim for 150 minutes of moderate aerobic activity per week',
+        'healthy diet': 'Focus on fruits, vegetables, lean proteins, and whole grains',
+        'quit smoking': 'Smoking cessation shows immediate and long-term health benefits',
+        'weight management': 'Maintain a healthy BMI through balanced diet and exercise',
+        'stress management': 'Practice relaxation techniques, meditation, or counseling',
+        'regular checkups': 'Schedule periodic health screenings and monitoring',
+        'medication compliance': 'Take prescribed medications as directed by your healthcare provider',
+        'limit alcohol': 'Moderate alcohol consumption or consider abstaining completely'
+    };
+    
+    return descriptions[rec.toLowerCase()] || 'This recommendation can help improve your overall health outlook';
+}
+
+function getHealthMetrics(result, type) {
+    // This would typically use actual user input data
+    // For now, we'll create representative data based on the prediction type
+    
+    if (type === 'heart') {
+        return {
+            labels: ['Blood Pressure', 'Cholesterol', 'Heart Rate', 'BMI', 'Exercise'],
+            values: [75, 65, 80, 70, 60] // Normalized percentages
+        };
+    } else {
+        return {
+            labels: ['Blood Sugar', 'BMI', 'Age Factor', 'Activity Level', 'Diet Score'],
+            values: [70, 75, 85, 65, 70] // Normalized percentages
+        };
+    }
+}
+
+function showNoResultsMessage() {
+    const container = document.querySelector('.results-grid');
+    if (container) {
+        container.innerHTML = `
+            <div class="result-card full-width" style="text-align: center; padding: 4rem 2rem;">
+                <div style="font-size: 4rem; color: #64748b; margin-bottom: 2rem;">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h2 style="color: var(--dark-color); margin-bottom: 1rem;">No Results Found</h2>
+                <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 2rem;">
+                    We couldn't find any prediction results. Please complete a health assessment first.
+                </p>
+                <a href="predict.html" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Start New Assessment
+                </a>
+            </div>
+        `;
+    }
+}
+
+function showErrorMessage() {
+    const container = document.querySelector('.results-grid');
+    if (container) {
+        container.innerHTML = `
+            <div class="result-card full-width" style="text-align: center; padding: 4rem 2rem;">
+                <div style="font-size: 4rem; color: #f44336; margin-bottom: 2rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 style="color: var(--dark-color); margin-bottom: 1rem;">Error Loading Results</h2>
+                <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 2rem;">
+                    There was an error loading your prediction results. Please try again.
+                </p>
+                <a href="predict.html" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> Try Again
+                </a>
+            </div>
+        `;
+    }
+}
+
+function initializeResultsPage() {
+    // Add any additional initialization here
+    console.log('Results page initialized');
+}
+// Enhanced action buttons functionality
+function initializeActionButtons() {
+    // Print functionality
+    const printBtn = document.getElementById('print-results');
+    if (printBtn) {
+        printBtn.addEventListener('click', () => {
+            window.print();
+            showNotification('Preparing results for printing...', 'info');
+        });
+    }
+    
+    // Share functionality
+    const shareBtn = document.getElementById('share-results');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'My Health Risk Assessment Results',
+                        text: 'Check out my health risk assessment results from AI-Driven Disease Prediction System',
+                        url: window.location.href
+                    });
+                    showNotification('Results shared successfully!', 'success');
+                } catch (error) {
+                    console.log('Error sharing:', error);
+                    fallbackShare();
+                }
+            } else {
+                fallbackShare();
+            }
+        });
+    }
+    
+    // Download PDF functionality
+    const downloadBtn = document.getElementById('download-pdf');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            generatePDF();
+        });
+    }
+}
+
+function fallbackShare() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        showNotification('Results link copied to clipboard!', 'success');
+    }).catch(() => {
+        showNotification('Unable to share results. Please copy the URL manually.', 'error');
+    });
+}
+
+function generatePDF() {
+    showNotification('Generating PDF...', 'info');
+    
+    try {
+        // Using jsPDF for PDF generation
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Get current results data
+        const predictionType = localStorage.getItem('predictionType');
+        const resultData = predictionType === 'heart' ? 
+            localStorage.getItem('heartPredictionResult') : 
+            localStorage.getItem('diabetesPredictionResult');
+        
+        if (!resultData) {
+            showNotification('No results data found for PDF generation', 'error');
+            return;
+        }
+        
+        const result = JSON.parse(resultData);
+        const title = predictionType === 'heart' ? 'Heart Disease Risk Assessment' : 'Diabetes Risk Assessment';
+        
+        // PDF Header
+        doc.setFontSize(20);
+        doc.setTextColor(40, 40, 40);
+        doc.text(title, 20, 30);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 45);
+        
+        // Risk Overview
+        doc.setFontSize(16);
+        doc.setTextColor(40, 40, 40);
+        doc.text('Risk Assessment Results', 20, 65);
+        
+        doc.setFontSize(12);
+        doc.text(`Risk Level: ${result.risk_level}`, 20, 80);
+        doc.text(`Probability: ${(result.probability * 100).toFixed(1)}%`, 20, 95);
+        doc.text(`Model Confidence: ${(result.confidence * 100).toFixed(1)}%`, 20, 110);
+        
+        // Risk Factors
+        if (result.risk_factors && result.risk_factors.length > 0) {
+            doc.setFontSize(14);
+            doc.text('Risk Factors:', 20, 130);
+            doc.setFontSize(11);
+            result.risk_factors.forEach((factor, index) => {
+                doc.text(`• ${factor}`, 25, 145 + (index * 12));
+            });
+        }
+        
+        // Recommendations
+        if (result.recommendations && result.recommendations.length > 0) {
+            const startY = 130 + (result.risk_factors ? result.risk_factors.length * 12 + 30 : 30);
+            doc.setFontSize(14);
+            doc.text('Recommendations:', 20, startY);
+            doc.setFontSize(11);
+            result.recommendations.forEach((rec, index) => {
+                doc.text(`• ${rec}`, 25, startY + 15 + (index * 12));
+            });
+        }
+        
+        // Footer
+        const pageHeight = doc.internal.pageSize.height;
+        doc.setFontSize(10);
+        doc.setTextColor(150, 150, 150);
+        doc.text('AI-Driven Disease Risk Prediction System', 20, pageHeight - 20);
+        doc.text('This report is for informational purposes only. Consult a healthcare professional.', 20, pageHeight - 10);
+        
+        // Save the PDF
+        const filename = `${predictionType}_risk_assessment_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(filename);
+        
+        showNotification('PDF downloaded successfully!', 'success');
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        showNotification('Error generating PDF. Please try again.', 'error');
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${getNotificationIcon(type)}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+    
+    // Close button functionality
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.remove();
+    });
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        'success': 'check-circle',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    return icons[type] || 'info-circle';
+}
+
+function getRiskLevelClass(riskLevel) {
+    switch (riskLevel.toLowerCase()) {
+        case 'low risk':
+            return 'low-risk';
+        case 'moderate risk':
+            return 'moderate-risk';
+        case 'high risk':
+            return 'high-risk';
+        default:
+            return 'unknown-risk';
+    }
+}
+
+function getRiskDescription(riskLevel, type) {
+    const descriptions = {
+        'heart': {
+            'Low Risk': 'Your cardiovascular risk is currently low. Continue maintaining healthy lifestyle habits.',
+            'Moderate Risk': 'You have moderate cardiovascular risk. Consider lifestyle modifications and regular monitoring.',
+            'High Risk': 'You have high cardiovascular risk. Immediate medical consultation is strongly recommended.'
+        },
+        'diabetes': {
+            'Low Risk': 'Your diabetes risk is currently low. Continue maintaining healthy lifestyle habits.',
+            'Moderate Risk': 'You have moderate diabetes risk. Consider lifestyle modifications and regular monitoring.',
+            'High Risk': 'You have high diabetes risk. Immediate medical consultation is strongly recommended.'
+        }
+    };
+    
+    return descriptions[type]?.[riskLevel] || 'Risk assessment completed. Please consult with a healthcare provider.';
+}
+
+function showNoResultsMessage() {
+    const container = document.querySelector('.results-container') || document.querySelector('main');
+    if (container) {
+        container.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-info-circle"></i>
+                <h2>No Results Found</h2>
+                <p>No prediction results were found. Please complete a health assessment first.</p>
+                <a href="predict.html" class="btn-primary">Take Assessment</a>
+            </div>
+        `;
+    }
+}
+
+function showErrorMessage() {
+    const container = document.querySelector('.results-container') || document.querySelector('main');
+    if (container) {
+        container.innerHTML = `
+            <div class="error-results">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Error Loading Results</h2>
+                <p>There was an error loading your results. Please try taking the assessment again.</p>
+                <a href="predict.html" class="btn-primary">Retake Assessment</a>
+            </div>
+        `;
+    }
+}
+
+function initializeResultsPage() {
+    // Print functionality
+    const printBtn = document.getElementById('print-results');
+    if (printBtn) {
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+    }
+    
+    // Share functionality
+    const shareBtn = document.getElementById('share-results');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'My Health Risk Assessment Results',
+                        text: 'Check out my health risk assessment results from AI-Driven Disease Prediction System',
+                        url: window.location.href
+                    });
+                } catch (error) {
+                    console.log('Error sharing:', error);
+                }
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(window.location.href);
+                alert('Results link copied to clipboard!');
+            }
+        });
+    }
+    
+    // Download PDF functionality (placeholder)
+    const downloadBtn = document.getElementById('download-pdf');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            alert('PDF download feature will be implemented in a future update.');
+        });
+    }
+}
+
+// Additional CSS for results display
+const resultsStyles = `
+    .prediction-results {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .risk-overview {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .risk-level {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 12px;
+    }
+    
+    .risk-level.low-risk {
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: white;
+    }
+    
+    .risk-level.moderate-risk {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: white;
+    }
+    
+    .risk-level.high-risk {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+    
+    .risk-percentage {
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+    
+    .confidence-score {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .confidence-bar {
+        width: 100%;
+        height: 20px;
+        background: #ecf0f1;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 1rem 0;
+    }
+    
+    .confidence-fill {
+        height: 100%;
+        background: #3498db;
+        transition: width 1s ease-in-out;
+    }
+    
+    .risk-factors-section,
+    .recommendations-section {
+        background: #fff;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .risk-factors-list,
+    .recommendations-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .risk-factors-list li,
+    .recommendations-list li {
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        background: #f8f9fa;
+        border-left: 4px solid #3498db;
+        border-radius: 4px;
+    }
+    
+    .next-steps {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .action-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .action-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    
+    .action-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .action-card i {
+        font-size: 2rem;
+        color: #3498db;
+        margin-bottom: 1rem;
+    }
+    
+    .no-results,
+    .error-results {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        max-width: 600px;
+    }
+    
+    .no-results i,
+    .error-results i {
+        font-size: 3rem;
+        color: #95a5a6;
+        margin-bottom: 1rem;
+    }
+    
+    .btn-primary {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+    
+    @media (max-width: 768px) {
+        .risk-overview {
+            grid-template-columns: 1fr;
+        }
+        
+        .action-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        .prediction-results {
+            padding: 1rem;
         }
     }
-}); 
+`;
+
+// Add styles to page
+const styleSheet = document.createElement('style');
+styleSheet.textContent = resultsStyles;
+document.head.appendChild(styleSheet);

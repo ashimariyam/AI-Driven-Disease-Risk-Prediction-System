@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results Page</title>
+</head>
+<body>
+    <h1>Test Results Page</h1>
+    <button id="store-test-data">Store Test Heart Result</button>
+    <button id="store-diabetes-data">Store Test Diabetes Result</button>
+    <button id="view-results">View Results Page</button>
+    <button id="clear-data">Clear All Data</button>
+    
+    <div id="status"></div>
+    
+    <script>
+        document.getElementById('store-test-data').addEventListener('click', function() {
+            const testResult = {
+                "prediction": 1,
+                "probability": 0.542,
+                "risk_level": "Moderate Risk",
+                "confidence": 0.542,
+                "recommendations": [
+                    "Consult a cardiologist immediately",
+                    "Follow prescribed medications",
+                    "Schedule regular cardiac checkups",
+                    "Monitor blood pressure regularly",
+                    "Reduce sodium intake",
+                    "Quit smoking",
+                    "Maintain a Mediterranean-style diet",
+                    "Maintain a healthy weight"
+                ],
+                "risk_factors": [
+                    "Advanced age (>55 years)",
+                    "Male gender", 
+                    "High blood pressure",
+                    "Elevated fasting blood sugar",
+                    "Significant ST depression"
+                ],
+                "timestamp": "2025-06-29T21:27:39.643817"
+            };
+            
+            localStorage.setItem('heartPredictionResult', JSON.stringify(testResult));
+            localStorage.setItem('predictionType', 'heart');
+            document.getElementById('status').innerHTML = '<p style="color: green;">Heart test data stored! ✅</p>';
+        });
+        
+        document.getElementById('store-diabetes-data').addEventListener('click', function() {
+            const testResult = {
+                "risk_level": "High Risk",
+                "probability": 0.785,
+                "confidence": 0.785,
+                "risk_factors": [
+                    "High glucose levels",
+                    "Family history of diabetes",
+                    "Low physical activity",
+                    "High BMI"
+                ],
+                "recommendations": [
+                    "Consult an endocrinologist immediately",
+                    "Monitor blood sugar levels regularly",
+                    "Follow a strict diabetic diet",
+                    "Increase physical activity",
+                    "Consider medication as prescribed"
+                ],
+                "model_version": "diabetes_v1.0",
+                "timestamp": "2025-06-29T21:30:00.000000"
+            };
+            
+            localStorage.setItem('diabetesPredictionResult', JSON.stringify(testResult));
+            localStorage.setItem('predictionType', 'diabetes');
+            document.getElementById('status').innerHTML = '<p style="color: green;">Diabetes test data stored! ✅</p>';
+        });
+        
+        document.getElementById('view-results').addEventListener('click', function() {
+            window.open('results.html', '_blank');
+        });
+        
+        document.getElementById('clear-data').addEventListener('click', function() {
+            localStorage.removeItem('heartPredictionResult');
+            localStorage.removeItem('diabetesPredictionResult');
+            localStorage.removeItem('predictionType');
+            document.getElementById('status').innerHTML = '<p style="color: orange;">All data cleared! 🗑️</p>';
+        });
+        
+        // Show current localStorage data
+        function showCurrentData() {
+            const heartData = localStorage.getItem('heartPredictionResult');
+            const diabetesData = localStorage.getItem('diabetesPredictionResult');
+            const predictionType = localStorage.getItem('predictionType');
+            
+            let status = '<h3>Current localStorage Data:</h3>';
+            status += `<p><strong>Prediction Type:</strong> ${predictionType || 'None'}</p>`;
+            status += `<p><strong>Heart Data:</strong> ${heartData ? '✅ Present' : '❌ Missing'}</p>`;
+            status += `<p><strong>Diabetes Data:</strong> ${diabetesData ? '✅ Present' : '❌ Missing'}</p>`;
+            
+            document.getElementById('status').innerHTML = status;
+        }
+        
+        // Load current data status on page load
+        showCurrentData();
+        
+        // Refresh data status every 2 seconds
+        setInterval(showCurrentData, 2000);
+    </script>
+</body>
+</html>

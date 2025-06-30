@@ -1,0 +1,12 @@
+[2025-06-14 20:28:25,923] INFO in app: Heart disease prediction model loaded successfully
+[2025-06-14 20:45:27,328] INFO in app: Heart disease prediction model loaded successfully
+[2025-06-14 20:55:52,089] INFO in app: Heart disease prediction model loaded successfully
+[2025-06-28 23:00:07,513] INFO in app: Heart disease prediction model loaded successfully
+[2025-06-28 23:23:20,142] INFO in app: Heart disease prediction model loaded successfully
+[2025-06-28 23:37:47,354] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:38:38,528] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:39:55,260] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:41:14,428] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:41:57,437] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:42:35,486] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.
+[2025-06-28 23:46:53,170] ERROR in app: Prediction error: Specifying the columns using strings is only supported for dataframes.

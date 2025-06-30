@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize conditional form fields
     initConditionalFields();
     
-    // Initialize form submission handlers
-    initFormHandlers();
+    // NOTE: Form handlers are now handled by api-client.js for real API integration
+    // initFormHandlers(); // DISABLED - Using api-client.js instead
     
     // Check if a service was selected from the services page
     checkSelectedService();
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize Tabs
  */
 function initTabs() {
-    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');
     
     tabButtons.forEach(button => {

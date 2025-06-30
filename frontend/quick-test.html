@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Results Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px; 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        button:hover { background: #0056b3; }
+        .status { 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            background: #f8f9fa; 
+            border-left: 4px solid #007bff; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Quick Results Test</h1>
+    <p>Use these buttons to test the results page functionality:</p>
+    
+    <button onclick="storeHeartResult()">Store Heart Test Result</button>
+    <button onclick="storeDiabetesResult()">Store Diabetes Test Result</button>
+    <button onclick="viewResults()">Open Results Page</button>
+    <button onclick="clearData()">Clear All Data</button>
+    
+    <div id="status" class="status">Ready to test...</div>
+    
+    <script>
+        function storeHeartResult() {
+            const result = {
+                "prediction": 1,
+                "probability": 0.654,
+                "risk_level": "Moderate Risk",
+                "confidence": 0.654,
+                "recommendations": [
+                    "🏥 Consult a cardiologist for comprehensive evaluation",
+                    "💊 Consider medication as prescribed by your doctor",
+                    "📅 Schedule regular cardiac checkups every 6 months",
+                    "🩺 Monitor blood pressure daily",
+                    "🧂 Reduce sodium intake to less than 2,300mg per day",
+                    "🚭 Quit smoking immediately",
+                    "🥬 Follow a Mediterranean-style diet",
+                    "⚖️ Maintain healthy weight (BMI 18.5-24.9)"
+                ],
+                "risk_factors": [
+                    "Advanced age (>55 years)",
+                    "Male gender",
+                    "High blood pressure (>140/90 mmHg)",
+                    "Elevated cholesterol levels",
+                    "Low physical activity"
+                ],
+                "timestamp": new Date().toISOString()
+            };
+            
+            localStorage.setItem('heartPredictionResult', JSON.stringify(result));
+            localStorage.setItem('predictionType', 'heart');
+            
+            document.getElementById('status').innerHTML = `
+                <strong>✅ Heart Result Stored!</strong><br>
+                Risk Level: ${result.risk_level}<br>
+                Probability: ${(result.probability * 100).toFixed(1)}%<br>
+                Risk Factors: ${result.risk_factors.length}<br>
+                Recommendations: ${result.recommendations.length}
+            `;
+        }
+        
+        function storeDiabetesResult() {
+            const result = {
+                "risk_level": "High Risk",
+                "probability": 0.823,
+                "confidence": 0.823,
+                "risk_factors": [
+                    "High glucose levels (>140 mg/dL)",
+                    "Family history of diabetes",
+                    "Low physical activity (<2 hrs/week)",
+                    "High BMI (>30)",
+                    "Age over 45 years"
+                ],
+                "recommendations": [
+                    "🏥 Consult an endocrinologist immediately",
+                    "📊 Monitor blood sugar levels 3x daily",
+                    "🥗 Follow a strict low-carb, diabetic diet",
+                    "🏃‍♂️ Increase physical activity to 150 min/week",
+                    "💊 Consider metformin as prescribed",
+                    "⚖️ Aim for 5-10% weight loss",
+                    "🚭 Quit smoking if applicable",
+                    "😴 Maintain 7-9 hours of quality sleep"
+                ],
+                "model_version": "diabetes_v1.0",
+                "timestamp": new Date().toISOString()
+            };
+            
+            localStorage.setItem('diabetesPredictionResult', JSON.stringify(result));
+            localStorage.setItem('predictionType', 'diabetes');
+            
+            document.getElementById('status').innerHTML = `
+                <strong>✅ Diabetes Result Stored!</strong><br>
+                Risk Level: ${result.risk_level}<br>
+                Probability: ${(result.probability * 100).toFixed(1)}%<br>
+                Risk Factors: ${result.risk_factors.length}<br>
+                Recommendations: ${result.recommendations.length}
+            `;
+        }
+        
+        function viewResults() {
+            const predictionType = localStorage.getItem('predictionType');
+            if (!predictionType) {
+                document.getElementById('status').innerHTML = '<strong>❌ No data found!</strong><br>Store a result first.';
+                return;
+            }
+            
+            window.open('results.html', '_blank');
+            document.getElementById('status').innerHTML = `<strong>🚀 Opening results page...</strong><br>Prediction Type: ${predictionType}`;
+        }
+        
+        function clearData() {
+            localStorage.removeItem('heartPredictionResult');
+            localStorage.removeItem('diabetesPredictionResult');
+            localStorage.removeItem('predictionType');
+            
+            document.getElementById('status').innerHTML = '<strong>🗑️ All data cleared!</strong>';
+        }
+        
+        // Show current data status
+        function updateStatus() {
+            const heartData = localStorage.getItem('heartPredictionResult');
+            const diabetesData = localStorage.getItem('diabetesPredictionResult');
+            const predictionType = localStorage.getItem('predictionType');
+            
+            if (!predictionType) {
+                document.getElementById('status').innerHTML = 'No stored data. Click a button to store test results.';
+                return;
+            }
+            
+            document.getElementById('status').innerHTML = `
+                <strong>📊 Current Data Status:</strong><br>
+                Active Type: ${predictionType}<br>
+                Heart Data: ${heartData ? '✅ Available' : '❌ Missing'}<br>
+                Diabetes Data: ${diabetesData ? '✅ Available' : '❌ Missing'}
+            `;
+        }
+        
+        // Update status on page load
+        updateStatus();
+        
+        // Update status every 2 seconds
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>

@@ -8,11 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('🚀 Login form submitted');
             
             // Get form data
             const email = this.querySelector('input[name="email"]').value;
             const password = this.querySelector('input[name="password"]').value;
             const rememberMe = this.querySelector('input[name="remember"]')?.checked || false;
+            
+            console.log('📝 Login data:', { email, password: '***', rememberMe });
             
             // Show loading state
             const submitBtn = this.querySelector('button[type="submit"]');
@@ -23,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Authenticate user using localStorage
             authenticateUser(email, password, rememberMe)
                 .then(user => {
+                    console.log('✅ Login successful:', user);
                     // Show success message
                     showSuccessMessage('Login successful! Redirecting...');
                     
@@ -32,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 1500);
                 })
                 .catch(error => {
+                    console.log('❌ Login failed:', error);
                     // Show error message
                     showErrorMessage(error);
                     

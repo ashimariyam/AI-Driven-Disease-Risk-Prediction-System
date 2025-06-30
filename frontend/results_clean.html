@@ -689,11 +689,8 @@
                     <button onclick="loadSampleData('heart')" class="btn btn-primary" style="margin-right: 1rem;">
                         <i class="fas fa-heartbeat"></i> Load Sample Heart Results
                     </button>
-                    <button onclick="loadSampleData('diabetes')" class="btn btn-secondary" style="margin-right: 1rem;">
+                    <button onclick="loadSampleData('diabetes')" class="btn btn-secondary">
                         <i class="fas fa-tint"></i> Load Sample Diabetes Results
-                    </button>
-                    <button onclick="clearTestData()" class="btn" style="background: var(--gradient-danger); color: white;">
-                        <i class="fas fa-trash"></i> Clear Test Data
                     </button>
                 </div>
             </div>
@@ -706,8 +703,6 @@
     <script>
         // Initialize page when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Results page loaded');
-            
             // Add staggered animation delays
             const elements = document.querySelectorAll('.fade-in-up');
             elements.forEach((el, index) => {
@@ -719,40 +714,14 @@
             
             // Initialize action buttons
             initializeActionButtons();
-            
-            // Add debug button for testing
-            setTimeout(() => {
-                addDebugButton();
-            }, 1000);
         });
-        
-        // Add debug button to help with testing
-        function addDebugButton() {
-            const container = document.querySelector('.results-container');
-            if (container && container.innerHTML.includes('Loading your health assessment results')) {
-                const debugBtn = document.createElement('button');
-                debugBtn.innerHTML = '<i class="fas fa-bug"></i> Debug Mode';
-                debugBtn.className = 'btn';
-                debugBtn.style.cssText = 'background: var(--gradient-danger); color: white; margin: 1rem;';
-                debugBtn.onclick = function() {
-                    console.clear();
-                    console.log('🐛 DEBUG MODE ACTIVATED');
-                    debugLocalStorage();
-                    loadResults();
-                };
-                container.appendChild(debugBtn);
-            }
-        }
 
         // Sample data for testing
         function loadSampleData(type) {
-            console.log('🧪 Loading sample data for:', type);
-            
             if (type === 'heart') {
                 const sampleHeartResult = {
-                    prediction: 0,
-                    probability: 0.35,
                     risk_level: 'Moderate',
+                    probability: 0.35,
                     confidence: 0.87,
                     risk_factors: [
                         'Age over 50',
@@ -771,12 +740,10 @@
                 
                 localStorage.setItem('predictionType', 'heart');
                 localStorage.setItem('heartPredictionResult', JSON.stringify(sampleHeartResult));
-                console.log('✅ Heart sample data saved');
-            } else if (type === 'diabetes') {
+            } else {
                 const sampleDiabetesResult = {
-                    prediction: 0,
-                    probability: 0.15,
                     risk_level: 'Low',
+                    probability: 0.15,
                     confidence: 0.92,
                     risk_factors: [
                         'Family history of diabetes',
@@ -793,73 +760,11 @@
                 
                 localStorage.setItem('predictionType', 'diabetes');
                 localStorage.setItem('diabetesPredictionResult', JSON.stringify(sampleDiabetesResult));
-                console.log('✅ Diabetes sample data saved');
             }
             
-            // Force reload the results
-            console.log('🔄 Reloading page to show results...');
-            setTimeout(() => {
-                location.reload();
-            }, 100);
-        }
-        
-        // Clear all test data
-        function clearTestData() {
-            localStorage.removeItem('predictionType');
-            localStorage.removeItem('heartPredictionResult');
-            localStorage.removeItem('diabetesPredictionResult');
-            console.log('🗑️ Test data cleared');
+            // Reload the page to show results
             location.reload();
         }
-        
-        // Force load sample data and display it immediately
-        function forceLoadSample() {
-            console.log('🔧 Force loading sample data...');
-            
-            const sampleResult = {
-                prediction: 0,
-                probability: 0.25,
-                risk_level: 'Low',
-                confidence: 0.85,
-                risk_factors: [
-                    'Age: 35 years',
-                    'Blood pressure: Normal',
-                    'Cholesterol: Healthy range',
-                    'Exercise: Regular'
-                ],
-                recommendations: [
-                    'Continue regular physical activity',
-                    'Maintain healthy diet',
-                    'Monitor health annually',
-                    'Manage stress levels'
-                ],
-                timestamp: new Date().toISOString()
-            };
-            
-            // Store in localStorage
-            localStorage.setItem('predictionType', 'heart');
-            localStorage.setItem('heartPredictionResult', JSON.stringify(sampleResult));
-            
-            // Immediately try to display
-            if (typeof loadResults === 'function') {
-                loadResults();
-            } else {
-                location.reload();
-            }
-        }
-        
-        // Add force load button after 2 seconds if still loading
-        setTimeout(() => {
-            const container = document.querySelector('.results-container');
-            if (container && container.innerHTML.includes('Loading your health assessment results')) {
-                const forceBtn = document.createElement('button');
-                forceBtn.innerHTML = '<i class="fas fa-bolt"></i> Force Load Sample';
-                forceBtn.className = 'btn';
-                forceBtn.style.cssText = 'background: linear-gradient(135deg, #ff6b9d, #c44569); color: white; margin: 1rem;';
-                forceBtn.onclick = forceLoadSample;
-                container.appendChild(forceBtn);
-            }
-        }, 2000);
     </script>
 </body>
 </html>

@@ -1,0 +1,145 @@
+2025-06-29 19:24:34,699 - main - INFO - Initializing ML models...
+2025-06-29 19:29:14,394 - main - INFO - Received heart disease prediction request: {'age': 45, 'sex': 1, 'cp': 0, 'trestbps': 130, 'chol': 200, 'fbs': 0, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 1.0, 'slope': 1, 'ca': 0, 'thal': 2}
+2025-06-29 19:29:16,596 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 120, 'blood_pressure': 80, 'skin_thickness': 25, 'insulin': 100, 'bmi': 24.5, 'diabetes_pedigree': 0.5, 'age': 35, 'family_history': 0, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 2}
+2025-06-29 19:29:16,599 - models.diabetes_model - ERROR - Error in preprocessing: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- age
+- alcohol
+- blood_pressure
+- bmi
+- diabetes_pedigree
+- ...
+Feature names seen at fit time, yet now missing:
+- Age
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- ...
+
+2025-06-29 19:29:16,600 - models.diabetes_model - ERROR - Error in diabetes prediction: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- age
+- alcohol
+- blood_pressure
+- bmi
+- diabetes_pedigree
+- ...
+Feature names seen at fit time, yet now missing:
+- Age
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- ...
+
+2025-06-29 19:29:16,601 - main - ERROR - Error in diabetes prediction: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- age
+- alcohol
+- blood_pressure
+- bmi
+- diabetes_pedigree
+- ...
+Feature names seen at fit time, yet now missing:
+- Age
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- ...
+
+2025-06-29 19:29:56,778 - main - INFO - Initializing ML models...
+2025-06-29 19:30:19,686 - main - INFO - Initializing ML models...
+2025-06-29 19:30:43,765 - main - INFO - Initializing ML models...
+2025-06-29 19:31:17,551 - main - INFO - Received heart disease prediction request: {'age': 45, 'sex': 1, 'cp': 0, 'trestbps': 130, 'chol': 200, 'fbs': 0, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 1.0, 'slope': 1, 'ca': 0, 'thal': 2}
+2025-06-29 19:31:19,789 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 120, 'blood_pressure': 80, 'skin_thickness': 25, 'insulin': 100, 'bmi': 24.5, 'diabetes_pedigree': 0.5, 'age': 35, 'family_history': 0, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 2}
+2025-06-29 19:31:19,792 - models.diabetes_model - ERROR - Error in preprocessing: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- AlcoholConsumption(drinks/week)_13
+- ...
+
+2025-06-29 19:31:19,792 - models.diabetes_model - ERROR - Error in diabetes prediction: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- AlcoholConsumption(drinks/week)_13
+- ...
+
+2025-06-29 19:31:19,793 - main - ERROR - Error in diabetes prediction: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- AlcoholConsumption(drinks/week)_1
+- AlcoholConsumption(drinks/week)_10
+- AlcoholConsumption(drinks/week)_11
+- AlcoholConsumption(drinks/week)_12
+- AlcoholConsumption(drinks/week)_13
+- ...
+
+2025-06-29 19:31:49,232 - main - INFO - Initializing ML models...
+2025-06-29 19:36:59,003 - main - INFO - Initializing ML models...
+2025-06-29 19:37:18,711 - main - INFO - Initializing ML models...
+2025-06-29 19:37:23,530 - main - INFO - Received heart disease prediction request: {'age': 45, 'sex': 1, 'cp': 0, 'trestbps': 130, 'chol': 200, 'fbs': 0, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 1.0, 'slope': 1, 'ca': 0, 'thal': 2}
+2025-06-29 19:37:25,685 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 120, 'blood_pressure': 80, 'skin_thickness': 25, 'insulin': 100, 'bmi': 24.5, 'diabetes_pedigree': 0.5, 'age': 35, 'family_history': 0, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 2}
+2025-06-29 19:37:25,687 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-29 19:37:25,688 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 120.0, 'BloodPressure': 80.0, 'SkinThickness': 25.0, 'Insulin': 100.0, 'BMI': 24.5, 'DiabetesPedigreeFunction': 0.5, 'Age': 35.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 2.0, 'FamilyHistory_No': 1.0, 'FamilyHistory_Yes': 0.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-29 19:37:45,249 - main - INFO - Initializing ML models...
+2025-06-29 19:37:47,120 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-29 19:37:47,121 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-29 19:38:01,056 - main - INFO - Initializing ML models...
+2025-06-29 19:38:02,874 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-29 19:38:02,875 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-29 20:32:16,094 - main - INFO - Initializing ML models...
+2025-06-29 20:32:17,959 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-29 20:32:17,961 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-29 20:32:37,429 - main - INFO - Initializing ML models...
+2025-06-29 20:32:38,656 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-29 20:32:38,657 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-29 20:32:53,551 - main - INFO - Received heart disease prediction request: {'age': 45, 'sex': 1, 'cp': 0, 'trestbps': 130, 'chol': 200, 'fbs': 0, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 1.0, 'slope': 1, 'ca': 0, 'thal': 2}
+2025-06-29 20:32:55,719 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 120, 'blood_pressure': 80, 'skin_thickness': 25, 'insulin': 100, 'bmi': 24.5, 'diabetes_pedigree': 0.5, 'age': 35, 'family_history': 0, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 2}
+2025-06-29 20:32:55,720 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-29 20:32:55,721 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 120.0, 'BloodPressure': 80.0, 'SkinThickness': 25.0, 'Insulin': 100.0, 'BMI': 24.5, 'DiabetesPedigreeFunction': 0.5, 'Age': 35.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 2.0, 'FamilyHistory_No': 1.0, 'FamilyHistory_Yes': 0.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-29 20:40:05,237 - main - INFO - Received heart disease prediction request: {'age': 45, 'sex': 1, 'cp': 0, 'trestbps': 130, 'chol': 200, 'fbs': 0, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 1.0, 'slope': 1, 'ca': 0, 'thal': 2}
+2025-06-29 20:40:07,372 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 120, 'blood_pressure': 80, 'skin_thickness': 25, 'insulin': 100, 'bmi': 24.5, 'diabetes_pedigree': 0.5, 'age': 35, 'family_history': 0, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 2}
+2025-06-29 20:40:07,373 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-29 20:40:07,374 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 120.0, 'BloodPressure': 80.0, 'SkinThickness': 25.0, 'Insulin': 100.0, 'BMI': 24.5, 'DiabetesPedigreeFunction': 0.5, 'Age': 35.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 2.0, 'FamilyHistory_No': 1.0, 'FamilyHistory_Yes': 0.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-29 20:47:06,689 - main - INFO - Received diabetes prediction request: {'pregnancies': 3, 'glucose': 100, 'blood_pressure': 80, 'skin_thickness': 50, 'insulin': 100, 'bmi': 60.0, 'diabetes_pedigree': 1.0, 'age': 60, 'family_history': 1, 'physical_activity': 3.0, 'smoking': 1, 'alcohol': 10}
+2025-06-29 20:47:06,691 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-29 20:47:06,693 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 3.0, 'Glucose': 100.0, 'BloodPressure': 80.0, 'SkinThickness': 50.0, 'Insulin': 100.0, 'BMI': 60.0, 'DiabetesPedigreeFunction': 1.0, 'Age': 60.0, 'PhysicalActivity': 3.0, 'AlcoholConsumption': 10.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 0.0, 'SmokingStatus_Smoker': 1.0}
+2025-06-29 20:49:37,752 - main - INFO - Received heart disease prediction request: {'age': 40, 'sex': 1, 'cp': 0, 'trestbps': 100, 'chol': 150, 'fbs': 1, 'restecg': 0, 'thalach': 60, 'exang': 1, 'oldpeak': 0.5, 'slope': 0, 'ca': 2, 'thal': 1}
+2025-06-29 21:18:26,348 - main - INFO - Initializing ML models...
+2025-06-29 21:18:28,011 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-29 21:18:28,015 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-29 21:24:25,597 - main - INFO - Received diabetes prediction request: {'pregnancies': 3, 'glucose': 60, 'blood_pressure': 100, 'skin_thickness': 40, 'insulin': 50, 'bmi': 60.0, 'diabetes_pedigree': 1.0, 'age': 50, 'family_history': 1, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 0}
+2025-06-29 21:24:25,601 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-29 21:24:25,602 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 3.0, 'Glucose': 60.0, 'BloodPressure': 100.0, 'SkinThickness': 40.0, 'Insulin': 50.0, 'BMI': 60.0, 'DiabetesPedigreeFunction': 1.0, 'Age': 50.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 0.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-29 21:25:30,194 - main - INFO - Received heart disease prediction request: {'age': 60, 'sex': 1, 'cp': 1, 'trestbps': 80, 'chol': 100, 'fbs': 1, 'restecg': 0, 'thalach': 60, 'exang': 1, 'oldpeak': 0.0, 'slope': 0, 'ca': 0, 'thal': 1}
+2025-06-29 21:27:39,516 - main - INFO - Received heart disease prediction request: {'age': 63, 'sex': 1, 'cp': 3, 'trestbps': 145, 'chol': 233, 'fbs': 1, 'restecg': 0, 'thalach': 150, 'exang': 0, 'oldpeak': 2.3, 'slope': 0, 'ca': 0, 'thal': 1}
+2025-06-29 21:42:03,825 - main - INFO - Received heart disease prediction request: {'age': 30, 'sex': 0, 'cp': 0, 'trestbps': 80, 'chol': 100, 'fbs': 0, 'restecg': 0, 'thalach': 60, 'exang': 0, 'oldpeak': 0.0, 'slope': 0, 'ca': 1, 'thal': 1}
+2025-06-29 21:43:56,150 - main - INFO - Received heart disease prediction request: {'age': 50, 'sex': 1, 'cp': 0, 'trestbps': 100, 'chol': 300, 'fbs': 1, 'restecg': 1, 'thalach': 80, 'exang': 1, 'oldpeak': 1.0, 'slope': 1, 'ca': 2, 'thal': 2}
+2025-06-30 11:14:34,151 - main - INFO - Initializing ML models...
+2025-06-30 11:14:35,991 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-30 11:14:35,994 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-30 11:16:30,665 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 300, 'blood_pressure': 80, 'skin_thickness': 40, 'insulin': 800, 'bmi': 60.0, 'diabetes_pedigree': 2.0, 'age': 65, 'family_history': 1, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 0}
+2025-06-30 11:16:30,671 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-30 11:16:30,672 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 300.0, 'BloodPressure': 80.0, 'SkinThickness': 40.0, 'Insulin': 800.0, 'BMI': 60.0, 'DiabetesPedigreeFunction': 2.0, 'Age': 65.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 0.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-30 11:17:56,831 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 100, 'blood_pressure': 130, 'skin_thickness': 40, 'insulin': 700, 'bmi': 65.0, 'diabetes_pedigree': 2.0, 'age': 70, 'family_history': 1, 'physical_activity': 5.0, 'smoking': 0, 'alcohol': 10}
+2025-06-30 11:17:56,833 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-30 11:17:56,835 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 100.0, 'BloodPressure': 130.0, 'SkinThickness': 40.0, 'Insulin': 700.0, 'BMI': 65.0, 'DiabetesPedigreeFunction': 2.0, 'Age': 70.0, 'PhysicalActivity': 5.0, 'AlcoholConsumption': 10.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}
+2025-06-30 11:35:07,214 - main - INFO - Initializing ML models...
+2025-06-30 11:35:09,708 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-30 11:35:09,709 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-30 11:37:47,301 - main - INFO - Received diabetes prediction request: {'pregnancies': 0, 'glucose': 250, 'blood_pressure': 130, 'skin_thickness': 50, 'insulin': 700, 'bmi': 69.0, 'diabetes_pedigree': 2.0, 'age': 70, 'family_history': 1, 'physical_activity': 10.0, 'smoking': 1, 'alcohol': 10}
+2025-06-30 11:37:47,304 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-30 11:37:47,305 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 0.0, 'Glucose': 250.0, 'BloodPressure': 130.0, 'SkinThickness': 50.0, 'Insulin': 700.0, 'BMI': 69.0, 'DiabetesPedigreeFunction': 2.0, 'Age': 70.0, 'PhysicalActivity': 10.0, 'AlcoholConsumption': 10.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 0.0, 'SmokingStatus_Smoker': 1.0}
+2025-06-30 11:55:02,765 - main - INFO - Initializing ML models...
+2025-06-30 11:55:04,148 - models.diabetes_model - INFO - Diabetes model loaded successfully
+2025-06-30 11:55:04,149 - models.diabetes_model - INFO - Diabetes scaler loaded successfully
+2025-06-30 12:05:09,199 - main - INFO - Received diabetes prediction request: {'pregnancies': 2, 'glucose': 100, 'blood_pressure': 130, 'skin_thickness': 40, 'insulin': 700, 'bmi': 65.0, 'diabetes_pedigree': 2.0, 'age': 50, 'family_history': 1, 'physical_activity': 10.0, 'smoking': 0, 'alcohol': 0}
+2025-06-30 12:05:09,203 - models.diabetes_model - INFO - Prepared input data shape: (1, 14)
+2025-06-30 12:05:09,204 - models.diabetes_model - INFO - Feature values: {'Pregnancies': 2.0, 'Glucose': 100.0, 'BloodPressure': 130.0, 'SkinThickness': 40.0, 'Insulin': 700.0, 'BMI': 65.0, 'DiabetesPedigreeFunction': 2.0, 'Age': 50.0, 'PhysicalActivity': 10.0, 'AlcoholConsumption': 0.0, 'FamilyHistory_No': 0.0, 'FamilyHistory_Yes': 1.0, 'SmokingStatus_Non-Smoker': 1.0, 'SmokingStatus_Smoker': 0.0}

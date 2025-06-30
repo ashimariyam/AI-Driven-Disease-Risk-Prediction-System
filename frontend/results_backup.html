@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Risk Assessment Results | HealthPredict AI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --pink-brand: #ff6b9d;
+            --success-color: #00d4aa;
+            --warning-color: #ffa726;
+            --danger-color: #f44336;
+            --info-color: #2196f3;
+            --dark-color: #1a202c;
+            --light-color: #f8fafc;
+            --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-pink: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            --gradient-success: linear-gradient(135deg, #00d4aa 0%, #4facfe 100%);
+            --gradient-warning: linear-gradient(135deg, #ffa726 0%, #ffcc02 100%);
+            --gradient-danger: linear-gradient(135deg, #f44336 0%, #ff6b6b 100%);
+            --gradient-info: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Modern Header */
+        .modern-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-pink);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-tagline {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-color);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .results-hero {
+            background: var(--gradient-primary);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 30s infinite linear;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .results-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .assessment-date {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Enhanced Grid Layout */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Enhanced Card Styles */
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 25px 25px 0 0;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        /* Enhanced Risk Display */
+        .risk-display {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .risk-gauge-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+        }
+
+        .risk-gauge {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #e2e8f0 0deg, #e2e8f0 270deg, transparent 270deg);
+            position: relative;
+            padding: 15px;
+        }
+
+        .gauge-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .risk-percentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-label {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .risk-level-badge {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .risk-low {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .risk-moderate {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .risk-high {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        /* Enhanced Lists */
+        .enhanced-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .enhanced-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .enhanced-list li:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .list-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .list-content {
+            flex: 1;
+        }
+
+        .list-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .list-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .resource-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: var(--pink-brand);
+            transform: translateX(5px);
+        }
+
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-up:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in-up:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in-up:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .results-hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .results-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 300px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification-success {
+            background: var(--gradient-success);
+        }
+
+        .notification-error {
+            background: var(--gradient-danger);
+        }
+
+        .notification-info {
+            background: var(--gradient-info);
+        }
+
+        .notification-warning {
+            background: var(--gradient-warning);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: auto;
+            padding: 0;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Enhanced Header -->
+    <header class="modern-header">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                HealthPredict AI
+                <span class="brand-tagline">• Intelligent Health Insights</span>
+            </a>
+            
+            <div class="header-actions">
+                <a href="predict.html" class="btn btn-secondary">
+                    <i class="fas fa-chart-line"></i> New Prediction
+                </a>
+                <a href="profile.html" class="btn btn-primary">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="results-hero fade-in-up">
+            <div class="hero-content">
+                <h1 id="hero-title">Health Risk Assessment Results</h1>
+                <p class="hero-subtitle">Your personalized health analysis is ready</p>
+                <p class="assessment-date">Assessment Date: <span id="assessment-date">Loading...</span></p>
+                
+                <div class="hero-actions">
+                    <button id="download-pdf" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download PDF Report
+                    </button>
+                    <button id="share-results" class="btn btn-secondary">
+                        <i class="fas fa-share-alt"></i> Share Results
+                    </button>
+                    <button id="print-results" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Print Report
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Container (will be populated by JavaScript) -->
+        <div class="results-container">
+            <!-- Loading state -->
+            <div class="result-card fade-in-up" style="text-align: center; padding: 4rem;">
+                <div class="card-icon" style="background: var(--gradient-info); margin: 0 auto 2rem;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <h3>Loading your health assessment results...</h3>
+                <p style="color: #64748b; margin-top: 1rem;">Please wait while we analyze your health data</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/api-client.js"></script>
+    <script src="js/results.js"></script>
+    <script>
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add staggered animation delays
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Load and display results
+            loadResults();
+            
+            // Initialize action buttons
+            initializeActionButtons();
+        });
+    </script>
+</body>
+</html>
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-color);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .results-hero {
+            background: var(--gradient-primary);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 30s infinite linear;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .results-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .assessment-date {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Enhanced Grid Layout */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Enhanced Card Styles */
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 25px 25px 0 0;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        /* Enhanced Risk Display */
+        .risk-display {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .risk-gauge-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+        }
+
+        .risk-gauge {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #e2e8f0 0deg, #e2e8f0 270deg, transparent 270deg);
+            position: relative;
+            padding: 15px;
+        }
+
+        .gauge-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .risk-percentage {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-label {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .risk-level-badge {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .risk-low {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .risk-moderate {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .risk-high {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        /* Enhanced Lists */
+        .enhanced-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .enhanced-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .enhanced-list li:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .list-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .list-content {
+            flex: 1;
+        }
+
+        .list-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .list-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .resource-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            color: var(--pink-brand);
+            transform: translateX(5px);
+        }
+
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-up:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in-up:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in-up:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .results-hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .results-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            background: var(--gradient-success);
+        }
+
+        .notification.error {
+            background: var(--gradient-danger);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Enhanced Header -->
+    <header class="modern-header">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                HealthPredict AI
+                <span class="brand-tagline">• Intelligent Health Insights</span>
+            </a>
+            
+            <div class="header-actions">
+                <a href="predict.html" class="btn btn-secondary">
+                    <i class="fas fa-chart-line"></i> New Prediction
+                </a>
+                <a href="profile.html" class="btn btn-primary">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="results-hero fade-in-up">
+            <div class="hero-content">
+                <h1 id="hero-title">Health Risk Assessment Results</h1>
+                <p class="hero-subtitle">Your personalized health analysis is ready</p>
+                <p class="assessment-date">Assessment Date: <span id="assessment-date">Loading...</span></p>
+                
+                <div class="hero-actions">
+                    <button id="download-pdf" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download PDF Report
+                    </button>
+                    <button id="share-results" class="btn btn-secondary">
+                        <i class="fas fa-share-alt"></i> Share Results
+                    </button>
+                    <button id="print-results" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Print Report
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Results Grid -->
+        <div class="results-grid">
+            <!-- Overall Risk Assessment Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-primary);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="card-title">Overall Risk Assessment</h3>
+                </div>
+                <div class="risk-display">
+                    <div class="risk-gauge-container">
+                        <div class="risk-gauge">
+                            <div class="gauge-inner">
+                                <div class="risk-percentage" id="risk-percentage">--</div>
+                                <div class="risk-label">Risk Level</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="risk-level-badge" id="risk-level-badge">Analyzing...</div>
+                    <p id="risk-description" style="margin-top: 1.5rem; color: #64748b; font-size: 1.1rem;">Processing your health data...</p>
+                </div>
+            </div>
+
+            <!-- Model Confidence Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-info);">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3 class="card-title">Model Confidence</h3>
+                </div>
+                <div class="risk-display">
+                    <div class="risk-gauge-container">
+                        <div class="risk-gauge">
+                            <div class="gauge-inner">
+                                <div class="risk-percentage" id="confidence-percentage">--</div>
+                                <div class="risk-label">Confidence</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.5rem; color: #64748b; font-size: 1.1rem;">AI model prediction accuracy and reliability score</p>
+                </div>
+            </div>
+
+            <!-- Risk Factors Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-warning);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="card-title">Contributing Risk Factors</h3>
+                </div>
+                <ul class="enhanced-list" id="risk-factors-list">
+                    <li>
+                        <div class="list-icon skeleton">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="list-content">
+                            <div class="list-title">Loading risk factors...</div>
+                            <div class="list-description">Analyzing your health data to identify key risk indicators</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Health Recommendations Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="card-title">Personalized Recommendations</h3>
+                </div>
+                <ul class="enhanced-list" id="recommendations-list">
+                    <li>
+                        <div class="list-icon skeleton">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="list-content">
+                            <div class="list-title">Loading recommendations...</div>
+                            <div class="list-description">Generating personalized health improvement suggestions</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Health Data Visualizations -->
+        <section class="charts-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="card-title">Health Data Visualizations</h3>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Distribution Analysis</h4>
+                    <canvas id="riskPieChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Health Metrics Comparison</h4>
+                    <canvas id="metricsBarChart" width="400" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Timeline Projection</h4>
+                    <canvas id="riskLineChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Steps & Action Plan -->
+        <section class="result-card full-width fade-in-up" style="margin-bottom: 3rem;">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-route"></i>
+                </div>
+                <h3 class="card-title">Your Health Action Plan</h3>
+            </div>
+            <div class="resources-grid" id="action-plan">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4 class="resource-title">Consult Healthcare Provider</h4>
+                    <p class="resource-description">Schedule an appointment with your doctor to discuss these results and develop a comprehensive health plan.</p>
+                    <a href="#" class="resource-link">Find Providers <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4 class="resource-title">Schedule Follow-up</h4>
+                    <p class="resource-description">Book regular health checkups and monitoring appointments to track your progress over time.</p>
+                    <a href="#" class="resource-link">Schedule Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4 class="resource-title">Lifestyle Modifications</h4>
+                    <p class="resource-description">Implement the recommended lifestyle changes gradually to improve your overall health outcomes.</p>
+                    <a href="#" class="resource-link">Get Started <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Resources -->
+        <section class="resources-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-pink);">
+                    <i class="fas fa-book-medical"></i>
+                </div>
+                <h3 class="card-title">Additional Health Resources</h3>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="resource-title">Health Education</h4>
+                    <p class="resource-description">Learn more about your condition with evidence-based educational materials and research.</p>
+                    <a href="https://www.mayoclinic.org/" class="resource-link" target="_blank">Mayo Clinic <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="resource-title">Support Communities</h4>
+                    <p class="resource-description">Connect with others who share similar health journeys and experiences.</p>
+                    <a href="https://www.healthunlocked.com/" class="resource-link" target="_blank">HealthUnlocked <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="resource-title">Health Tracking Apps</h4>
+                    <p class="resource-description">Monitor your progress with recommended health and fitness tracking applications.</p>
+                    <a href="#" class="resource-link">Explore Apps <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4 class="resource-title">Emergency Contacts</h4>
+                    <p class="resource-description">Important phone numbers and emergency contacts for immediate health concerns.</p>
+                    <a href="tel:911" class="resource-link">Emergency: 911 <i class="fas fa-phone"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h4 class="resource-title">Health Calculators</h4>
+                    <p class="resource-description">Use additional health calculators and risk assessment tools for comprehensive analysis.</p>
+                    <a href="https://www.calculator.net/health-calculator.html" class="resource-link" target="_blank">Health Tools <i class="fas fa-external-link-alt"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h4 class="resource-title">Medical Records</h4>
+                    <p class="resource-description">Tips for organizing and maintaining your medical records and health history.</p>
+                    <a href="#" class="resource-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Note -->
+        <div class="result-card fade-in-up" style="text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong>Important Disclaimer</strong></p>
+            <p style="opacity: 0.9; line-height: 1.6;">
+                This health risk assessment is for informational purposes only and should not replace professional medical advice, diagnosis, or treatment. 
+                Always consult with qualified healthcare providers regarding any health concerns or before making medical decisions.
+            </p>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/api-client.js"></script>
+    <script src="js/results.js"></script>
+    <script>
+        // Initialize page animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add staggered animation delays
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Initialize tooltips and interactive elements
+            initializeInteractivity();
+        });
+
+        function initializeInteractivity() {
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.result-card, .resource-card, .chart-container');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add smooth scrolling to internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Enhanced PDF download functionality
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            showNotification('Generating PDF report...', 'info');
+            generatePDFReport();
+        });
+
+        function generatePDFReport() {
+            const { jsPDF } = window.jspdf;
+            
+            // Show loading state
+            const btn = document.getElementById('download-pdf');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+            btn.disabled = true;
+
+            // Use html2canvas to capture the main content
+            html2canvas(document.querySelector('.main-container'), {
+                scale: 1,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgWidth = 210;
+                const pageHeight = 295;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                // Add first page
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                // Add additional pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                // Save the PDF
+                const predictionType = localStorage.getItem('predictionType') || 'health';
+                const timestamp = new Date().toISOString().slice(0, 10);
+                pdf.save(`HealthPredict-${predictionType}-report-${timestamp}.pdf`);
+
+                // Reset button state
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                showNotification('PDF report downloaded successfully!', 'success');
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                showNotification('Error generating PDF report', 'error');
+            });
+        }
+
+        // Enhanced sharing functionality
+        document.getElementById('share-results').addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Health Risk Assessment Results',
+                    text: 'Check out my health risk assessment results from HealthPredict AI',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy link to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showNotification('Link copied to clipboard!', 'success');
+                }).catch(() => {
+                    showNotification('Unable to copy link', 'error');
+                });
+            }
+        });
+
+        // Print functionality
+        document.getElementById('print-results').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'}"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .styled-list li:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+
+        .list-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        /* Charts Container */
+        .charts-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-container {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--dark-color);
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .results-hero {
+                padding: 2rem;
+            }
+            
+            .results-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i> HealthPredict AI
+            </a>
+            <div class="header-actions">
+                <a href="predict.html" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> New Assessment
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="results-hero fade-in-up">
+            <div class="content">
+                <h1><i class="fas fa-chart-line"></i> Your Health Assessment Results</h1>
+                <p class="subtitle">AI-powered analysis of your health risk factors</p>
+                <p class="assessment-date">Assessment Date: <span id="assessment-date">Loading...</span></p>
+                
+                <div class="action-buttons">
+                    <button id="print-results" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Print Results
+                    </button>
+                    <button id="share-results" class="btn btn-secondary">
+                        <i class="fas fa-share-alt"></i> Share Results
+                    </button>
+                    <button id="download-pdf" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Grid -->
+        <div class="results-grid">
+            <!-- Risk Score Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-primary);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="card-title">Overall Risk Assessment</h3>
+                </div>
+                <div class="risk-score-display">
+                    <div class="risk-gauge">
+                        <div class="gauge-bg">
+                            <div class="gauge-fill" id="risk-gauge-fill"></div>
+                            <div class="gauge-center">
+                                <div class="risk-percentage" id="risk-percentage">--</div>
+                                <div class="risk-label">Risk Level</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="risk-level-badge" id="risk-level-badge">Analyzing...</div>
+                    <p id="risk-description" style="margin-top: 1rem; color: #64748b;">Processing your health data...</p>
+                </div>
+            </div>
+
+            <!-- Confidence Score Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3 class="card-title">Model Confidence</h3>
+                </div>
+                <div class="risk-score-display">
+                    <div class="risk-gauge">
+                        <div class="gauge-bg">
+                            <div class="gauge-fill" id="confidence-gauge-fill" style="background: var(--gradient-success);"></div>
+                            <div class="gauge-center">
+                                <div class="risk-percentage" id="confidence-percentage">--</div>
+                                <div class="risk-label">Confidence</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; color: #64748b;">AI model prediction accuracy</p>
+                </div>
+            </div>
+
+            <!-- Risk Factors Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-warning);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="card-title">Contributing Risk Factors</h3>
+                </div>
+                <ul class="styled-list" id="risk-factors-list">
+                    <li><div class="list-icon" style="background: var(--warning-color);"><i class="fas fa-spinner fa-spin"></i></div> Loading risk factors...</li>
+                </ul>
+            </div>
+
+            <!-- Recommendations Card -->
+            <div class="result-card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="card-title">Health Recommendations</h3>
+                </div>
+                <ul class="styled-list" id="recommendations-list">
+                    <li><div class="list-icon" style="background: var(--success-color);"><i class="fas fa-spinner fa-spin"></i></div> Loading recommendations...</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Health Visualizations -->
+        <section class="charts-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="card-title">Health Data Visualizations</h3>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Distribution</h4>
+                    <canvas id="riskPieChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Health Metrics Comparison</h4>
+                    <canvas id="metricsBarChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4 class="chart-title">Risk Timeline</h4>
+                    <canvas id="riskLineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Resources -->
+        <section class="resources-section full-width fade-in-up">
+            <div class="card-header">
+                <div class="card-icon" style="background: var(--gradient-primary);">
+                    <i class="fas fa-book-medical"></i>
+                </div>
+                <h3 class="card-title">Additional Health Resources</h3>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4>Heart Health Guide</h4>
+                    <p>Comprehensive cardiovascular health resources and tips</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-arrow-right"></i> Learn More
+                    </a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h4>Nutrition Guidelines</h4>
+                    <p>Personalized diet recommendations based on your risk profile</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-arrow-right"></i> View Guide
+                    </a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h4>Exercise Programs</h4>
+                    <p>Tailored fitness routines for your health conditions</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-arrow-right"></i> Start Now
+                    </a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Find Specialists</h4>
+                    <p>Connect with healthcare providers in your area</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-arrow-right"></i> Search
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/results.js"></script>
+    
+    <!-- Simple Results Handler -->
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true
+        });
+    </script>
+
+    <!-- Add new styles for the results page -->
+    <style>
+        .results-overview {
+            margin-bottom: 3rem;
+        }
+
+        .risk-score-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .risk-score-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .gauge-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-center-text .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+        }
+
+        .gauge-center-text .label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .risk-score-info {
+            flex: 1;
+        }
+
+        .score-display {
+            margin: 1rem 0;
+        }
+
+        .score-display #riskScore {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+
+        .risk-level.high {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .risk-level.moderate {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .risk-level.low {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .analysis-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+
+        .risk-factors-list {
+            margin-top: 1rem;
+        }
+
+        .risk-factor {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .risk-factor.high {
+            border-left: 4px solid #dc3545;
+        }
+
+        .risk-factor.moderate {
+            border-left: 4px solid #ffc107;
+        }
+
+        .risk-factor h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+
+        .risk-factor p {
+            margin: 0 0 0.5rem 0;
+            color: #6c757d;
+        }
+
+        .impact {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .impact.high {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .impact.moderate {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .recommendation-category {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-category h4 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .recommendation-category ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendation-category li {
+            padding: 0.5rem 0;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recommendation-category li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .action-plan {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .action-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .action-step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+
+        .step-content p {
+            margin: 0;
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .risk-score-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .risk-score-gauge {
+                margin: 0 auto;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html> 
