@@ -18,12 +18,12 @@ from models.heart_model import HeartDiseasePredictor
 from models.diabetes_model import DiabetesPredictor
 from schemas.prediction_schemas import HeartPredictionRequest, DiabetesPredictionRequest, PredictionResponse
 
-# Configure logging
+# Configure logging with UTF-8 encoding
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('logs/app.log'),
+        logging.FileHandler('logs/app.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )

@@ -158,12 +158,18 @@ async function handleHeartFormSubmission(e) {
         localStorage.setItem('heartPredictionResult', JSON.stringify(result));
         localStorage.setItem('predictionType', 'heart');
         
+        // Debug: Verify storage
+        console.log('✅ Stored prediction data:', {
+            type: localStorage.getItem('predictionType'),
+            result: localStorage.getItem('heartPredictionResult')
+        });
+        
         // Show success and redirect
         submitBtn.textContent = 'Success! Redirecting...';
         submitBtn.classList.add('btn-success');
         
         setTimeout(() => {
-            window.location.href = 'results.html';
+            window.location.href = 'results-perfect.html';
         }, 1000);
         
     } catch (error) {
@@ -217,7 +223,7 @@ async function handleDiabetesFormSubmission(e) {
         submitBtn.classList.add('btn-success');
         
         setTimeout(() => {
-            window.location.href = 'results.html';
+            window.location.href = 'results-perfect.html';
         }, 1000);
         
     } catch (error) {

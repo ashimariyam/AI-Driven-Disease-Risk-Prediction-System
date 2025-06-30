@@ -672,6 +672,9 @@
                     <button id="print-results" class="btn btn-secondary">
                         <i class="fas fa-print"></i> Print Report
                     </button>
+                    <button id="debug-reload" class="btn btn-warning" onclick="debugAndReload()" style="background: #f39c12; margin-left: 10px;">
+                        <i class="fas fa-bug"></i> Debug & Reload
+                    </button>
                 </div>
             </div>
         </section>
@@ -813,6 +816,33 @@
         }
         
         // Force load sample data and display it immediately
+        // Debug function for troubleshooting
+        function debugAndReload() {
+            console.log('=== MANUAL DEBUG ===');
+            console.log('Current localStorage contents:');
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                console.log(`${key}:`, value);
+            }
+            
+            // Force reload results
+            console.log('Forcing results reload...');
+            if (typeof loadResults === 'function') {
+                loadResults();
+            } else {
+                console.log('loadResults function not available, reloading page...');
+                location.reload();
+            }
+            
+            // Update assessment date manually if needed
+            const assessmentDate = document.getElementById('assessment-date');
+            if (assessmentDate && assessmentDate.textContent === 'Loading...') {
+                assessmentDate.textContent = new Date().toLocaleDateString();
+                console.log('Manually updated assessment date');
+            }
+        }
+        
         function forceLoadSample() {
             console.log('🔧 Force loading sample data...');
             

@@ -12,8 +12,30 @@ let charts = {
 
 // Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    loadResults();
+    console.log('🚀 Results page loaded - starting initialization');
+    
+    // Force immediate debug check
+    debugLocalStorage();
+    
+    // Add a 1 second delay to ensure localStorage is fully available
+    setTimeout(() => {
+        console.log('🔄 Attempting to load results after delay...');
+        loadResults();
+    }, 100);
+    
     initializeActionButtons();
+    
+    // Add emergency fallback after 3 seconds
+    setTimeout(() => {
+        const assessmentDate = document.getElementById('assessment-date');
+        if (assessmentDate && assessmentDate.textContent === 'Loading...') {
+            console.log('⚠️ Results still loading after 3 seconds, checking localStorage again...');
+            debugLocalStorage();
+            
+            // Try loading again
+            loadResults();
+        }
+    }, 3000);
 });
 
 // Debug function to check localStorage contents
@@ -91,16 +113,24 @@ function displayDiabetesResults(result) {
 }
 
 function updatePageHeader(title, result) {
+    console.log('📝 Updating page header with:', { title, result });
+    
     document.title = title;
     const heroTitle = document.querySelector('#hero-title');
     if (heroTitle) {
         heroTitle.textContent = title;
+        console.log('✅ Updated hero title');
+    } else {
+        console.log('❌ Hero title element not found');
     }
     
     const assessmentDate = document.getElementById('assessment-date');
     if (assessmentDate) {
         const date = result.timestamp ? new Date(result.timestamp).toLocaleDateString() : new Date().toLocaleDateString();
         assessmentDate.textContent = date;
+        console.log('✅ Updated assessment date to:', date);
+    } else {
+        console.log('❌ Assessment date element not found');
     }
 }
 
